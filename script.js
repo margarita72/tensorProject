@@ -18,12 +18,19 @@ function makeList(data)
     return res;
 }
 
-function parse()
+function parse(argc)
 {
-    let inp = document.getElementById('inp');
+    let inp = argc;
+    if(argc === undefined)
+        inp = document.getElementById('inp').value; 
+    
     let objData;
     try {
-        objData = JSON.parse(inp.value);
+        if(typeof(inp) === 'object'){
+            objData = inp;
+        }else {
+            objData = JSON.parse(inp);
+        }
     } catch (error) {
         alert('строка не соответствует синтаксису JSON');
         return;
