@@ -46,9 +46,9 @@
  * //        Доска 2
  * 
  */
-function makeList(data)  //
+function makeList(data)
 {
-    if (data === undefined)  //Если объект не определен, то осуществляется выход.
+    if (data === undefined || data.length === 0)  //Если объект не определен, то осуществляется выход.
         return '';
     let res = '';
     res += '<ul>';  //Начало маркированного списка.       
@@ -72,15 +72,14 @@ function makeList(data)  //
  */
 function parse(jsonObj)
 {
-    let inp = jsonObj; //Инициализация значением переданным в функцию
-    if(jsonObj === undefined)  //Если в функцию ничего не передали то значение берется с Textarea
-        inp = document.getElementById('inp').value;  //Получение объекта из textarea и добавление его в переменную inp.
+    if(jsonObj === undefined)  //Если в функцию ничего не передали генерируется исключение
+        throw new Error('Объект не был передан в функцию');
     let objData;
     try {
-        if(typeof(inp) === 'object'){ //Если передан строка то нужно преобразовать его в объект
-            objData = inp;
+        if(typeof(jsonObj) === 'object'){ //Если передан строка то нужно преобразовать его в объект
+            objData = jsonObj;
         }else {
-            objData = JSON.parse(inp);  //Берётся текст и создается объект типа JSON.
+            objData = JSON.parse(jsonObj);  //Берётся текст и создается объект типа JSON.
         }  
     } catch (error) {
         alert('строка не соответствует синтаксису JSON');  //Обработка исключения, выводится сообщение об ошибке.
@@ -93,3 +92,45 @@ function parse(jsonObj)
         return;  //Выход из функции.
     }
 }
+
+function modelBuilder(keys,values){
+    if(!keys||!values)
+        throw new Error('Функция принимает два обязательных аргумента');
+    if(keys.length !== values.length)
+        throw new Error('Ключи и значения имеют разные размеры');
+    let res = {};
+    for (let i = 0; i < keys.length; i++) {
+        res[keys[i]] = values[i];
+    }
+
+    res.delete = function(){
+        this.removed = true;
+    }
+    res.update = function(updObj){
+        if(this[updObj[0]])
+            this[updObj[0]] = updObj[1];
+        else throw new Error('у объекта нет такого поля: ' + updObj[0]);
+    }
+    res.read = function(key){
+        if(this.removed)
+            return;
+        if(key) 
+        {
+            if(this[key])
+                return this[key];
+            else return null;
+        }
+        let tmp = {};
+        for (const i in this) {
+            if(typeof this[i] !== 'function')
+                tmp[i] = this[i];
+        }
+        let m = [];
+        m[0] = tmp;
+        return m;
+    }
+    return res;
+}
+
+o = modelBuilder(["name","childeren"],['title',[['name'],['title1']]]);
+jsonExample  = [{ "name": "Доска 1", "children": [ { "name": "Список задач 1.1", "children": [ { "name": "Задача 1.1.1" }, { "name": "Задача 1.1.2" } ] }, { "name": "Список задач 1.2", "children": [ { "name": "Задача 1.2.1" }, { "name": "Задача 1.2.2" } ] }, { "name": "Список задач 1.3" } ] }, { "name": "Доска 2" } ];
