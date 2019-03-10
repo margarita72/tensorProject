@@ -92,55 +92,72 @@ function parse(jsonObj)
         return;  //Выход из функции.
     }
 }
-/**
-* Функция задаёт Элементам массива имена key и values и включает в себя методы delete, read, update.
-* @param {key} - Ключи элементов массива.
-* @param {values} - Значение для ключей массива.
-* @param {res.delete} - Метод delete, помечает объект для удаления (свойство removedпринимает значение true).
-* @returns {String} - Строка в формате HTML без выбранного на удаление элемента.
-* @param {res.update} - Метод update обновляет объект. Предполагается что во входящем объекте updObjсодержаться ключ/значения для обновления.
-* @returns {String} - Выводится строка в формате HTML, но уже с обновлённым элементом.
-* @param {res.read} - Метод read возвращает выбранный (key) объект JSON таблицы. Если ключа не существует или значение в нём пусто – возвращает null.
-* @returns {String} - Строка в формате HTML, выбранная методом read. Либо null.
-*/
-
-function modelBuilder(keys,values){
+/** 
+ * @param {Array} keys Массив ключей.
+ * @param {Array} values Массив значений.
+ * @returns {Object} Объект с полями из ключей и методами delete, read, update.
+ * @constructor 
+ */
+let modelBuilder = function (keys,values){
     let res = {};  //Создание пустого объекта.
-    if(keys && values)  //Проверка условий объектов key и values. 
+    if(keys && values)  //Если не передали массив ключей и значений то создаем пустой объект. 
     {
-        if(keys.length !== values.length)    //Если свойства объектов не эквивалентны, то выводится сообщение об ошибке.
+        if(keys.length !== values.length)    //Если размеры объектов не эквивалентны, то генерируем исключение.
             throw new Error('Ключи и значения имеют разные размеры');
         for (let i = 0; i < keys.length; i++) {  //Цикл обработки элементов массива.
-            res[keys[i]] = values[i];  //Элементу массива key задаётся значение values.
+            res[keys[i]] = values[i];  //Создается новое поле с названием key[i] и с  значением values[i].
         }
     }
-    res.delete = function(){  //Создаётся метод delete.
+    /**
+     * Метод delete, помечает объект для удаления 
+     * (свойство removed принимает значение true).
+     *  @name modelBuilder#delete
+     */
+    res.delete = function(){
         this.removed = true;  //Свойство removed принимает значение true.
     }
-    res.update = function(updObj){  //Создаётся метод update.
-        if(!updObj || updObj.length !== 2)  //Если объект updObj не определен или его размер не равно двум, то вывести сообщение об ошибке.
+    /**
+     * Метод update обновляет объект.
+     * @name modelBuilder#update
+     * @param {Object} updObj Предполагается что во входящем объекте updObj содержаться ключ/значения для обновления.
+     */
+    res.update = function(updObj){
+        for (const i in updObj) {  //Цикл по всем ключам в объекте.
+            if(this[i] !== undefined) //Если поле существует, то изменить значение
+                this[i] = updObj[i];
+        }
+        /*Этот код предназначен для массивов
+        if(!updObj || updObj.length !== 2)  //Если объект updObj не определен или это не пара ключь - значение, то генерируем исключение.
             throw new Error('Невозможно обновить: переданный объект не совпадает требованиям.');
         if(this[updObj[0]])
-            this[updObj[0]] = updObj[1];  
-        else throw new Error('У объекта нет такого поля: ' + updObj[0]); 
+            this[updObj[0]] = updObj[1];  //Обновляем значение.
+        else throw new Error('У объекта нет такого поля: ' + updObj[0]); //Если у объекта нет такого поля генерируем исключение.
+        */
     }
-    res.read = function(key){  //Метод read.
-        if(this.removed)  //Проверка значения элемента. Если removed, то метод read не используется. 
+    /**
+     * Метод read возвращает выбранный (key) объект JSON таблицы.
+     * Если ключа не существует или значение в нём пусто – возвращает null.
+     * @name modelBuilder#read
+     * @param {String} key 
+     */
+    res.read = function(key){
+        if(this.removed)  //Проверка значения элемента. Если он печень как удаленный, то возвращаем undefined. 
             return; 
-        if(key)  //Если значение key.
+        if(key) //Если был передан ключ, то функция должна вернуть значение по ключу.
         {
-            if(this[key])  
-                return this[key];  //Вывод свойств объекта key.
-            else return null;  
-        }
+            if(this[key]) 
+                return this[key];  //Возвращает значение свойства с ключом key.
+            else return null;  //Если ключа не существует или значение в нём пусто – возвращает null.
+        } 
+        //метод возвращает объект без методов объекта если ключ не передан.
         let tmp = {};  //Создаётся пустой оъект.
-        for (const i in this) {  
-            if(typeof this[i] !== 'function') 
+        for (const i in this) { //Перебрать все методы и проя и выделить все поля.
+            if(typeof this[i] !== 'function') //Если не функйия, то поле со значением копируется в новый объект.
                 tmp[i] = this[i]; 
         }
-        return tmp;  
+        return tmp;  //Возвращаем объект без методов.
     }
-    return res;  
+    return res;
 }
 
 let o = modelBuilder(["name","children"],['title',[['name'],['title1']]]);  
