@@ -94,22 +94,24 @@ function parse(jsonObj)
 }
 
 function modelBuilder(keys,values){
-    if(!keys||!values)
-        throw new Error('Функция принимает два обязательных аргумента');
-    if(keys.length !== values.length)
-        throw new Error('Ключи и значения имеют разные размеры');
     let res = {};
-    for (let i = 0; i < keys.length; i++) {
-        res[keys[i]] = values[i];
+    if(keys && values)
+    {
+        if(keys.length !== values.length)
+            throw new Error('Ключи и значения имеют разные размеры');
+        for (let i = 0; i < keys.length; i++) {
+            res[keys[i]] = values[i];
+        }
     }
-
     res.delete = function(){
         this.removed = true;
     }
     res.update = function(updObj){
+        if(!updObj || updObj.length !== 2)
+            throw new Error('Невозможно обновить: переданный объект не совпадает требованиям.');
         if(this[updObj[0]])
             this[updObj[0]] = updObj[1];
-        else throw new Error('у объекта нет такого поля: ' + updObj[0]);
+        else throw new Error('У объекта нет такого поля: ' + updObj[0]);
     }
     res.read = function(key){
         if(this.removed)
@@ -125,12 +127,10 @@ function modelBuilder(keys,values){
             if(typeof this[i] !== 'function')
                 tmp[i] = this[i];
         }
-        let m = [];
-        m[0] = tmp;
-        return m;
+        return tmp;
     }
     return res;
 }
 
-o = modelBuilder(["name","childeren"],['title',[['name'],['title1']]]);
-jsonExample  = [{ "name": "Доска 1", "children": [ { "name": "Список задач 1.1", "children": [ { "name": "Задача 1.1.1" }, { "name": "Задача 1.1.2" } ] }, { "name": "Список задач 1.2", "children": [ { "name": "Задача 1.2.1" }, { "name": "Задача 1.2.2" } ] }, { "name": "Список задач 1.3" } ] }, { "name": "Доска 2" } ];
+let o = modelBuilder(["name","children"],['title',[['name'],['title1']]]);
+let jsonExample  = [{ "name": "Доска 1", "children": [ { "name": "Список задач 1.1", "children": [ { "name": "Задача 1.1.1" }, { "name": "Задача 1.1.2" } ] }, { "name": "Список задач 1.2", "children": [ { "name": "Задача 1.2.1" }, { "name": "Задача 1.2.2" } ] }, { "name": "Список задач 1.3" } ] }, { "name": "Доска 2" } ];
