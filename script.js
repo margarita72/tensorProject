@@ -50,7 +50,7 @@ function makeList(data)
 {
     if (data === undefined || data.length === 0)  //Если объект не определен, то осуществляется выход.
         return '';
-    let res = '';
+    let res = '';  
     res += '<ul>';  //Начало маркированного списка.       
     for(let i = 0;i<data.length;i++)  //Каждый объект находится в массиве. Цикл проверяет все элементы массива.
     {   
@@ -94,43 +94,43 @@ function parse(jsonObj)
 }
 
 function modelBuilder(keys,values){
-    let res = {};
-    if(keys && values)
+    let res = {};  //Создание пустого объекта.
+    if(keys && values)  //Проверка условий объектов key и values. 
     {
-        if(keys.length !== values.length)
+        if(keys.length !== values.length)    //Если свойства объектов не эквивалентны, то выводится сообщение об ошибке.
             throw new Error('Ключи и значения имеют разные размеры');
-        for (let i = 0; i < keys.length; i++) {
-            res[keys[i]] = values[i];
+        for (let i = 0; i < keys.length; i++) {  //Цикл обработки элементов массива.
+            res[keys[i]] = values[i];  //Элементу массива key задаётся значение values.
         }
     }
-    res.delete = function(){
-        this.removed = true;
+    res.delete = function(){  //Создаётся метод delete.
+        this.removed = true;  //Свойство removed принимает значение true.
     }
-    res.update = function(updObj){
-        if(!updObj || updObj.length !== 2)
+    res.update = function(updObj){  //Создаётся метод update.
+        if(!updObj || updObj.length !== 2)  //Если объект updObj не определен или его размер не равно двум, то вывести сообщение об ошибке.
             throw new Error('Невозможно обновить: переданный объект не совпадает требованиям.');
         if(this[updObj[0]])
-            this[updObj[0]] = updObj[1];
-        else throw new Error('У объекта нет такого поля: ' + updObj[0]);
+            this[updObj[0]] = updObj[1];  
+        else throw new Error('У объекта нет такого поля: ' + updObj[0]); 
     }
-    res.read = function(key){
-        if(this.removed)
-            return;
-        if(key) 
+    res.read = function(key){  //Метод read.
+        if(this.removed)  //Проверка значения элемента. Если removed, то метод read не используется. 
+            return; 
+        if(key)  //Если значение key.
         {
-            if(this[key])
-                return this[key];
-            else return null;
+            if(this[key])  
+                return this[key];  //Вывод свойств объекта key.
+            else return null;  
         }
-        let tmp = {};
-        for (const i in this) {
-            if(typeof this[i] !== 'function')
-                tmp[i] = this[i];
+        let tmp = {};  //Создаётся пустой оъект.
+        for (const i in this) {  
+            if(typeof this[i] !== 'function') 
+                tmp[i] = this[i]; 
         }
-        return tmp;
+        return tmp;  
     }
-    return res;
+    return res;  
 }
 
-let o = modelBuilder(["name","children"],['title',[['name'],['title1']]]);
-let jsonExample  = [{ "name": "Доска 1", "children": [ { "name": "Список задач 1.1", "children": [ { "name": "Задача 1.1.1" }, { "name": "Задача 1.1.2" } ] }, { "name": "Список задач 1.2", "children": [ { "name": "Задача 1.2.1" }, { "name": "Задача 1.2.2" } ] }, { "name": "Список задач 1.3" } ] }, { "name": "Доска 2" } ];
+let o = modelBuilder(["name","children"],['title',[['name'],['title1']]]);  
+let jsonExample  = [{ "name": "Доска 1", "children": [ { "name": "Список задач 1.1", "children": [ { "name": "Задача 1.1.1" }, { "name": "Задача 1.1.2" } ] }, { "name": "Список задач 1.2", "children": [ { "name": "Задача 1.2.1" }, { "name": "Задача 1.2.2" } ] }, { "name": "Список задач 1.3" } ] }, { "name": "Доска 2" } ];  
