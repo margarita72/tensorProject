@@ -151,14 +151,23 @@ let modelBuilder = function (keys,values){
         } 
         //метод возвращает объект без методов объекта если ключ не передан.
         let tmp = {};  //Создаётся пустой оъект.
-        for (const i in this) { //Перебрать все методы и проя и выделить все поля.
-            if(typeof this[i] !== 'function') //Если не функйия, то поле со значением копируется в новый объект.
-                tmp[i] = this[i]; 
+        let keys = Object.keys(this);
+        for (let i = 0; i < keys.length;i++) { //Перебрать все методы и проя и выделить все поля.
+            if(typeof this[keys[i]] !== 'function') //Если не функйия, то поле со значением копируется в новый объект.
+                tmp[keys[i]] = this[keys[i]]; 
         }
-        return tmp;  //Возвращаем объект без методов.
+        let m = [];
+        m[0] = tmp;
+        return m;  //Возвращаем объект без методов.
     }
     return res;
 }
 
-let o = modelBuilder(["name","children"],['title',[['name'],['title1']]]);  
-let jsonExample  = [{ "name": "Доска 1", "children": [ { "name": "Список задач 1.1", "children": [ { "name": "Задача 1.1.1" }, { "name": "Задача 1.1.2" } ] }, { "name": "Список задач 1.2", "children": [ { "name": "Задача 1.2.1" }, { "name": "Задача 1.2.2" } ] }, { "name": "Список задач 1.3" } ] }, { "name": "Доска 2" } ];  
+//let o = modelBuilder(["name","children"],['title',[['name'],['title1']]]);  
+//let jsonExample  = [{ "name": "Доска 1", "children": [ { "name": "Список задач 1.1", "children": [ { "name": "Задача 1.1.1" }, { "name": "Задача 1.1.2" } ] }, { "name": "Список задач 1.2", "children": [ { "name": "Задача 1.2.1" }, { "name": "Задача 1.2.2" } ] }, { "name": "Список задач 1.3" } ] }, { "name": "Доска 2" } ];  
+//a = [{"name":"Доска 1","children":[{"name": "Список задач 1.1"}]},{"name":"Доска 1"}];
+
+let p1 = ["name","children"];
+let p2 = ["Доска 1",[{"name": "Список задач 1.1"}]];
+
+parse(modelBuilder(p1,p2).read());
