@@ -1,0 +1,12 @@
+.list-open{
+    width: 20px;
+    height: 20px;
+    background-color: gray;
+    float: left;
+}
+
+li::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
