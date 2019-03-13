@@ -93,10 +93,14 @@ function parse(jsonObj)
     }
 }
 
+/*Демо-данные для выполнения задачи*/
 data = [{"id":1,"name":"Доска 1","hasChildren":true},{"id":2,"parent":1,"name":"Список задач 1.1","hasChildren":true},{"id":3,"parent":2,"name":"Задача 1.1.1"},{"id":4,"parent":2,"name":"Задача 1.1.2"},{"id":5,"parent":1,"name":"Список задач 1.2","hasChildren":true},{"id":6,"parent":5,"name":"Задача 1.2.1"},{"id":7,"parent":5,"name":"Задача 1.2.2"},{"id":8,"parent":1,"name":"Список задач 1.3"},{"id":9,"name":"Доска 2"}];
-DataList = {};
+
+/*объект (ассоциативный массив) где будет хранятся все объект из списка*/
+dataList = {};
 /**
- * 
+ * mock-функция
+ * Эмулирует работу запроса к серверу. Получает дочерние элементы по идентификатору объекта и передает в колбэк-функцию.
  * @param {Number} id 
  * @param {Function} callback 
  */
@@ -118,9 +122,7 @@ function loadChildren(id, callback){
         setTimeout(callback, 0,res);
 }
 
-/**
-  * 
-  */
+/* Класс представляет структуру списка со всеми необходимая полями, а также с методами для динамичной работы со многоуровневым списком. */
 class modelBuilder{
     /** 
      * @param {Array} keys Массив ключей.
@@ -128,6 +130,7 @@ class modelBuilder{
      * @constructor 
      */
     constructor(keys,values){
+        //инициализация основных полей
         this.id = null;
         this.hasChildren = false;
         this.name = '';
@@ -189,42 +192,57 @@ class modelBuilder{
         return m;  //Возвращаем объект без методов.
     }
     /**
-     * 
-     * @param {Function} callback 
+     * Асинхронный метод.
+     * Метод вызывает mock-функцию loadChildren
+     * @param {Function} callback Принимает на вход функцию-колбэк
      */
     getChildren (callback){
-        setTimeout(loadChildren,0,this.id,callback);
+        if(this.hasChildren) //Если у списка есть дочерний список то открывается.
+            setTimeout(loadChildren,0,this.id,callback);
     }
-    /**
+    /** 
+     * формирует вёрстку конкретного элемента и возвращает её в виде строки.
      * @returns {String}
      */
     render() {
-        let btn = '<div class="list-open" onclick="OpenLine(this)" id="btn' + this.id + '">' + this.name + '</div>';
-        return '<li id="list'+ this.id +'">' + btn + ' ' + '</li>';
+        let content = '<div class="list-open" onclick="openLine(this)" id="btn' + this.id + '">' + this.name + '</div>';
+        return '<li id="list'+ this.id +'">' + content + ' ' + '</li>';
     }
 }
-
-function cb(arr)
+/**
+ * Функция принимает на вход массив объектов типа modelBuilder и выводит их на страницу.
+ * Также сохраняет эти объекты в глобальный объект dataList для дальнейшего использования.
+ * @param {Array} arrayOfModel Массив объектов типа modelBuilder.
+ */
+function handler(arrayOfModel)
 {
-    let container = 'main-list';
-    if(arr[0].parent)
+    let container = 'main-list'; //ИД корневого тега куда выводится список 
+    //Если id равен нулю или не определено, то это корень списка.
+    if(arrayOfModel[0].parent) //Если это не корень, то составляем ид строки из списка.
     {
-        container = 'list' +  arr[0].parent;
+        container = 'list' +  arrayOfModel[0].parent;
     }
+    //Получаем строку списка куда нужно добавить строки.
     let li = document.getElementById(container);
-    let res = '';
-    for (let i = 0; i < arr.length; i++) {
-        res += arr[i].render();
-        DataList['btn'+arr[i].id] = arr[i];
+    let htmlList = '';
+    for (let i = 0; i < arrayOfModel.length; i++) {
+        htmlList += arrayOfModel[i].render();   //Собирается все строки списка.
+        dataList['btn'+arrayOfModel[i].id] = arrayOfModel[i]; //Добавляется в список для дальнейшего доступа к объекту.
     }
-    li.innerHTML += '<ul>'+res+'</ul>';
+    //Выводится список.
+    li.innerHTML += '<ul>'+htmlList+'</ul>';
+}
+/**
+ * Обработчик нажатия на строку из списка.
+ * Открывает подсписок если оно существует.
+ * @param {Object} pressedButton 
+ */
+function openLine(pressedButton){
+    if(!dataList[pressedButton.id].opened){     //Если список уже открыт, ничего не происходит.
+        dataList[pressedButton.id].opened = true;   //Помечаем как открытий.
+        dataList[pressedButton.id].getChildren(handler);    //Открываем список.
+    }
 }
 
-function OpenLine(line){    
-    if(!DataList[line.id].opened){
-        DataList[line.id].opened = true;
-        DataList[line.id].getChildren(cb);
-    }
-}
-
-loadChildren(null,cb);
+//вызов функции для отображения первого уровня
+loadChildren(null,handler);
