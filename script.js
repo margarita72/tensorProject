@@ -1,5 +1,5 @@
-/**
- * Функция принимает объект и возвращает строку. 
+/**  
+ * Функция принимает объект и возвращает строку.   
  * Объект передается по рекурсии. 
  * Каждый вызов - это переход на следующий уровень вложения JSON.
  * @param {Object} data - принимает JSON объект.
@@ -92,28 +92,65 @@ function parse(jsonObj)
         return;  //Выход из функции.
     }
 }
-/** 
- * @param {Array} keys Массив ключей.
- * @param {Array} values Массив значений.
- * @returns {Object} Объект с полями из ключей и методами delete, read, update.
- * @constructor 
+
+/*Демо-данные для выполнения задачи*/
+data = [{"id":1,"name":"Доска 1","hasChildren":true},{"id":2,"parent":1,"name":"Список задач 1.1","hasChildren":true},{"id":3,"parent":2,"name":"Задача 1.1.1"},{"id":4,"parent":2,"name":"Задача 1.1.2"},{"id":5,"parent":1,"name":"Список задач 1.2","hasChildren":true},{"id":6,"parent":5,"name":"Задача 1.2.1"},{"id":7,"parent":5,"name":"Задача 1.2.2"},{"id":8,"parent":1,"name":"Список задач 1.3"},{"id":9,"name":"Доска 2"}];
+
+/*объект (ассоциативный массив) где будет хранятся все объект из списка*/
+dataList = {};
+/**
+ * mock-функция
+ * Эмулирует работу запроса к серверу. Получает дочерние элементы по идентификатору объекта и передает в колбэк-функцию.
+ * @param {Number} id 
+ * @param {Function} callback 
  */
-let modelBuilder = function (keys,values){
-    let res = {};  //Создание пустого объекта.
-    if(keys && values)  //Если не передали массив ключей и значений то создаем пустой объект. 
-    {
-        if(keys.length !== values.length)    //Если размеры объектов не эквивалентны, то генерируем исключение.
-            throw new Error('Ключи и значения имеют разные размеры');
-        for (let i = 0; i < keys.length; i++) {  //Цикл обработки элементов массива.
-            res[keys[i]] = values[i];  //Создается новое поле с названием key[i] и с  значением values[i].
+function loadChildren(id, callback){
+    if(callback === undefined || typeof(callback) !== 'function')
+        throw new Error('callback not defined');
+    if(id === null)
+        id = undefined;
+    let res = [];
+    for (let i = 0; i < data.length; i++) {
+        if(data[i].parent == id)
+        {
+            let o = new modelBuilder();
+            o.update(data[i]);
+            res.push(o);
         }
     }
+    if (res.length)
+        setTimeout(callback, 0,res);
+}
+
+/* Класс представляет структуру списка со всеми необходимая полями, а также с методами для динамичной работы со многоуровневым списком. */
+class modelBuilder{
+    /** 
+     * @param {Array} keys Массив ключей.
+     * @param {Array} values Массив значений.
+     * @constructor 
+     */
+    constructor(keys,values){
+        //инициализация основных полей
+        this.id = null;
+        this.hasChildren = false;
+        this.name = '';
+        this.parent = null;
+
+        if(keys && values)  //Если не передали массив ключей и значений то создаем пустой объект. 
+        {
+            if(keys.length !== values.length)    //Если размеры объектов не эквивалентны, то генерируем исключение.
+                throw new Error('Ключи и значения имеют разные размеры');
+            for (let i = 0; i < keys.length; i++) {  //Цикл обработки элементов массива.
+                res[keys[i]] = values[i];  //Создается новое поле с названием key[i] и с  значением values[i].
+            }
+        }
+    }    
     /**
      * Метод delete, помечает объект для удаления 
      * (свойство removed принимает значение true).
      *  @name modelBuilder#delete
      */
-    res.delete = function(){
+    delete(){
         this.removed = true;  //Свойство removed принимает значение true.
     }
     /**
@@ -121,26 +158,20 @@ let modelBuilder = function (keys,values){
      * @name modelBuilder#update
      * @param {Object} updObj Предполагается что во входящем объекте updObj содержаться ключ/значения для обновления.
      */
-    res.update = function(updObj){
+    update(updObj){
         for (const i in updObj) {  //Цикл по всем ключам в объекте.
             if(this[i] !== undefined) //Если поле существует, то изменить значение
                 this[i] = updObj[i];
         }
-        /*Этот код предназначен для массивов
-        if(!updObj || updObj.length !== 2)  //Если объект updObj не определен или это не пара ключь - значение, то генерируем исключение.
-            throw new Error('Невозможно обновить: переданный объект не совпадает требованиям.');
-        if(this[updObj[0]])
-            this[updObj[0]] = updObj[1];  //Обновляем значение.
-        else throw new Error('У объекта нет такого поля: ' + updObj[0]); //Если у объекта нет такого поля генерируем исключение.
-        */
     }
     /**
      * Метод read возвращает выбранный (key) объект JSON таблицы.
      * Если ключа не существует или значение в нём пусто – возвращает null.
      * @name modelBuilder#read
      * @param {String} key 
+     * @returns {Object} 
      */
-    res.read = function(key){
+    read(key){
         if(this.removed)  //Проверка значения элемента. Если он печень как удаленный, то возвращаем undefined. 
             return; 
         if(key) //Если был передан ключ, то функция должна вернуть значение по ключу.
@@ -160,14 +191,58 @@ let modelBuilder = function (keys,values){
         m[0] = tmp;
         return m;  //Возвращаем объект без методов.
     }
-    return res;
+    /**
+     * Асинхронный метод.
+     * Метод вызывает mock-функцию loadChildren
+     * @param {Function} callback Принимает на вход функцию-колбэк
+     */
+    getChildren (callback){
+        if(this.hasChildren) //Если у списка есть дочерний список то открывается.
+            setTimeout(loadChildren,0,this.id,callback);
+    }
+    /** 
+     * формирует вёрстку конкретного элемента и возвращает её в виде строки.
+     * @returns {String}
+     */
+    render() {
+        let content = '<div class="list-open" onclick="openLine(this)" id="btn' + this.id + '">' + this.name + '</div>';
+        return '<li id="list'+ this.id +'">' + content + ' ' + '</li>';
+    }
+}
+/**
+ * Функция принимает на вход массив объектов типа modelBuilder и выводит их на страницу.
+ * Также сохраняет эти объекты в глобальный объект dataList для дальнейшего использования.
+ * @param {Array} arrayOfModel Массив объектов типа modelBuilder.
+ */
+function handler(arrayOfModel)
+{
+    let container = 'main-list'; //ИД корневого тега куда выводится список 
+    //Если id равен нулю или не определено, то это корень списка.
+    if(arrayOfModel[0].parent) //Если это не корень, то составляем ид строки из списка.
+    {
+        container = 'list' +  arrayOfModel[0].parent;
+    }
+    //Получаем строку списка куда нужно добавить строки.
+    let li = document.getElementById(container);
+    let htmlList = '';
+    for (let i = 0; i < arrayOfModel.length; i++) {
+        htmlList += arrayOfModel[i].render();   //Собирается все строки списка.
+        dataList['btn'+arrayOfModel[i].id] = arrayOfModel[i]; //Добавляется в список для дальнейшего доступа к объекту.
+    }
+    //Выводится список.
+    li.innerHTML += '<ul>'+htmlList+'</ul>';
+}
+/**
+ * Обработчик нажатия на строку из списка.
+ * Открывает подсписок если оно существует.
+ * @param {Object} pressedButton 
+ */
+function openLine(pressedButton){
+    if(!dataList[pressedButton.id].opened){     //Если список уже открыт, ничего не происходит.
+        dataList[pressedButton.id].opened = true;   //Помечаем как открытий.
+        dataList[pressedButton.id].getChildren(handler);    //Открываем список.
+    }
 }
 
-//let o = modelBuilder(["name","children"],['title',[['name'],['title1']]]);  
-//let jsonExample  = [{ "name": "Доска 1", "children": [ { "name": "Список задач 1.1", "children": [ { "name": "Задача 1.1.1" }, { "name": "Задача 1.1.2" } ] }, { "name": "Список задач 1.2", "children": [ { "name": "Задача 1.2.1" }, { "name": "Задача 1.2.2" } ] }, { "name": "Список задач 1.3" } ] }, { "name": "Доска 2" } ];  
-//a = [{"name":"Доска 1","children":[{"name": "Список задач 1.1"}]},{"name":"Доска 1"}];
-
-let p1 = ["name","children"];
-let p2 = ["Доска 1",[{"name": "Список задач 1.1"}]];
-
-parse(modelBuilder(p1,p2).read());
+//вызов функции для отображения первого уровня
+loadChildren(null,handler);

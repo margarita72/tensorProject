@@ -1,0 +1,10 @@
+.list-open{
+    display: block;
+    cursor: pointer;
+}
+/*
+li::after {
+    content: "";
+    display: table;
+    clear: both;
+  }*/
