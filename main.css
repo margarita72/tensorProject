@@ -1,10 +1,4 @@
-.list-open{
-    display: block;
+ .list-open{
+    display: inline-block;
     cursor: pointer;
 }
-/*
-li::after {
-    content: "";
-    display: table;
-    clear: both;
-  }*/

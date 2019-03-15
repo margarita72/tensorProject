@@ -110,7 +110,8 @@ function loadChildren(id, callback){
     if(id === null)
         id = undefined;
     let res = [];
-    for (let i = 0; i < data.length; i++) {
+    let i = 0;
+    for (; i < data.length; i++) {
         if(data[i].parent == id)
         {
             let o = new modelBuilder();
@@ -140,7 +141,8 @@ class modelBuilder{
         {
             if(keys.length !== values.length)    //Если размеры объектов не эквивалентны, то генерируем исключение.
                 throw new Error('Ключи и значения имеют разные размеры');
-            for (let i = 0; i < keys.length; i++) {  //Цикл обработки элементов массива.
+            let i = 0
+            for (; i < keys.length; i++) {  //Цикл обработки элементов массива.
                 res[keys[i]] = values[i];  //Создается новое поле с названием key[i] и с  значением values[i].
             }
         }
@@ -159,9 +161,11 @@ class modelBuilder{
      * @param {Object} updObj Предполагается что во входящем объекте updObj содержаться ключ/значения для обновления.
      */
     update(updObj){
-        for (const i in updObj) {  //Цикл по всем ключам в объекте.
-            if(this[i] !== undefined) //Если поле существует, то изменить значение
-                this[i] = updObj[i];
+        let keys = Object.keys(updObj);
+        let i = 0;
+        for (;i<keys.length;i++) {  //Цикл по всем ключам в объекте.
+            if(this[keys[i]] !== undefined) //Если поле существует, то изменить значение
+                this[keys[i]] = updObj[keys[i]];
         }
     }
     /**
@@ -183,7 +187,8 @@ class modelBuilder{
         //метод возвращает объект без методов объекта если ключ не передан.
         let tmp = {};  //Создаётся пустой оъект.
         let keys = Object.keys(this);
-        for (let i = 0; i < keys.length;i++) { //Перебрать все методы и проя и выделить все поля.
+        let i = 0;
+        for (; i < keys.length;i++) { //Перебрать все методы и проя и выделить все поля.
             if(typeof this[keys[i]] !== 'function') //Если не функйия, то поле со значением копируется в новый объект.
                 tmp[keys[i]] = this[keys[i]]; 
         }
@@ -200,15 +205,28 @@ class modelBuilder{
         if(this.hasChildren) //Если у списка есть дочерний список то открывается.
             setTimeout(loadChildren,0,this.id,callback);
     }
+}
     /** 
      * формирует вёрстку конкретного элемента и возвращает её в виде строки.
      * @returns {String}
      */
-    render() {
-        let content = '<div class="list-open" onclick="openLine(this)" id="btn' + this.id + '">' + this.name + '</div>';
-        return '<li id="list'+ this.id +'">' + content + ' ' + '</li>';
+    function render(modelBuilderObject) {
+        let deep = 0;
+        tmpObject = modelBuilderObject;
+        while(tmpObject.parent && deep < 4)
+        {
+            tmpObject = dataList['btn' + tmpObject.parent];
+            deep++;
+        }
+        let mainTable = 'table-layer';
+        switch (deep) {
+            case 0: mainTable = 'class="table-layer-0"';   break;
+            case 1: mainTable = 'class="table-layer-1"';   break;
+            case 2: mainTable = 'class="table-layer-2"';
+        }
+        let content = '<div class="list-open" onclick="openLine(this)" id="btn' + modelBuilderObject.id + '">' + modelBuilderObject.name + '</div>';
+        return '<li '+ mainTable + ' id="list'+ modelBuilderObject.id +'">' + content + ' ' + '</li>';
     }
-}
 /**
  * Функция принимает на вход массив объектов типа modelBuilder и выводит их на страницу.
  * Также сохраняет эти объекты в глобальный объект dataList для дальнейшего использования.
@@ -225,8 +243,9 @@ function handler(arrayOfModel)
     //Получаем строку списка куда нужно добавить строки.
     let li = document.getElementById(container);
     let htmlList = '';
-    for (let i = 0; i < arrayOfModel.length; i++) {
-        htmlList += arrayOfModel[i].render();   //Собирается все строки списка.
+    let i = 0;
+    for (; i < arrayOfModel.length; i++) {
+        htmlList += render(arrayOfModel[i]);   //Собирается все строки списка.
         dataList['btn'+arrayOfModel[i].id] = arrayOfModel[i]; //Добавляется в список для дальнейшего доступа к объекту.
     }
     //Выводится список.
