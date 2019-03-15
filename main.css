@@ -1,12 +1,6 @@
  .list-open{
     display: inline-block;
     cursor: pointer;
-   
-/*    grid-template-columns: 2fr 1fr 250px;
-    grid-template-rows: 10px 10px;
-    grid-auto-rows: 5px;
-    grid-gap:10px;
-*/
 }
 body{
    /* background-image: url('back.jpg');*/
@@ -46,6 +40,7 @@ body{
     transform: scale(1.04);
     background: rgb(13, 226, 226);
     color: rgb(7, 0, 41)0, 0, 0);
-    
 }
+
+
 
