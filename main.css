@@ -1,4 +1,4 @@
- .list-open{
+.list-open{
     display: inline-block;
     cursor: pointer;
 }
@@ -39,8 +39,5 @@ body{
 .table-layer-1:hover{
     transform: scale(1.04);
     background: rgb(13, 226, 226);
-    color: rgb(7, 0, 41)0, 0, 0);
+    color: rgb(7, 1, 41);
 }
-
-
-

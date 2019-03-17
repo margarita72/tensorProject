@@ -105,22 +105,20 @@ dataList = {};
  * @param {Function} callback 
  */
 function loadChildren(id, callback){
-    if(callback === undefined || typeof(callback) !== 'function')
-        throw new Error('callback not defined');
-    if(id === null)
-        id = undefined;
-    let res = [];
-    let i = 0;
-    for (; i < data.length; i++) {
-        if(data[i].parent == id)
-        {
-            let o = new modelBuilder();
-            o.update(data[i]);
-            res.push(o);
+    return new Promise(function(resolve){
+        if(id === null)
+            id = undefined;
+        let res = [];
+        for (let i = 0; i < data.length; i++) {
+            if(data[i].parent == id)
+            {
+                let o = new modelBuilder();
+                o.update(data[i]);
+                res.push(o);
+            }
         }
-    }
-    if (res.length)
-        setTimeout(callback, 0,res);
+        resolve(res);
+    })
 }
 
 /* Класс представляет структуру списка со всеми необходимая полями, а также с методами для динамичной работы со многоуровневым списком. */
@@ -203,7 +201,14 @@ class modelBuilder{
      */
     getChildren (callback){
         if(this.hasChildren) //Если у списка есть дочерний список то открывается.
-            setTimeout(loadChildren,0,this.id,callback);
+        {
+            let getAsyncChildren = function(_id){ 
+                    return new Promise(function(resolve){
+                    resolve(_id);
+                })
+            }
+            getAsyncChildren(this.id).then(loadChildren).then(callback);
+        }
     }
 }
     /** 
@@ -227,6 +232,7 @@ class modelBuilder{
         let content = '<div class="list-open" onclick="openLine(this)" id="btn' + modelBuilderObject.id + '">' + modelBuilderObject.name + '</div>';
         return '<li '+ mainTable + ' id="list'+ modelBuilderObject.id +'">' + content + ' ' + '</li>';
     }
+
 /**
  * Функция принимает на вход массив объектов типа modelBuilder и выводит их на страницу.
  * Также сохраняет эти объекты в глобальный объект dataList для дальнейшего использования.
@@ -264,4 +270,4 @@ function openLine(pressedButton){
 }
 
 //вызов функции для отображения первого уровня
-loadChildren(null,handler);
+loadChildren(null).then(handler);
