@@ -229,7 +229,7 @@ class modelBuilder{
             case 1: mainTable = 'class="table-layer-1"';   break;
             case 2: mainTable = 'class="table-layer-2"';
         }
-        let content = '<div class="list-open" onclick="openLine(this)" id="btn' + modelBuilderObject.id + '">' + modelBuilderObject.name + '</div>';
+        let content = '<div class="list-open" onclick="openLine(this)" id="btn' + modelBuilderObject.id + '">' + modelBuilderObject.name + '<span class="close-btn"><a href="#">X</a></span>'+'</div>';
         return '<li '+ mainTable + ' id="list'+ modelBuilderObject.id +'">' + content + ' ' + '</li>';
     }
 
@@ -240,6 +240,7 @@ class modelBuilder{
  */
 function handler(arrayOfModel)
 {
+    
     let container = 'main-list'; //ИД корневого тега куда выводится список 
     //Если id равен нулю или не определено, то это корень списка.
     if(arrayOfModel[0].parent) //Если это не корень, то составляем ид строки из списка.
