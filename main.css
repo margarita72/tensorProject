@@ -39,5 +39,19 @@ body{
 .table-layer-1:hover{
     transform: scale(1.04);
     background: rgb(13, 226, 226);
-    color: rgb(7, 1, 41);
+    color: rgb(7, 0, 41)0, 0, 0);
 }
+.close-btn {
+    position: fixed;
+    padding: 1px 4px;
+    background-color: rgb(62, 167, 189);
+    border-radius: 8px;
+}
+
+.close-btn a {
+    font-size: 8px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+
