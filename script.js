@@ -229,8 +229,18 @@ class modelBuilder{
             case 1: mainTable = 'class="table-layer-1"';   break;
             case 2: mainTable = 'class="table-layer-2"';
         }
-        let content = '<div class="list-open" onclick="openLine(this)" id="btn' + modelBuilderObject.id + '">' + modelBuilderObject.name + '<span class="close-btn"><a href="#">X</a></span>'+'</div>';
+        let button = '<span class="close-btn" onclick="closeLine()"><a href="#">X</a></span>';
+        
+        if(deep >= 2)
+            button = '';
+        let content = button + '<span class="list-open" onclick="openLine(this)" id="btn' + modelBuilderObject.id + '">' + modelBuilderObject.name +'</span>';
         return '<li '+ mainTable + ' id="list'+ modelBuilderObject.id +'">' + content + ' ' + '</li>';
+        
+        
+    }
+    function closeLine(){
+    
+        document.g ('list1').innerHTML = '';
     }
 
 /**
