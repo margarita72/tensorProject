@@ -1,7 +1,13 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
 .list-open{
     display: inline-block;
     cursor: pointer;
 }
+
 body{
    /* background-image: url('back.jpg');*/
    background-color: rgba(33, 53, 66);
@@ -9,21 +15,21 @@ body{
    color:rgb(62, 167, 189);
 
 }
-.table-layer-0{
-    display: grid;
+.table-layer-0{ 
+    font-family: monospace;
+    display: inline-table;
     width: 350px;
     min-height: 280px;
-    margin: 10px auto 0;
+    background-color:rgb(62, 167, 189);
+    color:rgb(7, 26, 24);
+    margin: 10px;
     padding: 10px;
     box-sizing: border-box;
+   
     text-align: center;
     
-    background-color:rgb(62, 167, 189);
-    font-family: sans-serif;
-    color:rgb(7, 26, 24);
     border-radius:8px;
-    font-family: monospace;
-
+    
 }
 
 .table-layer-1{
@@ -39,17 +45,19 @@ body{
 .table-layer-1:hover{
     transform: scale(1.04);
     background: rgb(13, 226, 226);
-    color: rgb(7, 0, 41)0, 0, 0);
+    color: rgb(7, 0, 41);
+}
+.table-layer-2{
+    list-style-type: none;
 }
 .close-btn {
-    position: fixed;
     padding: 1px 4px;
     background-color: rgb(62, 167, 189);
-    border-radius: 8px;
+    border-radius: 10px;
 }
 
 .close-btn a {
-    font-size: 8px;
+    font-size: 10px;
     font-weight: bold;
     color: white;
     text-decoration: none;
