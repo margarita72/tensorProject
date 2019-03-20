@@ -10,9 +10,9 @@
 
 body{
    /* background-image: url('back.jpg');*/
-   background-color: rgba(33, 53, 66);
+   background-color: #213542;
    background-size: cover;
-   color:rgb(62, 167, 189);
+   color:#3ea7bd;
 
 }
 .table-layer-0{ 
@@ -20,16 +20,13 @@ body{
     display: inline-table;
     width: 350px;
     min-height: 280px;
-    background-color:rgb(62, 167, 189);
-    color:rgb(7, 26, 24);
+    background-color:#3ea7bd;
+    color:#071a18;
     margin: 10px;
     padding: 10px;
     box-sizing: border-box;
-   
     text-align: center;
-    
     border-radius:8px;
-    
 }
 
 .table-layer-1{
@@ -37,14 +34,14 @@ body{
     margin: 5px auto 0;
     padding: 10px 20px;
     transition: .5s;
-    background-color: rgb(171, 214, 250);
+    background-color: #abd6fa;
     
     font-family: monospace;
     border-radius: 6px;
 }
 .table-layer-1:hover{
     transform: scale(1.04);
-    background: rgb(13, 226, 226);
+    background: #0de2e2;
     color: rgb(7, 0, 41);
 }
 .table-layer-2{
@@ -52,14 +49,7 @@ body{
 }
 .close-btn {
     padding: 1px 4px;
-    background-color: rgb(62, 167, 189);
+    background-color: #3ea7bd;
     border-radius: 10px;
+    cursor: pointer;
 }
-
-.close-btn a {
-    font-size: 10px;
-    font-weight: bold;
-    color: white;
-    text-decoration: none;
-}
-
