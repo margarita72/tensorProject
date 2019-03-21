@@ -81,6 +81,7 @@ function loadChildren(id){
  * @description Класс представляет собой структуру списка со всеми необходимыми полями, а также с методами для динамичной работы с многоуровневым списком. 
  * @class
  * @name modelBuilder
+ * @constructor 
  * @namespace
  * @property {number} modelBuilder.id
  * @property {boolean} modelBuilder.hasChildren
