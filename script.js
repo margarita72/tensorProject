@@ -1,6 +1,14 @@
+/**
+ * @file script.js
+ * @version 1.0.0
+ * @author Морские котики
+ */
+
 /**  
- * @description Feature 1. Объект передается по рекурсии. Каждый вызов - это переход на следующий уровень вложения JSON.makeList. Функция принимает объекты из data в формате JSON и возвращает в строку в формате HTML.
- * @param {Object} data JSON объект
+ * @description Объект передается по рекурсии. Каждый вызов - это переход на следующий уровень вложения JSON. Функция принимает объекты из data в формате JSON и возвращает в строку в формате HTML.
+ * @param {Object} data JSON объект.
+ * @name makeList
+ * @function
  * @returns {string} HTML список.
  */
 function makeList(data)
@@ -26,7 +34,9 @@ function makeList(data)
 /**
  * @description Ищет исключения и в случае их обнаружения, выводит сообщение об ошибке с описанием. Функция parse() обрабатывает данные jsonObj в формате JSON с помощью метода JSON.parse().
  * @param {Object} jsonObj JSON объект
- * @return {String} список в формате HTML.
+ * @name parse
+ * @function
+ * @returns {String} Список в формате HTML.
  */
 function parse(jsonObj)
 {
@@ -50,16 +60,26 @@ function parse(jsonObj)
         return;  //Выход из функции.
     }
 }
-
+/**
+ * @description Объект (ассоциативный массив) где будет хранятся все объект из списка.
+ * @name dataList
+ * @type {Object}
+ */
 dataList = {};
-/*Демо-данные для выполнения задачи*/
+/** 
+ * @description Демо-данные для выполнения задачи
+ * @type {Object}
+ * @name data
+ */
 data = [{"id":1,"name":"Доска 1","hasChildren":true},{"id":2,"parent":1,"name":"Список задач 1.1","hasChildren":true},{"id":3,"parent":2,"name":"Задача 1.1.1"},{"id":4,"parent":2,"name":"Задача 1.1.2"},{"id":5,"parent":1,"name":"Список задач 1.2","hasChildren":true},{"id":6,"parent":5,"name":"Задача 1.2.1"},{"id":7,"parent":5,"name":"Задача 1.2.2"},{"id":8,"parent":1,"name":"Список задач 1.3"},{"id":9,"name":"Доска 2"}];
 
 /**
- * @description Feature 3,4. Модель данных из задания Feature 2, представленная при помощи классов; mock-функция, эмулирующая работу запроса к серверу. Получает дочерние элементы по идентификатору объекта и передает в callback.
- * @param {Object} dataList объект (ассоциативный массив), где будут храниться все объекты из списка
- * @param {number} id номер доски
- * @returns {String} список в формате HTML.
+ * @description Mock-функция, эмулирующая работу запроса к серверу. Получает дочерние элементы по идентификатору объекта и передает в callback.
+ * @param {Object} dataList Объект (ассоциативный массив), где будут храниться все объекты из списка.
+ * @param {number} id Номер доски.
+ * @name loadChildren
+ * @function
+ * @returns {String} Список в формате HTML.
  */
 function loadChildren(id){                                                    
     return new Promise(function(resolve){  //Если id не определён.
@@ -81,29 +101,23 @@ function loadChildren(id){
  * @description Класс представляет собой структуру списка со всеми необходимыми полями, а также с методами для динамичной работы с многоуровневым списком. 
  * @class
  * @name modelBuilder
- * @constructor {modelBuilder}
- * @property {number} modelBuilder.id
- * @property {boolean} modelBuilder.hasChildren
- * @property {string} modelBuilder.name
- * @property {number} modelBuilder.parent
- * @property {boolean} modelBuilder.removed
- * @returns Формируется класс из JSON-объекта.
+ * @property {number} id Идентификатор пользователя.
+ * @property {boolean} hasChildren Указывает на присутствие у объекта дочернего элемента.
+ * @property {string} name Текст который будет отображено на странице.
+ * @property {number} parent Идентификатор родителя.
+ * @property {boolean} removed Указывает на пометку для удаления.
  */
 class modelBuilder{
     /** 
      * @description Инициализация основных полей.
+     * @constructor
      * @param {Array} keys массив ключей
      * @param {Array} values массив значений
-     * @returns
      */
     constructor(keys,values){
-        /**@type {number}*/
         this.id = null;
-        /**@type {boolean} */
         this.hasChildren = false;
-        /**@type {string} */
         this.name = '';
-        /**@type {number} */
         this.parent = null;
 
         if(keys && values)  //Если массив ключей и значений не был передан, то создаем пустой объект. 
@@ -123,7 +137,6 @@ class modelBuilder{
      * @memberof modelBuilder
      * @function
      * @name delete
-     * @returns removed = true.
      */
     delete(){
         this.removed = true;  //Свойство removed принимает значение true.
@@ -135,8 +148,7 @@ class modelBuilder{
      * @memberof modelBuilder
      * @method
      * @name update
-     * @param {Object} updObj содержится ключ/значение для обновления
-     * @returns this[keys[i]] = updObj[keys[i]].
+     * @param {Object} updObj Содержится ключ/значение для обновления
      */
     update(updObj){
         let keys = Object.keys(updObj);
@@ -153,8 +165,8 @@ class modelBuilder{
      * @memberof modelBuilder
      * @method
      * @name read 
-     * @param {String} key 
-     * @returns {Object} m.
+     * @param {string} key Ключ по которому будет возвращено значение.
+     * @returns {Object} Объект modelBuilder без методов.
      */
     read(key){
         if(this.removed)  //Проверка значения элемента. Если он помечен как удаленный, то возвращаем undefined. 
@@ -183,8 +195,9 @@ class modelBuilder{
      * @memberof modelBuilder
      * @method
      * @param {Function} callback Принимает на вход функцию-callback
+     * @function
      * @name getChildren
-     * @returns {String} список в формате HTML с задержкой по времени.
+     * @returns {String} Список в формате HTML с задержкой по времени.
      */
     getChildren (callback){
         if(this.hasChildren)  //Если у списка есть дочерний список то открывается.
@@ -201,7 +214,9 @@ class modelBuilder{
 
 /** 
  * @description Формирует вёрстку конкретного элемента и возвращает её в виде строки.
- * @param {Object} modelBuilderObject 
+ * @param {Object} modelBuilderObject Объект типа modelBuilder.
+ * @name render
+ * @function
  * @returns {string} HTML список.
  */
 function render(modelBuilderObject) {
@@ -233,7 +248,7 @@ function render(modelBuilderObject) {
  * @description Обработчик нажатия для кнопок.
  * @name closeLine
  * @param {*} btn HTML объект button.
- * @returns button.
+ * @function
  */
 function closeLine(btn){
     /**TODO: Сделать так, чтоб при нажатии на кнопку скрывалось блок*/
@@ -241,8 +256,10 @@ function closeLine(btn){
 
 /**
  * @description Функция принимает на вход массив объектов типа modelBuilder и выводит их на страницу. Также сохраняет эти объекты в глобальный объект dataList для дальнейшего использования.
- * @param {Array} arrayOfModel массив объектов типа modelBuilder
- * @returns {String} cформированный список в формате HTML.
+ * @param {Array} arrayOfModel Массив объектов типа modelBuilder.
+ * @name handler
+ * @function
+ * @returns {String} Сформированный список в формате HTML.
  */
 function handler(arrayOfModel)
 {    
@@ -267,6 +284,7 @@ function handler(arrayOfModel)
  * @description Обработчик нажатия на строку из списка. Открывает подсписок, если он существует.
  * @param {Object} pressedButton HTML объект button.
  * @name openLine
+ * @function
  * @returns {String} Список HTML.
  */
 function openLine(pressedButton){

@@ -1,0 +1,23 @@
+{
+  "name": "tensor-project",
+  "version": "1.0.0",
+  "description": "- Маргарита Юртина - Гагик Погосян - Алиса Первененок - Малика Хакимова",
+  "main": "script.js",
+  "dependencies": {
+    "jsdoc": "^3.5.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/margarita72/tensorProject.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/margarita72/tensorProject/issues"
+  },
+  "homepage": "https://github.com/margarita72/tensorProject#readme"
+}
