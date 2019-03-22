@@ -235,23 +235,13 @@ function render(modelBuilderObject) {
         case 2: mainTable = 'class="table-layer-2"';
     }
     /*Добавляем кнопку для скрытия списка, если есть дочерние элементы.*/
-    let button = `<span class="close-btn" onclick="closeLine(this)">X</span>`;
+    //let button = `<span class="close-btn" onclick="closeLine(this)" id="close-btn${modelBuilderObject.id}">X</span>`;
     
-    if(!modelBuilderObject.hasChildren)
-        button = '';
+    //if(!modelBuilderObject.hasChildren)
+    //    button = '';
     /*Сам текст который будет отображен.*/
-    let content = button + `<span class="list-open" onclick="openLine(this)" id="btn${modelBuilderObject.id}">${modelBuilderObject.name}</span>`;
+    let content = `<span class="list-open" onclick="openLine(this)" id="btn${modelBuilderObject.id}">${modelBuilderObject.name}</span>`;// + button;
     return `<li ${mainTable} id="list${modelBuilderObject.id}">${content}</li>`;
-}
-
-/**
- * @description Обработчик нажатия для кнопок.
- * @name closeLine
- * @param {*} btn HTML объект button.
- * @function
- */
-function closeLine(btn){
-    /**TODO: Сделать так, чтоб при нажатии на кнопку скрывалось блок*/
 }
 
 /**
@@ -288,10 +278,34 @@ function handler(arrayOfModel)
  * @returns {String} Список HTML.
  */
 function openLine(pressedButton){
-    if(!dataList[pressedButton.id].opened){  //Если список уже открыт, ничего не происходит.
+    if(!dataList[pressedButton.id].opened && dataList[pressedButton.id].hasChildren){  //Если список уже открыт, ничего не происходит.
         dataList[pressedButton.id].opened = true;  //Помечаем как открытий.
         dataList[pressedButton.id].getChildren(handler);  //Открываем список.
+        let button = `<span class="close-btn" onclick="closeLine(this)" id="close-btn${dataList[pressedButton.id].id}">X</span>`;
+        if(pressedButton.parentElement.className === 'table-layer-0'){
+            $('.table-layer-0').hide();
+            $('#'+pressedButton.parentElement.id).attr('class', 'table-layer-00');
+            $('#'+pressedButton.parentElement.id).show();
+        }
+        pressedButton.parentElement.innerHTML += button;
     }
+}
+
+/**
+ * @description Обработчик нажатия для кнопок.
+ * @name closeLine
+ * @param {*} btn HTML объект button.
+ * @function
+ */
+function closeLine(btn){
+    let id = $('#'+btn.id).prev()[0].id;
+    if(btn.parentElement.className === 'table-layer-00'){
+        $('#'+ btn.parentElement.id).attr('class', 'table-layer-0');
+        $('.table-layer-0').show();
+    }
+    dataList[id].opened = false;
+    $('#'+btn.id).next().remove();
+    btn.remove();
 }
 
 /*Вызов функции для отображения первого уровня.*/
