@@ -6,7 +6,6 @@
     display: inline-block;
     cursor: pointer;
 }
-
 body{
     /* background-image: url('back.jpg');*/
     background-color: #092d4214;
@@ -23,13 +22,29 @@ body{
     border-radius: 5px;
     color:black;
     text-align: center;
+    position: sticky;    
+}
+.table-layer-0:hover{
+    transform: scale(1.04);
+    transition: .5s;
+    background-color: #69c081;
+}
+.table-layer-0 span{
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%,-50%);
 }
 .table-layer-00{
     display: inline-block;
+    transition: .5s;
     width: 100vw;
     height: 100vh;
     background-color: #4bbf6b;
     color:black;
+}
+.table-layer-00>span{
+    float: none;
+    margin: 10px;
 }
 .table-layer-1{ 
     font-family: monospace;
@@ -44,28 +59,56 @@ body{
     text-align: center;
     border-radius:8px;
 }
+.table-layer-1:hover{
+    background-color:#ced1d3;
+}
 .table-layer-2{
     display:block;
     margin: 5px auto 0;
     padding: 10px 20px;
     transition: .5s;
-    background-color: #d1e3f1;    
+    background-color: #fff;    
     font-family: monospace;
     border-radius: 6px;
+    text-align: left;
 }
 .table-layer-2:hover{
     transform: scale(1.04);
-    background: #0de2e2;
-    color: rgb(7, 0, 41);
-}
-.table-layer-3{
-    list-style-type: none;
+    background: #ffffff;
+    color: #070029;
 }
 .close-btn {
     padding: 1px 4px;
-    margin-left: 10px;
-    background-color: #ee5c30;
-    border-radius: 2px;
+    float:right;
+    background-color: #d13607;
+    border:2px inset #e43702;
+    border-radius: 4px;
     cursor: pointer;
     font-size: 12pt;
+    color:#dadada;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.close-btn:hover {
+    background-color: #e2491a;
+}
+.description{
+    border: 1px solid gray;
+    resize: none;
+    margin-top: 10px;
+    height: 4em;
+    width: 100%;
+    font-size: 12pt;
+}
+.check{
+    float: right;
+    transform: scale(1.5);
+    margin: 6px;
+}
+.del-btn{
+    margin: 5px;
+    cursor: pointer;
+    float: right;
+}
+.del-btn:hover{
+    background-color: #b9d8c2;
 }
