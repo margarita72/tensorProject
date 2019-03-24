@@ -82,14 +82,19 @@ data = [{"id":1,"name":"Доска 1","hasChildren":true},{"id":2,"parent":1,"na
  * @returns {String} Список в формате HTML.
  */
 function loadChildren(id){                                                    
-    return new Promise(function(resolve){  //Если id не определён.
+    return new Promise(function(resolve){
         let res = [];  //Пустой массив.   
         for (let i = 0; i < data.length; i++) {
             if(data[i].parent == id)  //Цикл перебирает элемент data и если находит схожий id, то создаётся objectik и обновляется с добавленным значением.
             {
-                let objectik = new modelBuilder();                                         
-                objectik.update(data[i]);                                                  
-                res.push(objectik);  //Добавить с конца массива objectik.
+                if(!dataList['btn'+data[i].id]){   //Если объект уже создан, то не нужно заново его создавать.
+                    let objectik = new modelBuilder();                                         
+                    objectik.update(data[i]);                                                  
+                    res.push(objectik);  //Добавить с конца массива objectik.
+                }else {
+                    dataList['btn'+data[i].id].opened = false;
+                    res.push(dataList['btn'+data[i].id]);
+                }
             }
         }
         resolve(res);
@@ -115,6 +120,7 @@ class modelBuilder{
      * @param {Array} values массив значений
      */
     constructor(keys,values){
+        counter();   //Подсчет нового объекта.
         this._id = null;
         this._hasChildren = false;
         this._name = '';
@@ -122,7 +128,16 @@ class modelBuilder{
         this._removed = false;
         this._done = false;
         this._description = '';
-
+        //Массив свойств для которых нужно добавить геттеры и сеттеры.
+        let properties = ['id','hasChildren','name','parent','removed','done','description'];
+        let i = 0;
+        for (let i = 0; i < properties.length; i++) {
+            //добавляем геттеры и сеттеры.
+            Object.defineProperty(this, properties[i], { 
+                set: function (val) { this['_' + properties[i]] = val;},
+                get: function () { return this['_' + properties[i]];}
+            });
+        }
         if(keys && values)  //Если массив ключей и значений не был передан, то создаем пустой объект. 
         {
             if(keys.length !== values.length)  //Если размеры объектов не эквивалентны, то генерируем исключение.
@@ -213,50 +228,15 @@ class modelBuilder{
             getAsyncChildren(this.id).then(loadChildren).then(callback);
         }
     }
+    /**
+     * @description меняет значение 
+     * @memberof modelBuilder
+     * @method
+     * @name changeDone
+     * @function
+     */
     changeDone(){
         this.done = !this.done;
-    }
-    get id(){
-        return this._id;
-    }
-    set id(val){
-        this._id = val;
-    }
-    get hasChildren(){
-        return this._hasChildren;
-    }
-    set hasChildren(val){
-        this._hasChildren = val;
-    }
-    get name(){
-        return this._name;
-    }
-    set name(val){
-        this._name = val;
-    }
-    get parent(){
-        return this._parent;
-    }
-    set parent(val){
-        this._parent = val;
-    }
-    get removed(){
-        return this._removed;
-    }
-    set removed(val){
-        this._removed = val;
-    }
-    get done(){
-        return this._done;
-    }
-    set done(val){
-        this._done = val;
-    }
-    get description(){
-        return this._description;
-    }
-    set description(val){
-        this._description = val;
     }
 }
 
@@ -309,8 +289,21 @@ function handler(arrayOfModel)
     for (; i < arrayOfModel.length; i++) {
         htmlList += render(arrayOfModel[i]);  //Собираются все строки списка.
         dataList['btn'+arrayOfModel[i].id] = arrayOfModel[i];  //Объект добавляется в список для дальнейшего доступа к объекту.
-    }                 
+    }
     li.innerHTML += '<ul>'+htmlList+'</ul>';  //Выводится список.
+    i = 0;
+    for (; i < arrayOfModel.length; i++) {
+        if(dataList['btn'+arrayOfModel[i].id].removed){
+            $('#btn'+arrayOfModel[i].id).parent().css('border', '2px outset red');
+            $('#check' + arrayOfModel[i].id).css('pointer-events','none');
+        }else {
+            if(dataList['btn'+arrayOfModel[i].id].done){
+                $('#btn'+arrayOfModel[i].id).parent().css('border', '2px outset #0f0');
+            }else {
+                $('#btn'+arrayOfModel[i].id).parent().css('border', 'none');
+            }
+        }
+    }
 }
 
 /**
@@ -337,19 +330,20 @@ function openLine(btnjq){
         }
     }else {
         if(currentObj.layer === 2){
-            let a = $('#list'+currentObj.id);
+            let currentHTML = $('#list'+currentObj.id);
             if(!dataList['btn'+currentObj.id].opened){
                 dataList['btn'+currentObj.id].opened = true;
-                a.append(`<img src="Imgs/remove.png" class="del-btn" id="del-btn${currentObj.id}" >`);
-                a.append(`<input type="checkbox" id="check${currentObj.id}" class="check">`);
-                a.append(`<textarea class="description" id="description${currentObj.id}" ></textarea>`);
+                currentHTML.append(`<img src="Imgs/remove.png" class="del-btn" id="del-btn${currentObj.id}" >`);
+                currentHTML.append(`<input type="checkbox" id="check${currentObj.id}" class="check">`);
+                currentHTML.append(`<textarea class="description" id="description${currentObj.id}" ></textarea>`);
                
                 $('#check' + currentObj.id)[0].checked = dataList['btn'+currentObj.id].done;
                 $('#description' + currentObj.id)[0].value = dataList['btn'+currentObj.id].description;
-                
+
                 $('#del-btn' + currentObj.id ).bind('click', function (e) {
                     dataList['btn'+currentObj.id].delete();
                     $('#list'+currentObj.id).css('border', '2px outset red');
+                    $('#check' + currentObj.id).css('pointer-events','none');
                 });
 
                 $('#check' + currentObj.id).bind('click', function (e) {
@@ -369,9 +363,9 @@ function openLine(btnjq){
                 
             }else {
                 dataList['btn'+currentObj.id].opened = false;
-                a[0].children[1].remove();
-                a[0].children[1].remove();
-                a[0].children[1].remove();
+                let title = $('#btn'+ currentObj.id).clone();
+                currentHTML.empty();
+                currentHTML.append(title);
             }            
         }
     }
@@ -399,6 +393,21 @@ function closeLine(btnjq){
     $('#'+btn.id).next().remove();
     btn.remove();
 }
+/**
+ * @description Простой счетчик, предназначен для подсчета объектов типа modelBuilder.
+ * @function
+ * @name counterFun
+ */
+function counterFun(str){
+    let  count = 0;
+    return function(){
+        count++;
+        let out = str.replace('#count',count);
+        $('#obj-count').html(out);
+    }
+}
+//Создания объекта типа счетчик для подсчета количества объектов modelBuilder.
+counter = new counterFun('создано #count объектов modelBuilder');
 
 /*Вызов функции для отображения первого уровня.*/
 loadChildren(null).then(handler);

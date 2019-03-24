@@ -112,3 +112,13 @@ body{
 .del-btn:hover{
     background-color: #b9d8c2;
 }
+#obj-count{
+    position: fixed;
+    color: #070029;
+    right: 20px;
+    bottom: 20px;
+    background-color: #7bc08f;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 12pt;
+}
