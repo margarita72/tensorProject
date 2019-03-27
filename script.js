@@ -157,7 +157,7 @@ class modelBuilder{
      * @name delete
      */
     delete(){
-        this._removed = true;  //Свойство removed принимает значение true.
+        this.removed = true;  //Свойство removed принимает значение true.
     }
 
     /**
@@ -218,7 +218,7 @@ class modelBuilder{
      * @returns {String} Список в формате HTML с задержкой по времени.
      */
     getChildren (callback){
-        if(this._hasChildren)  //Если у списка есть дочерний список то открывается.
+        if(this.hasChildren)  //Если у списка есть дочерний список то открывается.
         {
             let getAsyncChildren = function(_id){ 
                     return new Promise(function(resolve){
@@ -308,13 +308,13 @@ function handler(arrayOfModel)
 
 /**
  * @description Обработчик нажатия на строку из списка. Открывает подсписок, если он существует.
- * @param {Object} btnjq Объект типа event.
+ * @param {Object} btn Объект типа event.
  * @name openLine
  * @function
  * @returns {String} Список HTML.
  */
-function openLine(btnjq){
-    let pressedButton = btnjq.currentTarget;   //Получаем html кнопки на которую нажали.
+function openLine(btn){
+    let pressedButton = btn.currentTarget;   //Получаем html кнопки на которую нажали.
     let currentObj = dataList[pressedButton.id];   //Получаем ссылку на объект modelBuilder
     if(currentObj.hasChildren){ 
         if(!currentObj.opened){  //Если список уже открыт, ничего не происходит.
