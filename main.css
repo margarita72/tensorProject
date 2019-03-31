@@ -73,10 +73,16 @@ main{
     min-width: 200px;    
     background-color: #66B57C;
 }
+.desk-list{
+    display: block;
+    margin: 10px;
+    height: 50px;
+    text-align: center;
+    background-color: #40a35b;
+    border-radius: 5px;
+}
 #main-list{
     width: calc(100% - 200px);
-    /* flex: 1; */
-    /* width: 100%; */
 }
 #main-list>ul{
     height: 100%;
@@ -201,9 +207,14 @@ body{
     position: fixed;
     color: #070029;
     right: 20px;
-    bottom: 20px;
+    bottom: 60px;
     background-color: #7bc08f;
     padding: 10px;
     border-radius: 5px;
     font-size: 12pt;
+}
+/*footer*/
+footer{
+    height: 40px;
+    background-color: #3FA25B;
 }

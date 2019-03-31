@@ -256,6 +256,10 @@ function render(modelBuilderObject) {
         deep++;  //Увеличиваем глубину.
     }
     modelBuilderObject.layer = deep;
+    if(deep === 1){
+        modelBuilderObject.getChildren(handler);
+        modelBuilderObject.opened = true;
+    }
     /*Присваивается имя, класс, исходя от глубины.*/
     let mainTable = 'class="table-layer"'; 
     switch (deep) {
@@ -285,12 +289,19 @@ function handler(arrayOfModel)
     
     let li = document.getElementById(container);  //Получаем строку списка, куда нужно добавить строки.
     let htmlList = '';
+    let htmlDesks = '';
     let i = 0;
     for (; i < arrayOfModel.length; i++) {
         htmlList += render(arrayOfModel[i]);  //Собираются все строки списка.
         dataList['btn'+arrayOfModel[i].id] = arrayOfModel[i];  //Объект добавляется в список для дальнейшего доступа к объекту.
+        if(arrayOfModel[i].layer === 0) {
+            htmlDesks += `<li class="desk-list">${arrayOfModel[i].name}</li>`;
+        }
     }
     li.innerHTML += '<ul>'+htmlList+'</ul>';  //Выводится список.
+    if(htmlDesks) {
+        $('#desk-nav')[0].innerHTML = `<ul>${htmlDesks}</ul>`;
+    }
     i = 0;
     //После отображения списка задач нужно покрасить задачи по его состоянию.
     for (; i < arrayOfModel.length; i++) {
@@ -320,9 +331,9 @@ function openLine(_event){
         case 0:
             openTable(_event);
             break;
-        case 1:
-            openTaskList(_event);
-            break;
+        //case 1:
+        //    openTaskList(_event);
+        //    break;
         case 2:
             openTasks(_event);
             break;
@@ -371,30 +382,30 @@ function openTable(_event){
  * @param {Object} _event
  * @name openTaskList
  */
-function openTaskList(_event){
-    let pressedButton = _event.currentTarget;   //Получаем html кнопки на которую нажали.
-    let currentObj = dataList[pressedButton.id];   //Получаем ссылку на объект modelBuilder
-    if(currentObj.hasChildren){ 
-        if(!currentObj.opened){  //Если список уже открыт, ничего не происходит.
-            currentObj.opened = true;  //Помечаем как открытий.
-            currentObj.getChildren(handler);  //Открываем список.
-            //Создаем кнопку закрыть.
-            let button = `<span class="close-btn" id="close-btn${currentObj.id}">X</span>`;
-            //Если кнопка не кторый мы нажали это доска, то нужно развернуть доску.
-            //Для этого мы меняем его класс
-            if(pressedButton.parentElement.className === 'table-layer-0'){
-                //Скрываем все доски с этим классом.
-                $('.table-layer-0').hide();
-                //Меняем класс у нашей доски класс.
-                $('#'+pressedButton.parentElement.id).attr('class', 'table-layer-00');
-                //Показываем нашу доску
-                $('#'+pressedButton.parentElement.id).show();
-            }
-            //Добавляем кнопку закрыть.
-            pressedButton.parentElement.innerHTML += button;
-        }
-    }
-}
+// function openTaskList(_event){
+//     let pressedButton = _event.currentTarget;   //Получаем html кнопки на которую нажали.
+//     let currentObj = dataList[pressedButton.id];   //Получаем ссылку на объект modelBuilder
+//     if(currentObj.hasChildren){ 
+//         if(!currentObj.opened){  //Если список уже открыт, ничего не происходит.
+//             currentObj.opened = true;  //Помечаем как открытий.
+//             currentObj.getChildren(handler);  //Открываем список.
+//             //Создаем кнопку закрыть.
+//             //let button = `<span class="close-btn" id="close-btn${currentObj.id}">X</span>`;
+//             //Если кнопка не кторый мы нажали это доска, то нужно развернуть доску.
+//             //Для этого мы меняем его класс
+//             if(pressedButton.parentElement.className === 'table-layer-0'){
+//                 //Скрываем все доски с этим классом.
+//                 $('.table-layer-0').hide();
+//                 //Меняем класс у нашей доски класс.
+//                 $('#'+pressedButton.parentElement.id).attr('class', 'table-layer-00');
+//                 //Показываем нашу доску
+//                 $('#'+pressedButton.parentElement.id).show();
+//             }
+//             //Добавляем кнопку закрыть.
+//             pressedButton.parentElement.innerHTML;// += button;
+//         }
+//     }
+// }
 
 /**
  * @description Открывает описание задач.
