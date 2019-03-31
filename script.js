@@ -514,3 +514,11 @@ $('#home').bind('click', function (e) {
     }
     $('.table-layer-0').show();
 });
+
+
+$("#info").click(function(){
+    $("#info>p").toggle();
+});
+$('#desks').bind('click', function (e) {
+    $("#desk-nav").toggle();
+});

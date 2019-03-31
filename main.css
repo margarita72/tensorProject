@@ -88,6 +88,7 @@ main{
 }
 #main-list{
     width: calc(100% - 200px);
+    /* width:100%; */
 }
 #main-list>ul{
     height: 100%;
@@ -120,9 +121,11 @@ body{
     /*background: rgba(73, 73, 73, 0);*/
 }
 .table-layer-0 span{
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%,-50%);
+    display:table-cell;
+	width: 200px;
+	height:150px;
+	vertical-align: middle;
+	border-radius: 5px;
 }
 .table-layer-00{
     display: flex;
@@ -232,7 +235,8 @@ footer{
 
 p.test
 {
-    position:fixed;;
+	z-index:100;
+    position:absolute;
     right:10px;
     top: 50px;
     height: 130px;
