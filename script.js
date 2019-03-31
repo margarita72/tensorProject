@@ -319,6 +319,7 @@ function openLine(_event){
     switch (currentObj.layer) {
         case 0:
             openTable(_event);
+            break;
         case 1:
             openTaskList(_event);
             break;
@@ -340,7 +341,28 @@ $(document).on('click','.list-open', openLine);
  * @name openTable
  */
 function openTable(_event){
-    
+    let pressedButton = _event.currentTarget;   //Получаем html кнопки на которую нажали.
+    let currentObj = dataList[pressedButton.id];   //Получаем ссылку на объект modelBuilder
+    if(currentObj.hasChildren){ 
+        if(!currentObj.opened){  //Если список уже открыт, ничего не происходит.
+            currentObj.opened = true;  //Помечаем как открытий.
+            currentObj.getChildren(handler);  //Открываем список.
+            //Создаем кнопку закрыть.
+            //let button = `<span class="close-btn" id="close-btn${currentObj.id}">X</span>`;
+            //Если кнопка не кторый мы нажали это доска, то нужно развернуть доску.
+            //Для этого мы меняем его класс
+            if(pressedButton.parentElement.className === 'table-layer-0'){
+                //Скрываем все доски с этим классом.
+                $('.table-layer-0').hide();
+                //Меняем класс у нашей доски класс.
+                $('#'+pressedButton.parentElement.id).attr('class', 'table-layer-00');
+                //Показываем нашу доску
+                $('#'+pressedButton.parentElement.id).show();
+            }
+            //Добавляем кнопку закрыть.
+            pressedButton.parentElement.innerHTML;// += button;
+        }
+    }
 }
 
 /**
@@ -471,3 +493,13 @@ counter = new counterFun('создано #count объектов modelBuilder');
 
 /*Вызов функции для отображения первого уровня.*/
 loadChildren(null).then(handler);
+
+$('#home').bind('click', function (e) {
+    $('.table-layer-00>ul').remove();
+    $('.table-layer-00').attr('class', 'table-layer-0');
+    let element;
+    for (element in dataList) {
+        dataList[element].opened = false;
+    }
+    $('.table-layer-0').show();
+});
