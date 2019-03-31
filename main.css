@@ -5,7 +5,7 @@
 /*Header*/
 header{
     height: 40px;
-    background-color: #40a35b;
+    background: rgb(0, 107, 102);
 }
 .headerButtons{
     display: flex;
@@ -17,12 +17,13 @@ header{
     border-radius: 3px;
     margin: 5px;
     display: inline-block;
-    background-color: #79BE8C;
+    background:rgb(0, 192, 128);
     cursor: pointer;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
-.headerButtons>li:hover{
-    background-color: #66B57C;
-}
+/*.headerButtons>li:hover{
+    background-color: rgb(143, 5, 255);
+}*/
 #home{
     width: 30px;
 }
@@ -71,15 +72,19 @@ main{
 }
 #desk-nav{
     min-width: 200px;    
-    background-color: #66B57C;
+    background-color: rgb(111, 111, 116);
 }
 .desk-list{
     display: block;
     margin: 10px;
     height: 50px;
+    line-height:50px;
+    width: 200px;
     text-align: center;
-    background-color: #40a35b;
+    background: rgb(161, 161, 161);
+    border: 10px;
     border-radius: 5px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 #main-list{
     width: calc(100% - 200px);
@@ -88,29 +93,31 @@ main{
     height: 100%;
 }
 body{
-    background-color: #092d4214;
+    background-image: url(https://www.nasa.gov/sites/default/files/thumbnails/image/columbia_tm5_1986209_lrg.jpg);
     background-size: cover;
-    color:#f8f9f9;
+    color:#f8f8f9;
     font-size: 14pt;
     height: 100%;
     display: flex;
     flex-direction: column;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 .table-layer-0{
     display: inline-block;
     min-height: 150px;
     min-width: 200px;
-    background-color: #4bbf6b;;
+    background: linear-gradient(45deg, rgb(18, 36, 68), rgb(0, 255, 157));
     margin: 5px;
     border-radius: 5px;
-    color:black;
+    color:rgb(255, 255, 255);
     text-align: center;
-    position: sticky;    
+    position: sticky;  
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 .table-layer-0:hover{
     transform: scale(1.04);
     transition: .5s;
-    background-color: #69c081;
+    /*background: rgba(73, 73, 73, 0);*/
 }
 .table-layer-0 span{
     position: absolute;
@@ -123,8 +130,9 @@ body{
     transition: .5s;
     width: 100%;
     height: 100%;
-    background-color: #4bbf6b;
+    background:  rgb(34, 185, 160);
     color:black;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 .table-layer-00>span{
     float: none;
@@ -137,12 +145,12 @@ body{
     width: 100%;
 }
 .table-layer-1{ 
-    font-family: monospace;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     display: inline-table;
     min-width: 300px;
     width: 300px;
     min-height: 280px;
-    background-color:#dfe3e6;
+    background-color:#007767fd;
     color:#071a18;
     margin: 10px;
     padding: 10px;
@@ -150,23 +158,25 @@ body{
     text-align: center;
     border-radius:8px;
 }
-.table-layer-1:hover{
-    background-color:#ced1d3;
-}
+/*.table-layer-1:hover{
+    background-color:#e5ff00;
+}*/
 .table-layer-2{
     display:block;
     margin: 5px auto 0;
     padding: 10px 20px;
     transition: .5s;
-    background-color: #fff;    
+    background-color: rgb(243, 243, 243);    
     font-family: monospace;
     border-radius: 6px;
     text-align: left;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 .table-layer-2:hover{
     transform: scale(1.04);
-    background: #ffffff;
+    background: #fafafa;
     color: #070029;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 .close-btn {
     padding: 1px 4px;
@@ -183,7 +193,7 @@ body{
     background-color: #e2491a;
 }
 .description{
-    border: 1px solid gray;
+    border: 1px solid rgb(99, 15, 95);
     resize: none;
     margin-top: 10px;
     height: 4em;
@@ -205,16 +215,30 @@ body{
 }
 #obj-count{
     position: fixed;
-    color: #070029;
+    color: #28f1ff;
     right: 20px;
     bottom: 60px;
-    background-color: #7bc08f;
+    background-color: rgb(0, 107, 102);
     padding: 10px;
     border-radius: 5px;
     font-size: 12pt;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 /*footer*/
 footer{
     height: 40px;
-    background-color: #3FA25B;
+    background-color: rgb(0, 107, 102);
+}
+
+p.test
+{
+    position:fixed;;
+    left:1200px;
+    top: 50px;
+    height: 100px;
+    text-align: center;
+    border-radius: 8px;
+    background-color: #28f1ffa9;
+    color:rgb(0, 63, 78);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
