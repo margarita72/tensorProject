@@ -233,9 +233,9 @@ footer{
 p.test
 {
     position:fixed;;
-    left:1200px;
+    right:10px;
     top: 50px;
-    height: 100px;
+    height: 120px;
     text-align: center;
     border-radius: 8px;
     background-color: #28f1ffa9;
