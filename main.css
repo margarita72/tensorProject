@@ -5,7 +5,7 @@
 /*Header*/
 header{
     height: 40px;
-    background: rgb(0, 107, 102);
+    background: #006b66;
 }
 .headerButtons{
     display: flex;
@@ -17,7 +17,7 @@ header{
     border-radius: 3px;
     margin: 5px;
     display: inline-block;
-    background:rgb(0, 192, 128);
+    background:#00c080;
     cursor: pointer;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
@@ -71,9 +71,8 @@ main{
     flex: 1;
 }
 #desk-nav{
-    display: grid;
     min-width: 200px;    
-    background-color: rgb(111, 111, 116);
+    background-color: #6f6f74;
 }
 .desk-list{
     display: block;
@@ -82,20 +81,20 @@ main{
     line-height:50px;
     width: 200px;
     text-align: center;
-    background: rgb(161, 161, 161);
+    background: #a1a1a1;
     border: 10px;
     border-radius: 5px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 #main-list{
-    width:;
-    /* width:100%; */
+    flex: 1;
+    overflow: hidden;
 }
 #main-list>ul{
     height: 100%;
 }
 body{
-    background:rgb(34, 185, 160);
+    background-image: url(https://www.nasa.gov/sites/default/files/thumbnails/image/columbia_tm5_1986209_lrg.jpg);
     background-size: cover;
     color:#f8f8f9;
     font-size: 14pt;
@@ -108,10 +107,10 @@ body{
     display: inline-block;
     min-height: 150px;
     min-width: 200px;
-    background: linear-gradient(45deg, rgb(18, 36, 68), rgb(0, 255, 157));
+    background: linear-gradient(45deg, #122444, #00ff9d);
     margin: 5px;
     border-radius: 5px;
-    color:rgb(255, 255, 255);
+    color:#fff;
     text-align: center;
     position: sticky;  
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -119,7 +118,7 @@ body{
 .table-layer-0:hover{
     transform: scale(1.04);
     transition: .5s;
-    /*background: rgba(73, 73, 73, 0);*/
+    /* background: #49494900; */
 }
 .table-layer-0 span{
     display:table-cell;
@@ -134,7 +133,7 @@ body{
     transition: .5s;
     width: 100%;
     height: 100%;
-    background:  rgb(34, 185, 160);
+    background:  #22b9a0;
     color:black;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
@@ -170,7 +169,7 @@ body{
     margin: 5px auto 0;
     padding: 10px 20px;
     transition: .5s;
-    background-color: rgb(243, 243, 243);    
+    background-color: #f3f3f3;    
     font-family: monospace;
     border-radius: 6px;
     text-align: left;
@@ -197,7 +196,7 @@ body{
     background-color: #e2491a;
 }
 .description{
-    border: 1px solid rgb(99, 15, 95);
+    border: 1px solid #630f5f;
     resize: none;
     margin-top: 10px;
     height: 4em;
@@ -222,7 +221,7 @@ body{
     color: #28f1ff;
     right: 20px;
     bottom: 60px;
-    background-color: rgb(0, 107, 102);
+    background-color: #006b66;
     padding: 10px;
     border-radius: 5px;
     font-size: 12pt;
@@ -231,7 +230,7 @@ body{
 /*footer*/
 footer{
     height: 40px;
-    background-color: rgb(0, 107, 102);
+    background-color: #006b66;
 }
 
 p.test
@@ -245,6 +244,6 @@ p.test
     text-align: center;
     border-radius: 8px;
     background-color: #28f1ffa9;
-    color:rgb(0, 63, 78);
+    color:#003f4e;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
