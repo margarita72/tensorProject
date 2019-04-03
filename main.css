@@ -71,6 +71,7 @@ main{
     flex: 1;
 }
 #desk-nav{
+    display: grid;
     min-width: 200px;    
     background-color: rgb(111, 111, 116);
 }
@@ -87,14 +88,14 @@ main{
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 #main-list{
-    width: calc(100% - 200px);
+    width:;
     /* width:100%; */
 }
 #main-list>ul{
     height: 100%;
 }
 body{
-    background-image: url(https://www.nasa.gov/sites/default/files/thumbnails/image/columbia_tm5_1986209_lrg.jpg);
+    background:rgb(34, 185, 160);
     background-size: cover;
     color:#f8f8f9;
     font-size: 14pt;
@@ -247,3 +248,5 @@ p.test
     color:rgb(0, 63, 78);
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
+
+@media(min-width:)
