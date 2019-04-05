@@ -66,13 +66,13 @@ function parse(jsonObj)
  * @name dataList
  * @type {Object}
  */
-dataList = {};
+let dataList = {};
 /** 
  * @description Демо-данные для выполнения задачи
  * @type {Object}
  * @name data
  */
-data = [{"id":1,"name":"Доска 1","hasChildren":true},{"id":2,"parent":1,"name":"Список задач 1.1","hasChildren":true},{"id":3,"parent":2,"name":"Задача 1.1.1","done":true,"description":"Programmers never sleep"},{"id":4,"parent":2,"name":"Задача 1.1.2"},{"id":5,"parent":1,"name":"Список задач 1.2","hasChildren":true},{"id":6,"parent":5,"name":"Задача 1.2.1"},{"id":7,"parent":5,"name":"Задача 1.2.2"},{"id":8,"parent":1,"name":"Список задач 1.3"},{"id":9,"name":"Доска 2"}];
+let data = [{"id":1,"name":"Доска 1","hasChildren":true},{"id":2,"parent":1,"name":"Список задач 1.1","hasChildren":true},{"id":3,"parent":2,"name":"Задача 1.1.1","done":true,"description":"Programmers never sleep"},{"id":4,"parent":2,"name":"Задача 1.1.2"},{"id":5,"parent":1,"name":"Список задач 1.2","hasChildren":true},{"id":6,"parent":5,"name":"Задача 1.2.1"},{"id":7,"parent":5,"name":"Задача 1.2.2"},{"id":8,"parent":1,"name":"Список задач 1.3"},{"id":9,"name":"Доска 2"}];
 
 /**
  * @description Mock-функция, эмулирующая работу запроса к серверу. Получает дочерние элементы по идентификатору объекта и передает в callback.
@@ -82,7 +82,7 @@ data = [{"id":1,"name":"Доска 1","hasChildren":true},{"id":2,"parent":1,"na
  * @function
  * @returns {String} Список в формате HTML.
  */
-function loadChildren(id){                                                    
+function loadChildren(id:number){
     return new Promise(function(resolve){
         let res = [];  //Пустой массив.   
         for (let i = 0; i < data.length; i++) {
@@ -491,8 +491,8 @@ function closeLine(btnjq){
  * @function
  * @name counterFun
  */
-function counterFun(str){
-    let  count = 0;
+function counterFun(str:string){
+    let  count:number = 0;
     return function(){
         count++;
         let out = str.replace('#count',count);
@@ -501,7 +501,7 @@ function counterFun(str){
 }
 
 //Создания объекта типа счетчик для подсчета количества объектов modelBuilder.
-counter = new counterFun('создано #count объектов modelBuilder');
+let counter = new counterFun('создано #count объектов modelBuilder');
 
 /*Вызов функции для отображения первого уровня.*/
 loadChildren(null).then(handler);
