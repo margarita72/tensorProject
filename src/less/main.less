@@ -1,3 +1,5 @@
+@fonts: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
+
 *{
     margin: 0;
     padding: 0;
@@ -19,7 +21,7 @@ header{
     display: inline-block;
     background:#00c080;
     cursor: pointer;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif;
+    font-family: @fonts;
 }
 /*.headerButtons>li:hover{
     background-color: rgb(143, 5, 255);
@@ -77,14 +79,16 @@ main{
 .desk-list{
     display: block;
     margin: 10px;
-    height: 50px;
-    line-height:50px;
-    width: 200px;
+    padding: 15px 10px;
     text-align: center;
     background: #a1a1a1;
-    border: 10px;
     border-radius: 5px;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif;
+    font-family: @fonts;
+}
+.desk-title{
+    text-align: center;
+    padding: 20px 10px;
+    background-color: #003f4e;
 }
 #main-list{
     flex: 1;
@@ -101,7 +105,7 @@ body{
     height: 100%;
     display: flex;
     flex-direction: column;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif;
+    font-family: @fonts;
 }
 .table-layer-0{
     display: inline-block;
@@ -113,7 +117,7 @@ body{
     color:#fff;
     text-align: center;
     position: sticky;  
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif;
+    font-family: @fonts;
 }
 .table-layer-0:hover{
     transform: scale(1.04);
@@ -135,7 +139,7 @@ body{
     height: 100%;
     background:  #22b9a0;
     color:black;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif;
+    font-family: @fonts;
 }
 .table-layer-00>span{
     float: none;
@@ -148,7 +152,7 @@ body{
     width: 100%;
 }
 .table-layer-1{ 
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif;
+    font-family: @fonts;
     display: inline-table;
     min-width: 300px;
     width: 300px;
@@ -173,13 +177,13 @@ body{
     font-family: monospace;
     border-radius: 6px;
     text-align: left;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif;
+    font-family: @fonts;
 }
 .table-layer-2:hover{
     transform: scale(1.04);
     background: #fafafa;
     color: #070029;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif;
+    font-family: @fonts;
 }
 .close-btn {
     padding: 1px 4px;
@@ -225,17 +229,10 @@ body{
     padding: 10px;
     border-radius: 5px;
     font-size: 12pt;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif;
+    font-family: @fonts;
 }
-/*footer*/
-footer{
-    height: 40px;
-    background-color: #006b66;
-}
-
-p.test
-{
-	z-index:100;
+p.test{
+    z-index:100;
     position:absolute;
     right:10px;
     top: 50px;
@@ -245,5 +242,10 @@ p.test
     border-radius: 8px;
     background-color: #28f1ffa9;
     color:#003f4e;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif;
+    font-family: @fonts;
+}
+/*footer*/
+footer{
+    height: 40px;
+    background-color: #006b66;
 }

@@ -1,70 +1,14 @@
-'use strict';
+"use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-//
 /**
  * @file script.js
  * @version 1.0.0
  * @author Морские котики
  */
-/**
- * @description Объект передается по рекурсии. Каждый вызов - это переход на следующий уровень вложения JSON. Функция принимает объекты из data в формате JSON и возвращает в строку в формате HTML.
- * @param {Object} data JSON объект.
- * @name makeList
- * @function
- * @returns {string} HTML список.
- */
-function makeList(data) {
-    if (data === undefined || data.length === 0) //Если объект не определен, то осуществляется выход.
-        return '';
-    var res = '';
-    res += '<ul>'; //Начало маркированного списка.       
-    for (var i = 0; i < data.length; i++) //Каждый объект находится в массиве. Цикл проверяет все элементы массива.
-    {
-        res += '<li>'; //Новая строка в списке.
-        if (data[i].name === undefined) //Если поле name не существует, то вызывается исключение.
-            throw new Error('каждый объект обязательно должен иметь поле "name"');
-        res += data[i].name; //Запись имени в список.
-        res += makeList(data[i].children); //Вызов выполняется с помощью рекурсии. Строка с новым списком добавляется к старой строке.
-        res += '</li>'; //Строка списка закрывается.
-    }
-    res += '</ul>'; //Закрытие маркированного списка.
-    return res; //Возвращение списка.
-}
-/**
- * @description Ищет исключения и в случае их обнаружения, выводит сообщение об ошибке с описанием. Функция parse() обрабатывает данные jsonObj в формате JSON с помощью метода JSON.parse().
- * @param {Object} jsonObj JSON объект
- * @name parse
- * @function
- * @returns {String} Список в формате HTML.
- */
-function parse(jsonObj) {
-    if (jsonObj === undefined) //Если в функцию ничего не передали, генерируется исключение.
-        throw new Error('Объект не был передан в функцию');
-    var objData = void 0;
-    try {
-        if ((typeof jsonObj === 'undefined' ? 'undefined' : _typeof(jsonObj)) === 'object') {
-            //Если передана строка, то происходит преобразование её в объект.
-            objData = jsonObj;
-        } else {
-            objData = JSON.parse(jsonObj); //Берётся текст и создается объект типа JSON.
-        }
-    } catch (error) {
-        alert('строка не соответствует синтаксису JSON'); //Обработка исключения, выводится сообщение об ошибке.
-        return; //Выход из функции.
-    }
-    try {
-        document.write(makeList(objData)); //Вызов функции преобразования. То, что она возвращает(список), выводится на страницу.  
-    } catch (e) {
-        alert(e.message); //Обработка исключения. Выводится сообщение об ошибке.
-        return; //Выход из функции.
-    }
-}
 /**
  * @description Объект (ассоциативный массив) где будет хранятся все объект из списка.
  * @name dataList
@@ -117,18 +61,17 @@ function loadChildren(id) {
  */
 
 var modelBuilder = function () {
-    /**
-     * @description Инициализация основных полей.
-     * @constructor
-     * @param {Array} keys массив ключей
-     * @param {Array} values массив значений
-     */
     function modelBuilder(keys, values) {
         var _this = this;
 
         _classCallCheck(this, modelBuilder);
 
-        counter(); //Подсчет нового объекта.
+        /**
+         * @description Инициализация основных полей.
+         * @constructor
+         * @param {Array} keys массив ключей
+         * @param {Array} values массив значений
+         */
         this._id = null;
         this._hasChildren = false;
         this._name = '';
@@ -136,47 +79,48 @@ var modelBuilder = function () {
         this._removed = false;
         this._done = false;
         this._description = '';
+        counter(); //Подсчет нового объекта.
         //Массив свойств для которых нужно добавить геттеры и сеттеры.
-        var properties = ['id', 'hasChildren', 'name', 'parent', 'removed', 'done', 'description'];
-        var i = 0;
+        var properties = ['hasChildren', 'name', 'parent', 'removed', 'done', 'description'];
+        /**TODO: Если вытащить let из for то все ломаеться.*/
 
-        var _loop = function _loop(_i) {
+        var _loop = function _loop(i) {
             //добавляем геттеры и сеттеры.
-            Object.defineProperty(_this, properties[_i], {
+            Object.defineProperty(_this, properties[i], {
                 set: function set(val) {
-                    this['_' + properties[_i]] = val;
+                    this['_' + properties[i]] = val;
                 },
                 get: function get() {
-                    return this['_' + properties[_i]];
+                    return this['_' + properties[i]];
                 }
             });
         };
 
-        for (var _i = 0; _i < properties.length; _i++) {
-            _loop(_i);
+        for (var i = 0; i < properties.length; i++) {
+            _loop(i);
         }
         if (keys && values) //Если массив ключей и значений не был передан, то создаем пустой объект. 
             {
                 if (keys.length !== values.length) //Если размеры объектов не эквивалентны, то генерируем исключение.
                     throw new Error('Ключи и значения имеют разные размеры');
-                var _i2 = 0;
-                for (; _i2 < keys.length; _i2++) {
+                var i = void 0;
+                for (i = 0; i < keys.length; i++) {
                     //Цикл обработки элементов массива.
-                    res[keys[_i2]] = values[_i2]; //Создается новое поле с названием key[i] и с значением values[i].
+                    this[keys[i]] = values[i]; //Создается новое поле с названием key[i] и с значением values[i].
                 }
             }
     }
-    /**
-     * @description Помечает объект для удаления.
-     * @method
-     * @memberof modelBuilder
-     * @function
-     * @name delete
-     */
-
 
     _createClass(modelBuilder, [{
-        key: 'delete',
+        key: "delete",
+
+        /**
+         * @description Помечает объект для удаления.
+         * @method
+         * @memberof modelBuilder
+         * @function
+         * @name delete
+         */
         value: function _delete() {
             this.removed = true; //Свойство removed принимает значение true.
         }
@@ -190,11 +134,11 @@ var modelBuilder = function () {
          */
 
     }, {
-        key: 'update',
+        key: "update",
         value: function update(updObj) {
             var keys = Object.keys(updObj);
-            var i = 0;
-            for (; i < keys.length; i++) {
+            var i = void 0;
+            for (i = 0; i < keys.length; i++) {
                 //Цикл по всем ключам в объекте.
                 if (this[keys[i]] !== undefined) //Если поле существует, то изменить значение.
                     this[keys[i]] = updObj[keys[i]];
@@ -211,7 +155,7 @@ var modelBuilder = function () {
          */
 
     }, {
-        key: 'read',
+        key: "read",
         value: function read(key) {
             if (this.removed) //Проверка значения элемента. Если он помечен как удаленный, то возвращаем undefined. 
                 return;
@@ -224,7 +168,7 @@ var modelBuilder = function () {
             var tmp = {}; //Создаётся пустой оъект.
             var keys = Object.keys(this);
             var i = 0;
-            for (; i < keys.length; i++) {
+            for (i = 0; i < keys.length; i++) {
                 //Перебираются и выделяются все поля.
                 if (typeof this[keys[i]] !== 'function') //Если значения с функцией различны, то поле с другим значением копируется в новый объект.
                     tmp[keys[i]] = this[keys[i]];
@@ -240,11 +184,10 @@ var modelBuilder = function () {
          * @param {Function} callback Принимает на вход функцию-callback
          * @function
          * @name getChildren
-         * @returns {String} Список в формате HTML с задержкой по времени.
          */
 
     }, {
-        key: 'getChildren',
+        key: "getChildren",
         value: function getChildren(callback) {
             if (this.hasChildren) //Если у списка есть дочерний список то открывается.
                 {
@@ -265,9 +208,17 @@ var modelBuilder = function () {
          */
 
     }, {
-        key: 'changeDone',
+        key: "changeDone",
         value: function changeDone() {
             this.done = !this.done;
+        }
+    }, {
+        key: "id",
+        get: function get() {
+            return this._id;
+        },
+        set: function set(value) {
+            this._id = value;
         }
     }]);
 
@@ -307,8 +258,8 @@ function render(modelBuilderObject) {
         case 2:
             mainTable = 'class="table-layer-2"';
     }
-    var content = '<span class="list-open" id="btn' + modelBuilderObject.id + '">' + modelBuilderObject.name + '</span>';
-    return '<li ' + mainTable + ' id="list' + modelBuilderObject.id + '">' + content + '</li>';
+    var content = "<span class=\"list-open\" id=\"btn" + modelBuilderObject.id + "\">" + modelBuilderObject.name + "</span>";
+    return "<li " + mainTable + " id=\"list" + modelBuilderObject.id + "\">" + content + "</li>";
 }
 /**
  * @description Функция принимает на вход массив объектов типа modelBuilder и выводит их на страницу. Также сохраняет эти объекты в глобальный объект dataList для дальнейшего использования.
@@ -325,23 +276,22 @@ function handler(arrayOfModel) {
             container = 'list' + arrayOfModel[0].parent;
         }
     var li = document.getElementById(container); //Получаем строку списка, куда нужно добавить строки.
-    var htmlList = '';
-    var htmlDesks = '';
-    var i = 0;
-    for (; i < arrayOfModel.length; i++) {
+    var htmlList = '',
+        htmlDesks = '',
+        i = void 0;
+    for (i = 0; i < arrayOfModel.length; i++) {
         htmlList += render(arrayOfModel[i]); //Собираются все строки списка.
         dataList['btn' + arrayOfModel[i].id] = arrayOfModel[i]; //Объект добавляется в список для дальнейшего доступа к объекту.
         if (arrayOfModel[i].layer === 0) {
-            htmlDesks += '<li class="desk-list">' + arrayOfModel[i].name + '</li>';
+            htmlDesks += "<li class=\"desk-list\">" + arrayOfModel[i].name + "</li>";
         }
     }
     li.innerHTML += '<ul>' + htmlList + '</ul>'; //Выводится список.
     if (htmlDesks) {
-        $('#desk-nav')[0].innerHTML = '<ul>' + htmlDesks + '</ul>';
+        $('#desk-nav')[0].innerHTML += "<ul>" + htmlDesks + "</ul>";
     }
-    i = 0;
     //После отображения списка задач нужно покрасить задачи по его состоянию.
-    for (; i < arrayOfModel.length; i++) {
+    for (i = 0; i < arrayOfModel.length; i++) {
         if (dataList['btn' + arrayOfModel[i].id].removed) {
             $('#btn' + arrayOfModel[i].id).parent().css('border', '2px outset red'); //Удалено - красный
         } else {
@@ -358,7 +308,6 @@ function handler(arrayOfModel) {
  * @param {Object} btn Объект типа event.
  * @name openLine
  * @function
- * @returns {String} Список HTML.
  */
 function openLine(_event) {
     var pressedButton = _event.currentTarget; //Получаем html кнопки на которую нажали.
@@ -454,12 +403,12 @@ function openTasks(_event) {
     if (!dataList['btn' + currentObj.id].opened) {
         dataList['btn' + currentObj.id].opened = true; //Указываем что доска открыта.
         //Добавляем кнопку закрыть.
-        currentHTML.append('<img src="Imgs/remove.png" class="del-btn" id="del-btn' + currentObj.id + '" >');
+        currentHTML.append("<img src=\"Imgs/remove.png\" class=\"del-btn\" id=\"del-btn" + currentObj.id + "\" >");
         //Добавляем переключатель выполнения.
-        currentHTML.append('<input type="checkbox" id="check' + currentObj.id + '" class="check">');
+        currentHTML.append("<input type=\"checkbox\" id=\"check" + currentObj.id + "\" class=\"check\">");
         $('#check' + currentObj.id)[0].checked = dataList['btn' + currentObj.id].done;
         //добавляем поле описание задачи.
-        currentHTML.append('<textarea class="description" id="description' + currentObj.id + '" ></textarea>');
+        currentHTML.append("<textarea class=\"description\" id=\"description" + currentObj.id + "\" ></textarea>");
         $('#description' + currentObj.id)[0].value = dataList['btn' + currentObj.id].description;
         //Если задача помечена для удаления, то поля делаем неактивными.
         if (dataList['btn' + currentObj.id].removed) {
@@ -499,11 +448,11 @@ function openTasks(_event) {
 /**
  * @description Обработчик нажатия для кнопок.
  * @name closeLine
- * @param {Object} btnjq Объект типа event.
+ * @param {Object} _event Объект типа event.
  * @function
  */
-function closeLine(btnjq) {
-    var btn = btnjq.currentTarget; //Получаем html кнопки на которую нажали.
+function closeLine(_event) {
+    var btn = _event.currentTarget; //Получаем html кнопки на которую нажали.
     var id = $('#' + btn.id).prev()[0].id;
     //Если родитель это доска, то нужно свернуть досу.
     //Для этого меняем его класс.
@@ -533,7 +482,7 @@ function counterFun(str) {
 var counter = new counterFun('создано #count объектов modelBuilder');
 /*Вызов функции для отображения первого уровня.*/
 loadChildren(null).then(handler);
-$('#home').bind('click', function (e) {
+$('#home').bind('click', function () {
     $('.table-layer-00>ul').remove();
     $('.table-layer-00').attr('class', 'table-layer-0');
     var element = void 0;
@@ -545,6 +494,6 @@ $('#home').bind('click', function (e) {
 $("#info").click(function () {
     $("#info>p").toggle();
 });
-$('#desks').bind('click', function (e) {
+$('#desks').bind('click', function () {
     $("#desk-nav").toggle();
 });

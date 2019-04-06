@@ -77,14 +77,16 @@ main {
 .desk-list {
   display: block;
   margin: 10px;
-  height: 50px;
-  line-height: 50px;
-  width: 200px;
+  padding: 15px 10px;
   text-align: center;
   background: #a1a1a1;
-  border: 10px;
   border-radius: 5px;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif;
+}
+.desk-title {
+  text-align: center;
+  padding: 20px 10px;
+  background-color: #003f4e;
 }
 #main-list {
   flex: 1;

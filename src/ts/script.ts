@@ -1,78 +1,36 @@
-//
 /**
  * @file script.js
  * @version 1.0.0
  * @author Морские котики
  */
 
-/**  
- * @description Объект передается по рекурсии. Каждый вызов - это переход на следующий уровень вложения JSON. Функция принимает объекты из data в формате JSON и возвращает в строку в формате HTML.
- * @param {Object} data JSON объект.
- * @name makeList
- * @function
- * @returns {string} HTML список.
- */
-function makeList(data)
-{
-    if (data === undefined || data.length === 0)  //Если объект не определен, то осуществляется выход.
-        return '';
-    let res = '';  
-    res += '<ul>';  //Начало маркированного списка.       
-    for(let i = 0;i<data.length;i++)  //Каждый объект находится в массиве. Цикл проверяет все элементы массива.
-    {   
-        res += '<li>';  //Новая строка в списке.
-        if(data[i].name === undefined)  //Если поле name не существует, то вызывается исключение.
-            throw  new Error('каждый объект обязательно должен иметь поле "name"'); 
-        
-        res += data[i].name;  //Запись имени в список.
-        res +=  makeList(data[i].children);  //Вызов выполняется с помощью рекурсии. Строка с новым списком добавляется к старой строке.
-        res += '</li>';  //Строка списка закрывается.
-    }
-    res += '</ul>';  //Закрытие маркированного списка.
-    return res;  //Возвращение списка.
-}
 
-/**
- * @description Ищет исключения и в случае их обнаружения, выводит сообщение об ошибке с описанием. Функция parse() обрабатывает данные jsonObj в формате JSON с помощью метода JSON.parse().
- * @param {Object} jsonObj JSON объект
- * @name parse
- * @function
- * @returns {String} Список в формате HTML.
- */
-function parse(jsonObj)
-{
-    if(jsonObj === undefined)  //Если в функцию ничего не передали, генерируется исключение.
-        throw new Error('Объект не был передан в функцию');
-    let objData;
-    try {
-        if(typeof(jsonObj) === 'object'){  //Если передана строка, то происходит преобразование её в объект.
-            objData = jsonObj;
-        }else {
-            objData = JSON.parse(jsonObj);  //Берётся текст и создается объект типа JSON.
-        }  
-    } catch (error) {
-        alert('строка не соответствует синтаксису JSON');  //Обработка исключения, выводится сообщение об ошибке.
-        return;  //Выход из функции.
-    }   
-    try {
-        document.write(makeList(objData));  //Вызов функции преобразования. То, что она возвращает(список), выводится на страницу.  
-    } catch (e) {
-        alert(e.message);  //Обработка исключения. Выводится сообщение об ошибке.
-        return;  //Выход из функции.
-    }
-}
 /**
  * @description Объект (ассоциативный массив) где будет хранятся все объект из списка.
  * @name dataList
  * @type {Object}
  */
 let dataList = {};
+
 /** 
  * @description Демо-данные для выполнения задачи
  * @type {Object}
  * @name data
  */
 let data = [{"id":1,"name":"Доска 1","hasChildren":true},{"id":2,"parent":1,"name":"Список задач 1.1","hasChildren":true},{"id":3,"parent":2,"name":"Задача 1.1.1","done":true,"description":"Programmers never sleep"},{"id":4,"parent":2,"name":"Задача 1.1.2"},{"id":5,"parent":1,"name":"Список задач 1.2","hasChildren":true},{"id":6,"parent":5,"name":"Задача 1.2.1"},{"id":7,"parent":5,"name":"Задача 1.2.2"},{"id":8,"parent":1,"name":"Список задач 1.3"},{"id":9,"name":"Доска 2"}];
+
+/**
+ * 
+ */
+ interface ImodelBuilder{
+    id: number;
+    hasChildren: boolean;
+    name: string;
+    parent: number;
+    removed: boolean;
+    done: boolean;
+    description: string;
+ }
 
 /**
  * @description Mock-функция, эмулирующая работу запроса к серверу. Получает дочерние элементы по идентификатору объекта и передает в callback.
@@ -89,8 +47,8 @@ function loadChildren(id:number){
             if(data[i].parent == id)  //Цикл перебирает элемент data и если находит схожий id, то создаётся objectik и обновляется с добавленным значением.
             {
                 if(!dataList['btn'+data[i].id]){   //Если объект уже создан, то не нужно заново его создавать.
-                    let objectik = new modelBuilder();                                         
-                    objectik.update(data[i]);                                                  
+                    let objectik = new modelBuilder();
+                    objectik.update(data[i]);
                     res.push(objectik);  //Добавить с конца массива objectik.
                 }else {
                     dataList['btn'+data[i].id].opened = false;
@@ -120,19 +78,25 @@ class modelBuilder{
      * @param {Array} keys массив ключей
      * @param {Array} values массив значений
      */
-    constructor(keys,values){
+    private _id: number = null;
+    private _hasChildren: boolean = false;
+    private _name: string = '';
+    private _parent: number = null;
+    private _removed: boolean = false;
+    private _done: boolean = false;
+    private _description: string = '';
+    get id(): number{
+        return this._id;
+    }
+    set id(value: number){
+        this._id = value;
+    }
+    constructor(keys: string[],values: string[]){
         counter();   //Подсчет нового объекта.
-        this._id = null;
-        this._hasChildren = false;
-        this._name = '';
-        this._parent = null;
-        this._removed = false;
-        this._done = false;
-        this._description = '';
         //Массив свойств для которых нужно добавить геттеры и сеттеры.
-        let properties = ['id','hasChildren','name','parent','removed','done','description'];
-        let i = 0;
-        for (let i = 0; i < properties.length; i++) {
+        let properties: string[] = ['hasChildren','name','parent','removed','done','description'];
+        /**TODO: Если вытащить let из for то все ломаеться.*/
+        for (let i: number = 0; i < properties.length; i++) {
             //добавляем геттеры и сеттеры.
             Object.defineProperty(this, properties[i], { 
                 set: function (val) { this['_' + properties[i]] = val;},
@@ -143,9 +107,9 @@ class modelBuilder{
         {
             if(keys.length !== values.length)  //Если размеры объектов не эквивалентны, то генерируем исключение.
                 throw new Error('Ключи и значения имеют разные размеры');
-            let i = 0
-            for (; i < keys.length; i++) {  //Цикл обработки элементов массива.
-                res[keys[i]] = values[i];  //Создается новое поле с названием key[i] и с значением values[i].
+            let i: number;
+            for (i = 0; i < keys.length; i++) {  //Цикл обработки элементов массива.
+                this[keys[i]] = values[i];  //Создается новое поле с названием key[i] и с значением values[i].
             }
         }
     }    
@@ -157,7 +121,7 @@ class modelBuilder{
      * @function
      * @name delete
      */
-    delete(){
+    delete(): void{
         this.removed = true;  //Свойство removed принимает значение true.
     }
 
@@ -169,10 +133,10 @@ class modelBuilder{
      * @name update
      * @param {Object} updObj Содержится ключ/значение для обновления
      */
-    update(updObj){
+    update(updObj :Object): void{
         let keys = Object.keys(updObj);
-        let i = 0;
-        for (;i<keys.length;i++) {  //Цикл по всем ключам в объекте.
+        let i: number;
+        for (i = 0; i<keys.length;i++) {  //Цикл по всем ключам в объекте.
             if(this[keys[i]] !== undefined)  //Если поле существует, то изменить значение.
                 this[keys[i]] = updObj[keys[i]];
         }
@@ -187,7 +151,7 @@ class modelBuilder{
      * @param {string} key Ключ по которому будет возвращено значение.
      * @returns {Object} Объект modelBuilder без методов.
      */
-    read(key){
+    read(key: string){
         if(this.removed)  //Проверка значения элемента. Если он помечен как удаленный, то возвращаем undefined. 
             return; 
         if(key)  //Если был передан ключ, то функция должна вернуть значение по ключу.
@@ -200,7 +164,7 @@ class modelBuilder{
         let tmp = {};  //Создаётся пустой оъект.
         let keys = Object.keys(this);
         let i = 0;
-        for (; i < keys.length;i++) {  //Перебираются и выделяются все поля.
+        for (i = 0; i < keys.length;i++) {  //Перебираются и выделяются все поля.
             if(typeof this[keys[i]] !== 'function')  //Если значения с функцией различны, то поле с другим значением копируется в новый объект.
                 tmp[keys[i]] = this[keys[i]]; 
         }
@@ -216,12 +180,11 @@ class modelBuilder{
      * @param {Function} callback Принимает на вход функцию-callback
      * @function
      * @name getChildren
-     * @returns {String} Список в формате HTML с задержкой по времени.
      */
-    getChildren (callback){
+    getChildren (callback:Function): void{
         if(this.hasChildren)  //Если у списка есть дочерний список то открывается.
         {
-            let getAsyncChildren = function(_id){ 
+            let getAsyncChildren = function(_id:number){
                     return new Promise(function(resolve){
                     resolve(_id);
                 })
@@ -236,7 +199,7 @@ class modelBuilder{
      * @name changeDone
      * @function
      */
-    changeDone(){
+    changeDone(): void{
         this.done = !this.done;
     }
 }
@@ -248,9 +211,9 @@ class modelBuilder{
  * @function
  * @returns {string} HTML список.
  */
-function render(modelBuilderObject) {
-    let deep = 0;  //В переменную будет записан уровень вложенности строки списка.
-    let tmpObject = modelBuilderObject;  
+function render(modelBuilderObject: modelBuilder) {
+    let deep: number = 0;  //В переменную будет записан уровень вложенности строки списка.
+    let tmpObject: modelBuilder = modelBuilderObject;
     while(tmpObject.parent && deep < 4)  //Цикл поднимается по родителям, пока не дойдет до корня или глубина не станет равна 4 (значение больше 4 нас не интересует).
     {
         tmpObject = dataList['btn' + tmpObject.parent];  //Берем родителя по ИД и становимся на его место.
@@ -262,13 +225,13 @@ function render(modelBuilderObject) {
         modelBuilderObject.opened = true;
     }
     /*Присваивается имя, класс, исходя от глубины.*/
-    let mainTable = 'class="table-layer"'; 
+    let mainTable: string = 'class="table-layer"'; 
     switch (deep) {
         case 0: mainTable = 'class="table-layer-0"';   break;
         case 1: mainTable = 'class="table-layer-1"';   break;
         case 2: mainTable = 'class="table-layer-2"';
     }
-    let content = `<span class="list-open" id="btn${modelBuilderObject.id}">${modelBuilderObject.name}</span>`;
+    let content: string = `<span class="list-open" id="btn${modelBuilderObject.id}">${modelBuilderObject.name}</span>`;
     return `<li ${mainTable} id="list${modelBuilderObject.id}">${content}</li>`;
 }
 
@@ -279,9 +242,9 @@ function render(modelBuilderObject) {
  * @function
  * @returns {String} Сформированный список в формате HTML.
  */
-function handler(arrayOfModel)
+function handler(arrayOfModel: modelBuilder[])
 {    
-    let container = 'main-list';  //ИД корневого тега куда выводится список 
+    let container: string = 'main-list';  //ИД корневого тега куда выводится список 
     /*Если id равен нулю или не определено, то это корень списка.*/
     if(arrayOfModel[0].parent)  //Если это не корень, то составляем ид строки из списка.
     {
@@ -289,10 +252,10 @@ function handler(arrayOfModel)
     }
     
     let li = document.getElementById(container);  //Получаем строку списка, куда нужно добавить строки.
-    let htmlList = '';
-    let htmlDesks = '';
-    let i = 0;
-    for (; i < arrayOfModel.length; i++) {
+    let htmlList:string = '',
+        htmlDesks:string = '',
+        i:number;
+    for (i = 0; i < arrayOfModel.length; i++) {
         htmlList += render(arrayOfModel[i]);  //Собираются все строки списка.
         dataList['btn'+arrayOfModel[i].id] = arrayOfModel[i];  //Объект добавляется в список для дальнейшего доступа к объекту.
         if(arrayOfModel[i].layer === 0) {
@@ -301,11 +264,10 @@ function handler(arrayOfModel)
     }
     li.innerHTML += '<ul>'+htmlList+'</ul>';  //Выводится список.
     if(htmlDesks) {
-        $('#desk-nav')[0].innerHTML = `<ul>${htmlDesks}</ul>`;
+        $('#desk-nav')[0].innerHTML += `<ul>${htmlDesks}</ul>`;
     }
-    i = 0;
     //После отображения списка задач нужно покрасить задачи по его состоянию.
-    for (; i < arrayOfModel.length; i++) {
+    for (i = 0; i < arrayOfModel.length; i++) {
         if(dataList['btn'+arrayOfModel[i].id].removed){
             $('#btn'+arrayOfModel[i].id).parent().css('border', '2px outset red');   //Удалено - красный
         }else {
@@ -323,9 +285,8 @@ function handler(arrayOfModel)
  * @param {Object} btn Объект типа event.
  * @name openLine
  * @function
- * @returns {String} Список HTML.
  */
-function openLine(_event){
+function openLine(_event: Event): void{
     let pressedButton = _event.currentTarget;   //Получаем html кнопки на которую нажали.
     let currentObj = dataList[pressedButton.id];   //Получаем ссылку на объект modelBuilder
     switch (currentObj.layer) {
@@ -352,9 +313,9 @@ $(document).on('click','.list-open', openLine);
  * @param {Object} _event
  * @name openTable
  */
-function openTable(_event){
+function openTable(_event): void{
     let pressedButton = _event.currentTarget;   //Получаем html кнопки на которую нажали.
-    let currentObj = dataList[pressedButton.id];   //Получаем ссылку на объект modelBuilder
+    let currentObj:modelBuilder = dataList[pressedButton.id];   //Получаем ссылку на объект modelBuilder
     if(currentObj.hasChildren){ 
         if(!currentObj.opened){  //Если список уже открыт, ничего не происходит.
             currentObj.opened = true;  //Помечаем как открытий.
@@ -414,9 +375,9 @@ function openTable(_event){
  * @param {Object} _event
  * @name openTasks
  */
-function openTasks(_event){
+function openTasks(_event): void{
     let pressedButton = _event.currentTarget;   //Получаем html кнопки на которую нажали.
-    let currentObj = dataList[pressedButton.id];   //Получаем ссылку на объект modelBuilder
+    let currentObj: modelBuilder = dataList[pressedButton.id];   //Получаем ссылку на объект modelBuilder
     let currentHTML = $('#list'+currentObj.id);
     //Если доска не открыта, то нужно его открыть.
     if(!dataList['btn'+currentObj.id].opened){
@@ -468,11 +429,11 @@ function openTasks(_event){
 /**
  * @description Обработчик нажатия для кнопок.
  * @name closeLine
- * @param {Object} btnjq Объект типа event.
+ * @param {Object} _event Объект типа event.
  * @function
  */
-function closeLine(btnjq){
-    let btn = btnjq.currentTarget;   //Получаем html кнопки на которую нажали.
+function closeLine(_event): void{
+    let btn = _event.currentTarget;   //Получаем html кнопки на которую нажали.
     let id = $('#'+btn.id).prev()[0].id;
     //Если родитель это доска, то нужно свернуть досу.
     //Для этого меняем его класс.
@@ -491,11 +452,11 @@ function closeLine(btnjq){
  * @function
  * @name counterFun
  */
-function counterFun(str:string){
-    let  count:number = 0;
-    return function(){
+function counterFun(str: string): void{
+    let  count: number = 0;
+    return function(): void{
         count++;
-        let out = str.replace('#count',count);
+        let out: string = str.replace('#count',count);
         $('#obj-count').html(out);
     }
 }
@@ -506,10 +467,10 @@ let counter = new counterFun('создано #count объектов modelBuilde
 /*Вызов функции для отображения первого уровня.*/
 loadChildren(null).then(handler);
 
-$('#home').bind('click', function (e) {
+$('#home').bind('click', function (): void {
     $('.table-layer-00>ul').remove();
     $('.table-layer-00').attr('class', 'table-layer-0');
-    let element;
+    let element:string;
     for (element in dataList) {
         dataList[element].opened = false;
     }
@@ -517,9 +478,9 @@ $('#home').bind('click', function (e) {
 });
 
 
-$("#info").click(function(){
+$("#info").click(function(): void{
     $("#info>p").toggle();
 });
-$('#desks').bind('click', function (e) {
+$('#desks').bind('click', function (): void {
     $("#desk-nav").toggle();
 });
