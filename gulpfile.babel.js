@@ -25,9 +25,10 @@ gulp.task("ts", function () {
   ]);
 });
 
-gulp.task("watch", ["ts","less"], function () {
-  gulp.watch("./src/ts/*.ts", ["ts"]);
-  gulp.watch("./src/less/*.less", ["less"]);
+gulp.task("watch", ["ts","less","html"], function () {
+  gulp.watch("./src/ts/**/*.ts", ["ts"]);
+  gulp.watch("./src/less/**/*.less", ["less"]);
+  gulp.watch("./src/**/*.html", ["html"]);
 });
 
 //gulp.task("default", ["build"]);
@@ -38,4 +39,9 @@ gulp.task("less", function () {
       paths: [ path.join(__dirname, "less", "includes") ]
     }))
     .pipe(gulp.dest("./build/css"));
+});
+
+gulp.task("html", function () {
+  return gulp.src("./src/**/*.html")
+    .pipe(gulp.dest("./build/"));
 });

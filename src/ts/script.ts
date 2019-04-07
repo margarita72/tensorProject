@@ -1,5 +1,5 @@
 /**
- * @file script.js
+ * @file script.ts
  * @version 1.0.0
  * @author Морские котики
  */

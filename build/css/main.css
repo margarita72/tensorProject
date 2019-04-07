@@ -1,257 +1,252 @@
-*{
-    margin: 0;
-    padding: 0;
+* {
+  margin: 0;
+  padding: 0;
 }
 /*Header*/
-header{
-    height: 40px;
-    background: #006b66;
+header {
+  height: 40px;
+  background: #006b66;
 }
-.headerButtons{
-    display: flex;
-    width: 100%;
-    li{
-    text-align: center;
-    height: 30px;
-    border-radius: 3px;
-    margin: 5px;
-    display: inline-block;
-    background:#00c080;
-    cursor: pointer;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif;
+header .headerButtons {
+  display: flex;
+  width: 100%;
+  /*li:hover{
+            background-color: rgb(143, 5, 255);
+        }*/
 }
+header .headerButtons li {
+  text-align: center;
+  height: 30px;
+  border-radius: 3px;
+  margin: 5px;
+  display: inline-block;
+  background: #00c080;
+  cursor: pointer;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
 }
-/*.headerButtons>li:hover{
-    background-color: rgb(143, 5, 255);
-}*/
-#home{
-    width: 30px;
-img{
-    margin: 5px;
-    width: 20px;
-    vertical-align: middle;
+header #home {
+  width: 30px;
 }
+header #home img {
+  margin: 5px;
+  width: 20px;
+  vertical-align: middle;
 }
-#desks{
-    padding: 0 10px;
-span{
-    vertical-align: middle;
-    font-size: 14pt;
+header #desks {
+  padding: 0 10px;
 }
+header #desks span {
+  vertical-align: middle;
+  font-size: 14pt;
 }
-#logo{
-    padding: 0 10px;
-    margin: auto;
-img{
-    width: 20px;
-    vertical-align: middle;
+header #logo {
+  padding: 0 10px;
+  margin: auto;
 }
-span{
-    vertical-align: middle;
+header #logo img {
+  width: 20px;
+  vertical-align: middle;
 }
+header #logo span {
+  vertical-align: middle;
 }
-#info{
-    width: 30px;
-    margin-left:auto
-
-img{
-    width: 20px;
-    vertical-align: middle;
+header #info {
+  width: 30px;
 }
+header #info margin-left:auto img {
+  width: 20px;
+  vertical-align: middle;
 }
-
 /*Body*/
-.list-open{
-    display: inline-block;
-    cursor: pointer;
+.list-open {
+  display: inline-block;
+  cursor: pointer;
 }
-html{
-    height: 100%;
+html {
+  height: 100%;
 }
-main{
-    display: flex;
-    flex: 1;
+main {
+  display: flex;
+  flex: 1;
 }
-#desk-nav{
-    min-width: 200px;    
-    background-color: #6f6f74;
+#desk-nav {
+  min-width: 200px;
+  background-color: #6f6f74;
 }
-.desk-list{
-    display: block;
-    margin: 10px;
-    height: 50px;
-    line-height:50px;
-    width: 200px;
-    text-align: center;
-    background: #a1a1a1;
-    border: 10px;
-    border-radius: 5px;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif;
+.desk-list {
+  display: block;
+  margin: 10px;
+  padding: 15px 10px;
+  text-align: center;
+  background: #a1a1a1;
+  border-radius: 5px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
 }
-#main-list{
-    flex: 1;
-    overflow: hidden;
-ul{
-    height: 100%;
+.desk-title {
+  text-align: center;
+  padding: 20px 10px;
+  background-color: #003f4e;
 }
+#main-list {
+  flex: 1;
+  overflow: hidden;
 }
-body{
-    background-image: url(https://www.nasa.gov/sites/default/files/thumbnails/image/columbia_tm5_1986209_lrg.jpg);
-    background-size: cover;
-    color:#f8f8f9;
-    font-size: 14pt;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif;
+#main-list ul {
+  height: 100%;
 }
-.table-layer-0{
-    display: inline-block;
-    min-height: 150px;
-    min-width: 200px;
-    background: linear-gradient(45deg, #122444, #00ff9d);
-    margin: 5px;
-    border-radius: 5px;
-    color:#fff;
-    text-align: center;
-    position: sticky;  
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif;
+body {
+  background-image: url(https://www.nasa.gov/sites/default/files/thumbnails/image/columbia_tm5_1986209_lrg.jpg);
+  background-size: cover;
+  color: #f8f8f9;
+  font-size: 14pt;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
 }
-.table-layer-0{
-    &:hover{
-    transform: scale(1.04);
-    transition: .5s;
-    /* background: #49494900; */
+.table-layer-0 {
+  display: inline-block;
+  min-height: 150px;
+  min-width: 200px;
+  background: linear-gradient(45deg, #122444, #00ff9d);
+  margin: 5px;
+  border-radius: 5px;
+  color: #fff;
+  text-align: center;
+  position: sticky;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
 }
-.table-layer-0 span{
-    display:table-cell;
-	width: 200px;
-	height:150px;
-	vertical-align: middle;
-	border-radius: 5px;
+.table-layer-0:hover {
+  transform: scale(1.04);
+  transition: 0.5s;
+  /* background: #49494900; */
 }
+.table-layer-0 span {
+  display: table-cell;
+  width: 200px;
+  height: 150px;
+  vertical-align: middle;
+  border-radius: 5px;
 }
-.table-layer-00{
-    display: flex;
-    flex-direction: column;
-    transition: .5s;
-    width: 100%;
-    height: 100%;
-    background:  #22b9a0;
-    color:black;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif;
-
-span{
-    float: none;
-    margin: 10px;
+.table-layer-00 {
+  display: flex;
+  flex-direction: column;
+  transition: 0.5s;
+  width: 100%;
+  height: 100%;
+  background: #22b9a0;
+  color: black;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
 }
-ul{
-    display: flex;
-    flex: 1;
-    overflow-x: auto;
-    width: 100%;
+.table-layer-00 span {
+  float: none;
+  margin: 10px;
 }
+.table-layer-00 ul {
+  display: flex;
+  flex: 1;
+  overflow-x: auto;
+  width: 100%;
 }
-.table-layer-1{ 
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif;
-    display: inline-table;
-    min-width: 300px;
-    width: 300px;
-    min-height: 280px;
-    background-color:#007767fd;
-    color:#071a18;
-    margin: 10px;
-    padding: 10px;
-    box-sizing: border-box;
-    text-align: center;
-    border-radius:8px;
+.table-layer-1 {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
+  display: inline-table;
+  min-width: 300px;
+  width: 300px;
+  min-height: 280px;
+  background-color: #007767fd;
+  color: #071a18;
+  margin: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+  border-radius: 8px;
+}
+.table-layer-1 ul {
+  display: block;
+  overflow: hidden;
 }
 /*.table-layer-1:hover{
     background-color:#e5ff00;
 }*/
-.table-layer-2{
-    display:block;
-    margin: 5px auto 0;
-    padding: 10px 20px;
-    transition: .5s;
-    background-color: #f3f3f3;    
-    font-family: monospace;
-    border-radius: 6px;
-    text-align: left;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif;
-
-&:hover{
-    transform: scale(1.04);
-    background: #fafafa;
-    color: #070029;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif;
+.table-layer-2 {
+  display: block;
+  margin: 5px auto 0;
+  padding: 10px 20px;
+  transition: 0.5s;
+  background-color: #f3f3f3;
+  font-family: monospace;
+  border-radius: 6px;
+  text-align: left;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
 }
+.table-layer-2:hover {
+  transform: scale(1.04);
+  background: #fafafa;
+  color: #070029;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
 }
 .close-btn {
-    padding: 1px 4px;
-    float:right;
-    background-color: #d13607;
-    border:2px inset #e43702;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 12pt;
-    color:#dadada;
-    font-family: Arial, Helvetica, sans-serif;
+  padding: 1px 4px;
+  float: right;
+  background-color: #d13607;
+  border: 2px inset #e43702;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12pt;
+  color: #dadada;
+  font-family: Arial, Helvetica, sans-serif;
 }
-&:hover {
-    background-color: #e2491a;
+.close-btn:hover {
+  background-color: #e2491a;
 }
+.description {
+  border: 1px solid #630f5f;
+  resize: none;
+  margin-top: 10px;
+  height: 4em;
+  width: 100%;
+  font-size: 12pt;
 }
-.description{
-    border: 1px solid #630f5f;
-    resize: none;
-    margin-top: 10px;
-    height: 4em;
-    width: 100%;
-    font-size: 12pt;
+.check {
+  float: right;
+  transform: scale(1.5);
+  margin: 6px;
 }
-.check{
-    float: right;
-    transform: scale(1.5);
-    margin: 6px;
+.del-btn {
+  margin: 5px;
+  cursor: pointer;
+  float: right;
 }
-.del-btn{
-    margin: 5px;
-    cursor: pointer;
-    float: right;
-
-&:hover{
-    background-color: #b9d8c2;
+.del-btn:hover {
+  background-color: #b9d8c2;
 }
+#obj-count {
+  position: fixed;
+  color: #28f1ff;
+  right: 20px;
+  bottom: 60px;
+  background-color: #006b66;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 12pt;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
 }
-#obj-count{
-    position: fixed;
-    color: #28f1ff;
-    right: 20px;
-    bottom: 60px;
-    background-color: #006b66;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 12pt;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif;
+p.test {
+  z-index: 100;
+  position: absolute;
+  right: 10px;
+  top: 50px;
+  height: 130px;
+  width: 400px;
+  text-align: center;
+  border-radius: 8px;
+  background-color: #28f1ffa9;
+  color: #003f4e;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
 }
 /*footer*/
-footer{
-    height: 40px;
-    background-color: #006b66;
-}
-
-p.test
-{
-	z-index:100;
-    position:absolute;
-    right:10px;
-    top: 50px;
-    height: 130px;
-    width: 400px;
-    text-align: center;
-    border-radius: 8px;
-    background-color: #28f1ffa9;
-    color:#003f4e;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif;
+footer {
+  height: 40px;
+  background-color: #006b66;
 }

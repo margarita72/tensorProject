@@ -8,57 +8,58 @@
 header{
     height: 40px;
     background: #006b66;
-}
-.headerButtons{
-    display: flex;
-    width: 100%;
-}
-.headerButtons>li{
-    text-align: center;
-    height: 30px;
-    border-radius: 3px;
-    margin: 5px;
-    display: inline-block;
-    background:#00c080;
-    cursor: pointer;
-    font-family: @fonts;
-}
-/*.headerButtons>li:hover{
-    background-color: rgb(143, 5, 255);
-}*/
-#home{
-    width: 30px;
-}
-#home>img{
-    margin: 5px;
-    width: 20px;
-    vertical-align: middle;
-}
-#desks{
-    padding: 0 10px;
-}
-#desks>span{
-    vertical-align: middle;
-    font-size: 14pt;
-}
-#logo{
-    padding: 0 10px;
-    margin: auto;
-}
-#logo>img{
-    width: 20px;
-    vertical-align: middle;
-}
-#logo>span{
-    vertical-align: middle;
-}
-#info{
-    width: 30px;
-    margin-left:auto
-}
-#info>img{
-    width: 20px;
-    vertical-align: middle;
+
+    .headerButtons{
+        display: flex;
+        width: 100%;
+        li{
+        text-align: center;
+        height: 30px;
+        border-radius: 3px;
+        margin: 5px;
+        display: inline-block;
+        background:#00c080;
+        cursor: pointer;
+        font-family: @fonts;
+        }
+        /*li:hover{
+            background-color: rgb(143, 5, 255);
+        }*/
+    }    
+    #home{
+        width: 30px;
+        img{
+            margin: 5px;
+            width: 20px;
+            vertical-align: middle;
+        }
+    }
+    #desks{
+        padding: 0 10px;
+        span{
+            vertical-align: middle;
+            font-size: 14pt;
+        }
+    }
+    #logo{
+        padding: 0 10px;
+        margin: auto;
+        img{
+            width: 20px;
+            vertical-align: middle;
+        }
+        span{
+            vertical-align: middle;
+        }
+    }
+    #info{
+        width: 30px;
+        margin-left:auto
+        img{
+            width: 20px;
+            vertical-align: middle;
+        }
+    }
 }
 /*Body*/
 .list-open{
@@ -93,9 +94,9 @@ main{
 #main-list{
     flex: 1;
     overflow: hidden;
-}
-#main-list>ul{
-    height: 100%;
+    ul{
+        height: 100%;
+    }
 }
 body{
     background-image: url(https://www.nasa.gov/sites/default/files/thumbnails/image/columbia_tm5_1986209_lrg.jpg);
@@ -118,18 +119,18 @@ body{
     text-align: center;
     position: sticky;  
     font-family: @fonts;
-}
-.table-layer-0:hover{
+    &:hover{
     transform: scale(1.04);
     transition: .5s;
     /* background: #49494900; */
-}
-.table-layer-0 span{
-    display:table-cell;
-	width: 200px;
-	height:150px;
-	vertical-align: middle;
-	border-radius: 5px;
+    }
+    span{
+        display:table-cell;
+        width: 200px;
+        height:150px;
+        vertical-align: middle;
+        border-radius: 5px;
+    }
 }
 .table-layer-00{
     display: flex;
@@ -140,16 +141,16 @@ body{
     background:  #22b9a0;
     color:black;
     font-family: @fonts;
-}
-.table-layer-00>span{
-    float: none;
-    margin: 10px;
-}
-.table-layer-00>ul{
-    display: flex;
-    flex: 1;
-    overflow-x: auto;
-    width: 100%;
+    span{
+        float: none;
+        margin: 10px;
+    }
+    ul{
+        display: flex;
+        flex: 1;
+        overflow-x: auto;
+        width: 100%;
+    }
 }
 .table-layer-1{ 
     font-family: @fonts;
@@ -160,10 +161,14 @@ body{
     background-color:#007767fd;
     color:#071a18;
     margin: 10px;
-    padding: 10px;
+    padding: 20px;
     box-sizing: border-box;
     text-align: center;
-    border-radius:8px;
+    border-radius: 8px;
+    ul{
+        display: block;
+        overflow: hidden;
+    }
 }
 /*.table-layer-1:hover{
     background-color:#e5ff00;
@@ -178,12 +183,12 @@ body{
     border-radius: 6px;
     text-align: left;
     font-family: @fonts;
-}
-.table-layer-2:hover{
-    transform: scale(1.04);
-    background: #fafafa;
-    color: #070029;
-    font-family: @fonts;
+    &:hover{
+        transform: scale(1.04);
+        background: #fafafa;
+        color: #070029;
+        font-family: @fonts;
+    }
 }
 .close-btn {
     padding: 1px 4px;
@@ -195,9 +200,9 @@ body{
     font-size: 12pt;
     color:#dadada;
     font-family: Arial, Helvetica, sans-serif;
-}
-.close-btn:hover {
-    background-color: #e2491a;
+    &:hover {
+        background-color: #e2491a;
+    }
 }
 .description{
     border: 1px solid #630f5f;
@@ -216,9 +221,9 @@ body{
     margin: 5px;
     cursor: pointer;
     float: right;
-}
-.del-btn:hover{
-    background-color: #b9d8c2;
+    &:hover{
+        background-color: #b9d8c2;
+    }
 }
 #obj-count{
     position: fixed;
