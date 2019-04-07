@@ -70,6 +70,9 @@ html{
     height: 100%;
 }
 main{
+    @media screen and (max-width: 769px){
+        flex-direction: column;
+    }
     display: flex;
     flex: 1;
 }
@@ -148,6 +151,9 @@ body{
     ul{
         display: flex;
         flex: 1;
+        @media screen and (max-width: 1280px) {
+            flex-flow: wrap;
+        }
         overflow-x: auto;
         width: 100%;
     }
@@ -157,6 +163,9 @@ body{
     display: inline-table;
     min-width: 300px;
     width: 300px;
+    @media screen and (max-width: 481px) {
+        width: 100%;
+    }
     min-height: 280px;
     background-color:#007767fd;
     color:#071a18;
@@ -184,7 +193,7 @@ body{
     text-align: left;
     font-family: @fonts;
     &:hover{
-        transform: scale(1.04);
+        //transform: scale(1.04);
         background: #fafafa;
         color: #070029;
         font-family: @fonts;
@@ -225,18 +234,8 @@ body{
         background-color: #b9d8c2;
     }
 }
-#obj-count{
-    position: fixed;
-    color: #28f1ff;
-    right: 20px;
-    bottom: 60px;
-    background-color: #006b66;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 12pt;
-    font-family: @fonts;
-}
-p.test{
+
+.information{
     z-index:100;
     position:absolute;
     right:10px;
@@ -253,4 +252,18 @@ p.test{
 footer{
     height: 40px;
     background-color: #006b66;
+    display: flex;
+    flex-direction: row-reverse;
+    #obj-count{
+        // position: fixed;
+        color: #28f1ff;
+        
+        // right: 20px;
+        // bottom: 60px;
+        background-color: #006b66;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 12pt;
+        font-family: @fonts;
+    }
 }

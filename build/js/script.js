@@ -5,7 +5,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * @file script.js
+ * @file script.ts
  * @version 1.0.0
  * @author Морские котики
  */
@@ -20,7 +20,7 @@ var dataList = {};
  * @type {Object}
  * @name data
  */
-var data = [{ "id": 1, "name": "Доска 1", "hasChildren": true }, { "id": 2, "parent": 1, "name": "Список задач 1.1", "hasChildren": true }, { "id": 3, "parent": 2, "name": "Задача 1.1.1", "done": true, "description": "Programmers never sleep" }, { "id": 4, "parent": 2, "name": "Задача 1.1.2" }, { "id": 5, "parent": 1, "name": "Список задач 1.2", "hasChildren": true }, { "id": 6, "parent": 5, "name": "Задача 1.2.1" }, { "id": 7, "parent": 5, "name": "Задача 1.2.2" }, { "id": 8, "parent": 1, "name": "Список задач 1.3" }, { "id": 9, "name": "Доска 2" }];
+var data = [{ "id": 1, "name": "Доска 1", "hasChildren": true }, { "id": 2, "parent": 1, "name": "Список задач 1.1", "hasChildren": true }, { "id": 3, "parent": 2, "name": "Задача 1.1.1", "done": true, "description": "Programmers never sleep" }, { "id": 4, "parent": 2, "name": "Задача 1.1.2" }, { "id": 5, "parent": 1, "name": "Список задач 1.2", "hasChildren": true }, { "id": 6, "parent": 5, "name": "Задача 1.2.1" }, { "id": 7, "parent": 5, "name": "Задача 1.2.2" }, { "id": 8, "parent": 1, "name": "Список задач 1.3" }, { "id": 10, "parent": 1, "name": "Список задач 1.4" }, { "id": 9, "name": "Доска 2" }];
 /**
  * @description Mock-функция, эмулирующая работу запроса к серверу. Получает дочерние элементы по идентификатору объекта и передает в callback.
  * @param {Object} dataList Объект (ассоциативный массив), где будут храниться все объекты из списка.
@@ -492,7 +492,7 @@ $('#home').bind('click', function () {
     $('.table-layer-0').show();
 });
 $("#info").click(function () {
-    $("#info>p").toggle();
+    $(".information").toggle();
 });
 $('#desks').bind('click', function () {
     $("#desk-nav").toggle();
