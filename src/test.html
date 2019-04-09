@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <style>
+
+.table-layer-2 {
+  display: block;
+  margin: 5px auto 0;
+  padding: 10px 20px;
+  transition: 0.5s;
+  background-color: #f3f3f3;
+  border-radius: 6px;
+  text-align: left;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
+}
+.table-layer-2:hover {
+  background: #fafafa;
+  color: #070029;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
+}
+
+.description {
+  border: 1px solid #630f5f;
+  resize: none;
+  margin-top: 10px;
+  height: 4em;
+  width: 100%;
+  font-size: 12pt;
+}
+.check {
+  float: right;
+  transform: scale(1.5);
+  margin: 6px;
+}
+.del-btn {
+  margin: 5px;
+  cursor: pointer;
+  float: right;
+}
+.del-btn:hover {
+  background-color: #b9d8c2;
+}
+    </style>
+</head>
+<body>
+    <div id="components-demo">
+        <task-v></task-v>
+    </div>
+    <script src="./js/components.js"></script>    
+</body>
+</html>
