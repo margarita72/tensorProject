@@ -16,12 +16,9 @@
   text-align: left;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
 }
-.table-layer-2:hover {
-  background: #fafafa;
-  color: #070029;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
+.table-layer-2-head{
+  display: flex;
 }
-
 .description {
   border: 1px solid #630f5f;
   resize: none;
@@ -31,14 +28,25 @@
   font-size: 12pt;
 }
 .check {
-  float: right;
+  width: 16px;
+  height: 16px;
   transform: scale(1.5);
   margin: 6px;
+  margin-left: auto; 
 }
 .del-btn {
+  width: 16px;
+  height: 16px;
   margin: 5px;
   cursor: pointer;
-  float: right;
+  
+}
+.edit-btn {
+  width: 16px;
+  height: 16px;
+  margin: 5px;
+  cursor: pointer;
+  
 }
 .del-btn:hover {
   background-color: #b9d8c2;
@@ -47,8 +55,21 @@
 </head>
 <body>
     <div id="components-demo">
-        <task-v></task-v>
+      <task></task>
+      <tasklist></tasklist>
     </div>
+
+    <template id="template-task">
+      <div class="table-layer-2" :style="{border: borderStyle}">
+        <div class="table-layer-2-head">
+          <span class="list-open"> {{ name }} </span>
+          <input v-bind:disabled="removed" type="checkbox" v-model="done" class="check">
+          <img src="Imgs/edit.png" class="edit-btn" @click="activeEdit">
+          <img src="Imgs/remove.png" class="del-btn" @click="remove">
+        </div>
+        <textarea v-bind:disabled="removed || !edit" v-model="description" class="description"></textarea>
+      </div>
+    </template>
     <script src="./js/components.js"></script>    
 </body>
 </html>

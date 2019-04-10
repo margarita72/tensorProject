@@ -1,21 +1,37 @@
 'use strict';
 
-Vue.component('task-v', {
+Vue.component('task', {
     data: function data() {
         return {
             description: 'описание',
             name: 'задача',
             done: false,
             removed: false,
-            edit: true
+            edit: false
         };
     },
-    template: '\n        <div class="table-layer-2">\n            <span class="list-open">\n                {{ name }}\n            </span>\n            <img src="Imgs/remove.png" class="del-btn" @click="remove">\n            <input v-bind:disabled="removed" type="checkbox" v-model="done" class="check">\n            <textarea v-bind:disabled="removed || !edit" v-model="description" class="description"></textarea>\n        </div>\n    ',
+    template: '#template-task',
     methods: {
         remove: function remove() {
-            this.taskBorder = '1px solid red';
             this.removed = true;
+        },
+        activeEdit: function activeEdit() {
+            this.edit = !this.edit;
+        }
+    },
+    computed: {
+        borderStyle: function borderStyle() {
+            if (this.removed) return '2px solid red';
+            if (this.done) return '2px solid green';
+            return 'none';
         }
     }
+});
+Vue.component('tasklist', {
+    data: function data() {
+        return {};
+    },
+
+    template: '\n        <task></task>\n    '
 });
 var task1 = new Vue({ el: '#components-demo' });
