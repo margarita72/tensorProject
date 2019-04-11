@@ -86,22 +86,14 @@ main {
   background: #a1a1a1;
   border-radius: 5px;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
+  cursor: pointer;
 }
 .desk-title {
   text-align: center;
   padding: 20px 10px;
   background-color: #003f4e;
 }
-#main-list {
-  flex: 1;
-  overflow: hidden;
-}
-#main-list ul {
-  height: 100%;
-}
 body {
-  background-image: url(https://www.nasa.gov/sites/default/files/thumbnails/image/columbia_tm5_1986209_lrg.jpg);
-  background-size: cover;
   color: #f8f8f9;
   font-size: 14pt;
   height: 100%;
@@ -109,110 +101,19 @@ body {
   flex-direction: column;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
 }
-.table-layer-0 {
-  display: inline-block;
-  min-height: 150px;
-  min-width: 200px;
-  background: linear-gradient(45deg, #122444, #00ff9d);
-  margin: 5px;
-  border-radius: 5px;
-  color: #fff;
-  text-align: center;
-  position: sticky;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
-}
-.table-layer-0:hover {
-  transform: scale(1.04);
-  transition: 0.5s;
-  /* background: #49494900; */
-}
-.table-layer-0 span {
-  display: table-cell;
-  width: 200px;
-  height: 150px;
-  vertical-align: middle;
-  border-radius: 5px;
-}
-.table-layer-00 {
-  display: flex;
-  flex-direction: column;
-  transition: 0.5s;
-  width: 100%;
-  height: 100%;
-  background: #22b9a0;
-  color: black;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
-}
-.table-layer-00 span {
-  float: none;
-  margin: 10px;
-}
-.table-layer-00 ul {
-  display: flex;
-  flex: 1;
-  overflow-x: auto;
-  width: 100%;
-}
-@media screen and (max-width: 1280px) {
-  .table-layer-00 ul {
-    flex-flow: wrap;
-  }
-}
-.table-layer-1 {
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
-  display: inline-table;
-  min-width: 300px;
-  width: 300px;
-  min-height: 280px;
-  background-color: #007767fd;
-  color: #071a18;
-  margin: 10px;
-  padding: 20px;
-  box-sizing: border-box;
-  text-align: center;
-  border-radius: 8px;
-}
-@media screen and (max-width: 481px) {
-  .table-layer-1 {
-    width: 100%;
-  }
-}
-.table-layer-1 ul {
-  display: block;
-  overflow: hidden;
-}
-/*.table-layer-1:hover{
-    background-color:#e5ff00;
-}*/
+/*begin component task*/
 .table-layer-2 {
   display: block;
   margin: 5px auto 0;
   padding: 10px 20px;
   transition: 0.5s;
   background-color: #f3f3f3;
-  font-family: monospace;
   border-radius: 6px;
   text-align: left;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
 }
-.table-layer-2:hover {
-  background: #fafafa;
-  color: #070029;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
-}
-.close-btn {
-  padding: 1px 4px;
-  float: right;
-  background-color: #d13607;
-  border: 2px inset #e43702;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 12pt;
-  color: #dadada;
-  font-family: Arial, Helvetica, sans-serif;
-}
-.close-btn:hover {
-  background-color: #e2491a;
+.table-layer-2-head {
+  display: flex;
 }
 .description {
   border: 1px solid #630f5f;
@@ -223,18 +124,66 @@ body {
   font-size: 12pt;
 }
 .check {
-  float: right;
+  width: 16px;
+  height: 16px;
   transform: scale(1.5);
   margin: 6px;
+  margin-left: auto;
 }
 .del-btn {
+  width: 16px;
+  height: 16px;
   margin: 5px;
   cursor: pointer;
-  float: right;
+}
+.edit-btn {
+  width: 16px;
+  height: 16px;
+  margin: 5px;
+  cursor: pointer;
 }
 .del-btn:hover {
   background-color: #b9d8c2;
 }
+/*end component task*/
+#main-list {
+  background-color: #405a69;
+  flex: 1;
+  display: flex;
+  overflow: auto;
+}
+/*begin component taskList*/
+.task-list {
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  min-width: 300px;
+  background-color: #28f1ff;
+  margin: 5px;
+  border-radius: 5px;
+}
+.task-list-title {
+  background-color: #a1a1a1;
+  border-radius: 5px;
+  width: 100%;
+  padding: 15px 0;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.task-list-body {
+  width: 100%;
+  flex: 1;
+}
+.task-list-footer {
+  background-color: #a1a1a1;
+  border-radius: 5px;
+  width: 100%;
+  padding: 15px 0;
+  margin-top: 10px;
+  text-align: center;
+}
+/*end component taskList*/
 .information {
   z-index: 100;
   position: absolute;

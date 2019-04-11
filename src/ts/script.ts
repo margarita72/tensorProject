@@ -17,7 +17,7 @@ let dataList = {};
  * @type {Object}
  * @name data
  */
-let data = [{"id":1,"name":"Доска 1","hasChildren":true},{"id":2,"parent":1,"name":"Список задач 1.1","hasChildren":true},{"id":3,"parent":2,"name":"Задача 1.1.1","done":true,"description":"Programmers never sleep"},{"id":4,"parent":2,"name":"Задача 1.1.2"},{"id":5,"parent":1,"name":"Список задач 1.2","hasChildren":true},{"id":6,"parent":5,"name":"Задача 1.2.1"},{"id":7,"parent":5,"name":"Задача 1.2.2"},{"id":8,"parent":1,"name":"Список задач 1.3"},{"id":10,"parent":1,"name":"Список задач 1.4"},{"id":9,"name":"Доска 2"}];
+let data = [{"id":1,"name":"Доска 1","hasChildren":true},{"id":2,"parent":1,"name":"Список задач 1.1","hasChildren":true},{"id":3,"parent":2,"name":"Задача 1.1.1","done":true,"description":"Programmers never sleep"},{"id":4,"parent":2,"name":"Задача 1.1.2"},{"id":5,"parent":1,"name":"Список задач 1.2","hasChildren":true},{"id":6,"parent":5,"name":"Задача 1.2.1"},{"id":7,"parent":5,"name":"Задача 1.2.2"},{"id":8,"parent":1,"name":"Список задач 1.3"},{"id":10,"parent":1,"name":"Список задач 1.4"},{"id":9,"name":"Доска 2"},{"id":11,"name":"Доска 3","hasChildren":true}];
 
 /**
  * 
@@ -91,10 +91,16 @@ class modelBuilder{
     set id(value: number){
         this._id = value;
     }
+    get parent(): number{
+        return this._parent;
+    }
+    set parent(value: number){
+        this._parent = value;
+    }
     constructor(keys: string[],values: string[]){
         counter();   //Подсчет нового объекта.
         //Массив свойств для которых нужно добавить геттеры и сеттеры.
-        let properties: string[] = ['hasChildren','name','parent','removed','done','description'];
+        let properties: string[] = ['hasChildren','name','removed','done','description'];
         /**TODO: Если вытащить let из for то все ломаеться.*/
         for (let i: number = 0; i < properties.length; i++) {
             //добавляем геттеры и сеттеры.
@@ -244,31 +250,48 @@ function render(modelBuilderObject: modelBuilder) {
  */
 function handler(arrayOfModel: modelBuilder[])
 {    
-    let container: string = 'main-list';  //ИД корневого тега куда выводится список 
-    /*Если id равен нулю или не определено, то это корень списка.*/
-    if(arrayOfModel[0].parent)  //Если это не корень, то составляем ид строки из списка.
-    {
-        container = 'list' +  arrayOfModel[0].parent;
-        let i:number;
-        tasks.fill(arrayOfModel);
-    }
-
-    
-    let li = document.getElementById(container);  //Получаем строку списка, куда нужно добавить строки.
-    let htmlList:string = '',
-        htmlDesks:string = '',
-        i:number;
-    for (i = 0; i < arrayOfModel.length; i++) {
-        htmlList += render(arrayOfModel[i]);  //Собираются все строки списка.
-        dataList['btn'+arrayOfModel[i].id] = arrayOfModel[i];  //Объект добавляется в список для дальнейшего доступа к объекту.
-        if(arrayOfModel[i].layer === 0) {
-            htmlDesks += `<li class="desk-list">${arrayOfModel[i].name}</li>`;
+    for (let i = 0; i < arrayOfModel.length; i++) {
+        let deep: number = 0;  //В переменную будет записан уровень вложенности строки списка.
+        let tmpObject: modelBuilder = arrayOfModel[i];
+        while(tmpObject.parent && deep < 4)  //Цикл поднимается по родителям, пока не дойдет до корня или глубина не станет равна 4 (значение больше 4 нас не интересует).
+        {
+            tmpObject = dataList['btn' + tmpObject.parent];  //Берем родителя по ИД и становимся на его место.
+            deep++;  //Увеличиваем глубину.
         }
+        arrayOfModel[i].layer = deep;
     }
-    li.innerHTML += '<ul>'+htmlList+'</ul>';  //Выводится список.
-    if(htmlDesks) {
-        $('#desk-nav')[0].innerHTML += `<ul>${htmlDesks}</ul>`;
+    //let container: string = 'main-list';  //ИД корневого тега куда выводится список 
+    /*Если id равен нулю или не определено, то это корень списка.*/
+    switch (arrayOfModel[0].layer) {
+        case 0:
+            tasksNav.init(arrayOfModel);
+            break;
+        case 1: 
+            let tasksView = document.getElementById('main-list');
+            tasksView.innerHTML = '';
+            tasksView.innerHTML = '<tasklist></tasklist>'
+
+            break;
+        default:
+            break;
     }
+    
+    
+    //let li = document.getElementById(container);  //Получаем строку списка, куда нужно добавить строки.
+    //let htmlList:string = '',
+    //    htmlDesks:string = '',
+    let i:number;
+    for (i = 0; i < arrayOfModel.length; i++) {
+    //    htmlList += render(arrayOfModel[i]);  //Собираются все строки списка.
+        dataList['btn'+arrayOfModel[i].id] = arrayOfModel[i];  //Объект добавляется в список для дальнейшего доступа к объекту.
+    //    if(arrayOfModel[i].layer === 0) {
+    //        htmlDesks += `<li class="desk-list">${arrayOfModel[i].name}</li>`;
+    //    }
+    }
+    //li.innerHTML += '<ul>'+htmlList+'</ul>';  //Выводится список.
+    //if(htmlDesks) {
+    //    $('#desk-nav')[0].innerHTML += `<ul>${htmlDesks}</ul>`;
+    //}
     //После отображения списка задач нужно покрасить задачи по его состоянию.
     // for (i = 0; i < arrayOfModel.length; i++) {
     //     if(dataList['btn'+arrayOfModel[i].id].removed){
@@ -457,3 +480,96 @@ $("#info").click(function(): void{
 $('#desks').bind('click', function (): void {
     $("#desk-nav").toggle();
 });
+
+/*components */
+Vue.component('task', {
+    data: function () {
+      return {
+        description: 'описание',
+        name: 'задача',
+        done: false,
+        removed: false,
+        edit: false,
+      }
+    },
+    template: '#template-task',
+    methods: {
+        remove(){
+            this.removed = true;
+        },
+        activeEdit(){
+            this.edit = ! this.edit;
+        }
+    },
+    computed: {
+        borderStyle: function(){
+            if(this.removed) 
+                return '2px solid red';
+            if(this.done)
+                return '2px solid green';
+            return 'none';
+        }
+    },
+})
+
+Vue.component('tasklist',{
+    data() {
+        return {
+            description: 'описание',
+            name: 'список задач',
+        }
+    },
+    template:'#template-task-list',
+    methods: {
+        init(m:modelBuilder){
+
+        }
+    },
+})
+  
+//let task1 = new Vue({ el: '#components-demo' });
+new Vue({
+    el:'#main-list',
+    data() {
+        return {
+            allTasks: ['tasklist','tasklist','tasklist'],
+        }
+    },
+    methods: {
+        init(arrayOfModel:modelBuilder[]){
+            let i:number;
+            this.allTasks = [];
+            for(i = 0; i < arrayOfModel.length; i++){
+                let a = arrayOfModel[i];
+                this.desks.push(a)
+            }
+        }
+    },
+})
+
+let tasksNav = new Vue({
+    el: '#nav-desks',
+    data: {
+        desks: []
+    },
+    methods:{
+        init(arrayOfModel:modelBuilder[]){
+            let i:number;
+            this.desks = [];
+            for(i = 0; i < arrayOfModel.length; i++){
+                let a = arrayOfModel[i];
+                this.desks.push(a)
+            }
+        },
+        open(e){
+            let current = e.target.id;
+            let i:number;
+            for (i = 0; i < this.desks.length; i++) {
+                if('desk' + this.desks[i].id == current){
+                    loadChildren(this.desks[i].id).then(handler);
+                    break;                
+                }
+            }
+        }
+    }
+ });
