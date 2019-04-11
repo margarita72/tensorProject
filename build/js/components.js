@@ -35,3 +35,18 @@ Vue.component('tasklist', {
     template: '\n        <task></task>\n    '
 });
 var task1 = new Vue({ el: '#components-demo' });
+var tasks = new Vue({
+    el: '#nav-desks',
+    data: {
+        desks: [{ id: 1, name: 'desk1' }, { id: 2, name: 'desk2' }]
+    },
+    methods: {
+        fill: function fill(arrayOfModel) {
+            var i = void 0;
+            this.desks.clear();
+            for (i = 0; i < arrayOfModel.length; i++) {
+                this.desks.push('arrayOfModel[i].read()');
+            }
+        }
+    }
+});

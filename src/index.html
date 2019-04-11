@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="./css/main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <title>Морские котики</title>
 </head>
 <body>
@@ -27,6 +28,9 @@
     <main>
         <div id="desk-nav">
             <div class="desk-title">Доступные доски</div>
+            <div id="nav-desks">
+                <div class="desk-list" id="desk{{ desk.id }}" v-for="desk in desks">{{ desk.name }}</div>
+            </div>
         </div>
         <div id='main-list'></div>
     </main>
@@ -34,6 +38,21 @@
         <span id="obj-count"></span>
     </footer>
     <p class="information" style="display: none;">информация по проекту</p>
+
+    <!-- components -->
+    <template id="template-task">
+        <div class="table-layer-2" :style="{border: borderStyle}">
+            <div class="table-layer-2-head">
+                <span class="list-open"> {{ name }} </span>
+                <input v-bind:disabled="removed" type="checkbox" v-model="done" class="check">
+                <img src="Imgs/edit.png" class="edit-btn" @click="activeEdit">
+                <img src="Imgs/remove.png" class="del-btn" @click="remove">
+            </div>
+            <textarea v-bind:disabled="removed || !edit" v-model="description" class="description"></textarea>
+        </div>
+    </template>
+    <!-- scripts -->
     <script src="./js/script.js"></script>
+    <script src="./js/components.js"></script>
 </body>
 </html>

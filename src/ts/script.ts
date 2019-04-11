@@ -249,7 +249,10 @@ function handler(arrayOfModel: modelBuilder[])
     if(arrayOfModel[0].parent)  //Если это не корень, то составляем ид строки из списка.
     {
         container = 'list' +  arrayOfModel[0].parent;
+        let i:number;
+        tasks.fill(arrayOfModel);
     }
+
     
     let li = document.getElementById(container);  //Получаем строку списка, куда нужно добавить строки.
     let htmlList:string = '',
@@ -267,17 +270,17 @@ function handler(arrayOfModel: modelBuilder[])
         $('#desk-nav')[0].innerHTML += `<ul>${htmlDesks}</ul>`;
     }
     //После отображения списка задач нужно покрасить задачи по его состоянию.
-    for (i = 0; i < arrayOfModel.length; i++) {
-        if(dataList['btn'+arrayOfModel[i].id].removed){
-            $('#btn'+arrayOfModel[i].id).parent().css('border', '2px outset red');   //Удалено - красный
-        }else {
-            if(dataList['btn'+arrayOfModel[i].id].done){
-                $('#btn'+arrayOfModel[i].id).parent().css('border', '2px outset #0f0');   //Выполнено - зеленый
-            }else {
-                $('#btn'+arrayOfModel[i].id).parent().css('border', 'none');   //Не выполнено - нет обводки
-            }
-        }
-    }
+    // for (i = 0; i < arrayOfModel.length; i++) {
+    //     if(dataList['btn'+arrayOfModel[i].id].removed){
+    //         $('#btn'+arrayOfModel[i].id).parent().css('border', '2px outset red');   //Удалено - красный
+    //     }else {
+    //         if(dataList['btn'+arrayOfModel[i].id].done){
+    //             $('#btn'+arrayOfModel[i].id).parent().css('border', '2px outset #0f0');   //Выполнено - зеленый
+    //         }else {
+    //             $('#btn'+arrayOfModel[i].id).parent().css('border', 'none');   //Не выполнено - нет обводки
+    //         }
+    //     }
+    // }
 }
 
 /**
@@ -287,25 +290,25 @@ function handler(arrayOfModel: modelBuilder[])
  * @function
  */
 function openLine(_event: Event): void{
-    let pressedButton = _event.currentTarget;   //Получаем html кнопки на которую нажали.
-    let currentObj = dataList[pressedButton.id];   //Получаем ссылку на объект modelBuilder
-    switch (currentObj.layer) {
-        case 0:
-            openTable(_event);
-            break;
-        //case 1:
-        //    openTaskList(_event);
-        //    break;
-        case 2:
-            openTasks(_event);
-            break;
-        default:
-            break;
-    }
+    // let pressedButton = _event.currentTarget;   //Получаем html кнопки на которую нажали.
+    // let currentObj = dataList[pressedButton.id];   //Получаем ссылку на объект modelBuilder
+    // switch (currentObj.layer) {
+    //     case 0:
+    //         openTable(_event);
+    //         break;
+    //     //case 1:
+    //     //    openTaskList(_event);
+    //     //    break;
+    //     case 2:
+    //         openTasks(_event);
+    //         break;
+    //     default:
+    //         break;
+    // }
 }
 
-$(document).on('click','.close-btn', closeLine);
-$(document).on('click','.list-open', openLine);
+// $(document).on('click','.close-btn', closeLine);
+// $(document).on('click','.list-open', openLine);
 
 /**
  * @description Открывает доску.
@@ -314,60 +317,30 @@ $(document).on('click','.list-open', openLine);
  * @name openTable
  */
 function openTable(_event): void{
-    let pressedButton = _event.currentTarget;   //Получаем html кнопки на которую нажали.
-    let currentObj:modelBuilder = dataList[pressedButton.id];   //Получаем ссылку на объект modelBuilder
-    if(currentObj.hasChildren){ 
-        if(!currentObj.opened){  //Если список уже открыт, ничего не происходит.
-            currentObj.opened = true;  //Помечаем как открытий.
-            currentObj.getChildren(handler);  //Открываем список.
-            //Создаем кнопку закрыть.
-            //let button = `<span class="close-btn" id="close-btn${currentObj.id}">X</span>`;
-            //Если кнопка не кторый мы нажали это доска, то нужно развернуть доску.
-            //Для этого мы меняем его класс
-            if(pressedButton.parentElement.className === 'table-layer-0'){
-                //Скрываем все доски с этим классом.
-                $('.table-layer-0').hide();
-                //Меняем класс у нашей доски класс.
-                $('#'+pressedButton.parentElement.id).attr('class', 'table-layer-00');
-                //Показываем нашу доску
-                $('#'+pressedButton.parentElement.id).show();
-            }
-            //Добавляем кнопку закрыть.
-            pressedButton.parentElement.innerHTML;// += button;
-        }
-    }
-}
 
-/**
- * @description Открывает список задач.
- * @function
- * @param {Object} _event
- * @name openTaskList
- */
-// function openTaskList(_event){
-//     let pressedButton = _event.currentTarget;   //Получаем html кнопки на которую нажали.
-//     let currentObj = dataList[pressedButton.id];   //Получаем ссылку на объект modelBuilder
-//     if(currentObj.hasChildren){ 
-//         if(!currentObj.opened){  //Если список уже открыт, ничего не происходит.
-//             currentObj.opened = true;  //Помечаем как открытий.
-//             currentObj.getChildren(handler);  //Открываем список.
-//             //Создаем кнопку закрыть.
-//             //let button = `<span class="close-btn" id="close-btn${currentObj.id}">X</span>`;
-//             //Если кнопка не кторый мы нажали это доска, то нужно развернуть доску.
-//             //Для этого мы меняем его класс
-//             if(pressedButton.parentElement.className === 'table-layer-0'){
-//                 //Скрываем все доски с этим классом.
-//                 $('.table-layer-0').hide();
-//                 //Меняем класс у нашей доски класс.
-//                 $('#'+pressedButton.parentElement.id).attr('class', 'table-layer-00');
-//                 //Показываем нашу доску
-//                 $('#'+pressedButton.parentElement.id).show();
-//             }
-//             //Добавляем кнопку закрыть.
-//             pressedButton.parentElement.innerHTML;// += button;
-//         }
-//     }
-// }
+    // let pressedButton = _event.currentTarget;   //Получаем html кнопки на которую нажали.
+    // let currentObj:modelBuilder = dataList[pressedButton.id];   //Получаем ссылку на объект modelBuilder
+    // if(currentObj.hasChildren){ 
+    //     if(!currentObj.opened){  //Если список уже открыт, ничего не происходит.
+    //         currentObj.opened = true;  //Помечаем как открытий.
+    //         currentObj.getChildren(handler);  //Открываем список.
+    //         //Создаем кнопку закрыть.
+    //         //let button = `<span class="close-btn" id="close-btn${currentObj.id}">X</span>`;
+    //         //Если кнопка не кторый мы нажали это доска, то нужно развернуть доску.
+    //         //Для этого мы меняем его класс
+    //         if(pressedButton.parentElement.className === 'table-layer-0'){
+    //             //Скрываем все доски с этим классом.
+    //             $('.table-layer-0').hide();
+    //             //Меняем класс у нашей доски класс.
+    //             $('#'+pressedButton.parentElement.id).attr('class', 'table-layer-00');
+    //             //Показываем нашу доску
+    //             $('#'+pressedButton.parentElement.id).show();
+    //         }
+    //         //Добавляем кнопку закрыть.
+    //         pressedButton.parentElement.innerHTML;// += button;
+    //     }
+    // }
+}
 
 /**
  * @description Открывает описание задач.
@@ -376,54 +349,54 @@ function openTable(_event): void{
  * @name openTasks
  */
 function openTasks(_event): void{
-    let pressedButton = _event.currentTarget;   //Получаем html кнопки на которую нажали.
-    let currentObj: modelBuilder = dataList[pressedButton.id];   //Получаем ссылку на объект modelBuilder
-    let currentHTML = $('#list'+currentObj.id);
-    //Если доска не открыта, то нужно его открыть.
-    if(!dataList['btn'+currentObj.id].opened){
-        dataList['btn'+currentObj.id].opened = true; //Указываем что доска открыта.
-        //Добавляем кнопку закрыть.
-        currentHTML.append(`<img src="Imgs/remove.png" class="del-btn" id="del-btn${currentObj.id}" >`);
-        //Добавляем переключатель выполнения.
-        currentHTML.append(`<input type="checkbox" id="check${currentObj.id}" class="check">`);
-        $('#check' + currentObj.id)[0].checked = dataList['btn'+currentObj.id].done;
-        //добавляем поле описание задачи.
-        currentHTML.append(`<textarea class="description" id="description${currentObj.id}" ></textarea>`);
-        $('#description' + currentObj.id)[0].value = dataList['btn'+currentObj.id].description;
-        //Если задача помечена для удаления, то поля делаем неактивными.
-        if (dataList['btn'+currentObj.id].removed) {
-            $('#check' + currentObj.id).css('pointer-events','none');
-            $('#description' + currentObj.id).css('pointer-events','none');
-        }
-        //Обработчик для кнопки удалить.
-        $('#del-btn' + currentObj.id ).bind('click', function (e) {
-            dataList['btn'+currentObj.id].delete();
-            $('#list'+currentObj.id).css('border', '2px outset red');
-            $('#check' + currentObj.id).css('pointer-events','none');
-            $('#description' + currentObj.id).css('pointer-events','none');
-        });
-        //Обработчик для переключателя.
-        $('#check' + currentObj.id).bind('click', function (e) {
-            if(!dataList['btn'+currentObj.id].removed){
-                dataList['btn'+currentObj.id].changeDone();
-                if (dataList['btn'+currentObj.id].done){
-                    $('#list'+currentObj.id).css('border', '2px outset #0f0');
-                }else {
-                    $('#list'+currentObj.id).css('border', 'none');
-                }
-            }
-        });
-        //Обработчик для сохранения введенного текста.
-        $('#description' + currentObj.id).change(function (e) {
-            dataList['btn'+currentObj.id].description = $('#description' + currentObj.id)[0].value;
-        });
-    }else {
-        //Если список уже открыт то нужно свернуть его.
-        dataList['btn'+currentObj.id].opened = false;
-        let title = $('#btn'+ currentObj.id).clone();   //Сохраняем заголовок в переменную.
-        currentHTML.empty();   //Очищаем список.
-        currentHTML.append(title); //Выводим заголовок.
-    }     
+    // let pressedButton = _event.currentTarget;   //Получаем html кнопки на которую нажали.
+    // let currentObj: modelBuilder = dataList[pressedButton.id];   //Получаем ссылку на объект modelBuilder
+    // let currentHTML = $('#list'+currentObj.id);
+    // //Если доска не открыта, то нужно его открыть.
+    // if(!dataList['btn'+currentObj.id].opened){
+    //     dataList['btn'+currentObj.id].opened = true; //Указываем что доска открыта.
+    //     //Добавляем кнопку закрыть.
+    //     currentHTML.append(`<img src="Imgs/remove.png" class="del-btn" id="del-btn${currentObj.id}" >`);
+    //     //Добавляем переключатель выполнения.
+    //     currentHTML.append(`<input type="checkbox" id="check${currentObj.id}" class="check">`);
+    //     $('#check' + currentObj.id)[0].checked = dataList['btn'+currentObj.id].done;
+    //     //добавляем поле описание задачи.
+    //     currentHTML.append(`<textarea class="description" id="description${currentObj.id}" ></textarea>`);
+    //     $('#description' + currentObj.id)[0].value = dataList['btn'+currentObj.id].description;
+    //     //Если задача помечена для удаления, то поля делаем неактивными.
+    //     if (dataList['btn'+currentObj.id].removed) {
+    //         $('#check' + currentObj.id).css('pointer-events','none');
+    //         $('#description' + currentObj.id).css('pointer-events','none');
+    //     }
+    //     //Обработчик для кнопки удалить.
+    //     $('#del-btn' + currentObj.id ).bind('click', function (e) {
+    //         dataList['btn'+currentObj.id].delete();
+    //         $('#list'+currentObj.id).css('border', '2px outset red');
+    //         $('#check' + currentObj.id).css('pointer-events','none');
+    //         $('#description' + currentObj.id).css('pointer-events','none');
+    //     });
+    //     //Обработчик для переключателя.
+    //     $('#check' + currentObj.id).bind('click', function (e) {
+    //         if(!dataList['btn'+currentObj.id].removed){
+    //             dataList['btn'+currentObj.id].changeDone();
+    //             if (dataList['btn'+currentObj.id].done){
+    //                 $('#list'+currentObj.id).css('border', '2px outset #0f0');
+    //             }else {
+    //                 $('#list'+currentObj.id).css('border', 'none');
+    //             }
+    //         }
+    //     });
+    //     //Обработчик для сохранения введенного текста.
+    //     $('#description' + currentObj.id).change(function (e) {
+    //         dataList['btn'+currentObj.id].description = $('#description' + currentObj.id)[0].value;
+    //     });
+    // }else {
+    //     //Если список уже открыт то нужно свернуть его.
+    //     dataList['btn'+currentObj.id].opened = false;
+    //     let title = $('#btn'+ currentObj.id).clone();   //Сохраняем заголовок в переменную.
+    //     currentHTML.empty();   //Очищаем список.
+    //     currentHTML.append(title); //Выводим заголовок.
+    // }     
 }
 
 /**
@@ -433,18 +406,18 @@ function openTasks(_event): void{
  * @function
  */
 function closeLine(_event): void{
-    let btn = _event.currentTarget;   //Получаем html кнопки на которую нажали.
-    let id = $('#'+btn.id).prev()[0].id;
-    //Если родитель это доска, то нужно свернуть досу.
-    //Для этого меняем его класс.
-    if(btn.parentElement.className === 'table-layer-00'){
-        $('#'+ btn.parentElement.id).attr('class', 'table-layer-0');
-        $('.table-layer-0').show();
-    }
-    dataList[id].opened = false;
-    /**TODO: Не удалять, а скрывать объекты для оптимизации, чтоб не скачивать данные из сервера повторно и создавать объект заново.*/
-    $('#'+btn.id).next().remove();
-    btn.remove();
+    // let btn = _event.currentTarget;   //Получаем html кнопки на которую нажали.
+    // let id = $('#'+btn.id).prev()[0].id;
+    // //Если родитель это доска, то нужно свернуть досу.
+    // //Для этого меняем его класс.
+    // if(btn.parentElement.className === 'table-layer-00'){
+    //     $('#'+ btn.parentElement.id).attr('class', 'table-layer-0');
+    //     $('.table-layer-0').show();
+    // }
+    // dataList[id].opened = false;
+    // /**TODO: Не удалять, а скрывать объекты для оптимизации, чтоб не скачивать данные из сервера повторно и создавать объект заново.*/
+    // $('#'+btn.id).next().remove();
+    // btn.remove();
 }
 
 /**
@@ -467,15 +440,15 @@ let counter = new counterFun('создано #count объектов modelBuilde
 /*Вызов функции для отображения первого уровня.*/
 loadChildren(null).then(handler);
 
-$('#home').bind('click', function (): void {
-    $('.table-layer-00>ul').remove();
-    $('.table-layer-00').attr('class', 'table-layer-0');
-    let element:string;
-    for (element in dataList) {
-        dataList[element].opened = false;
-    }
-    $('.table-layer-0').show();
-});
+// $('#home').bind('click', function (): void {
+//     $('.table-layer-00>ul').remove();
+//     $('.table-layer-00').attr('class', 'table-layer-0');
+//     let element:string;
+//     for (element in dataList) {
+//         dataList[element].opened = false;
+//     }
+//     $('.table-layer-0').show();
+// });
 
 
 $("#info").click(function(): void{
