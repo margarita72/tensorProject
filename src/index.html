@@ -50,7 +50,7 @@
             <div class="task-list-body">
                 <task v-for="t in tasks" :getting-tasks="t"></task>
             </div>
-            <div class="task-list-footer">Добавить задачу</div>
+            <div @click="addtask" class="task-list-footer">Добавить задачу</div>
         </div>
     </template>
 

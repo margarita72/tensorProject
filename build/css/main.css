@@ -163,7 +163,7 @@ body {
   margin: 5px;
   border-radius: 5px;
 }
-.task-list-title {
+.task-list .task-list-title {
   cursor: pointer;
   background-color: #a1a1a1;
   border-radius: 5px;
@@ -172,11 +172,12 @@ body {
   margin-bottom: 10px;
   text-align: center;
 }
-.task-list-body {
+.task-list .task-list-body {
   width: 100%;
   flex: 1;
 }
-.task-list-footer {
+.task-list .task-list-footer {
+  cursor: pointer;
   background-color: #a1a1a1;
   border-radius: 5px;
   width: 100%;

@@ -45,3 +45,7 @@ gulp.task("html", function () {
   return gulp.src("./src/**/*.html")
     .pipe(gulp.dest("./build/"));
 });
+
+gulp.task("build",["ts","less","html"], function () {
+  console.log('Building');
+});
