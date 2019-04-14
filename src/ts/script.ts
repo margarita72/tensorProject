@@ -6,7 +6,7 @@
 
  interface dataMode{
     id:number,
-    name:string,
+    name?:string,
     parent?:number,
     hasChildren?:boolean,
     done?:boolean,
@@ -31,13 +31,12 @@ let data:dataMode[] = [
     {id:9,parent:4,name:"Задача 1.1.1",done:true,description:"Programmers never sleep"},
     {id:10,parent:4,name:"Задача 1.1.2"},
     {id:11,parent:5,name:"Задача 1.2.1"},
-    {id:11,parent:5,name:"Задача 1.2.2"},
-    {id:12,parent:8,name:"Задача 2.1.1"},
+    {id:12,parent:5,name:"Задача 1.2.2"},
+    {id:13,parent:8,name:"Задача 2.1.1"},
 ];
 
 /**
  * @description Mock-функция, эмулирующая работу запроса к серверу. Получает дочерние элементы по идентификатору объекта и передает в callback.
- * @param {Object} dataList Объект (ассоциативный массив), где будут храниться все объекты из списка.
  * @param {number} id Номер доски.
  * @name loadChildren
  * @function
@@ -46,12 +45,38 @@ let data:dataMode[] = [
 function loadChildren(id:number):Promise<dataMode[]>{
     return new Promise<dataMode[]>(function(resolve){
         let res:dataMode[] = [];  //Пустой массив.   
-        for (let i = 0; i < data.length; i++) {
+        let i:number = 0;
+        for (i = 0; i < data.length; i++) {
             if(data[i].parent == id){  //Цикл перебирает элемент data и если находит схожий id, то создаётся objectik и обновляется с добавленным значением.
                 res.push(data[i]);
             }
         }
         resolve(res);
+    })
+}
+
+/**
+ * @description 
+ * @param {dataMode} 
+ * @function
+ * @name sendData
+ * @returns {Promise<void>}
+ */
+function sendData(obj:dataMode):Promise<void>{
+    return new Promise<void>(function(resolve,reject){
+        let i:number = 0;
+        for (i = 0; i < data.length; i++) {
+            if(data[i].id == obj.id){ 
+                let keys:string[] = Object.keys(obj),
+                    j:number;
+                for (j = 0; j < keys.length; j++) {
+                    data[i][keys[j]] = obj[keys[j]];
+                }
+                resolve();        
+                return;
+            }
+        }
+        reject();
     })
 }
 
@@ -106,6 +131,23 @@ Vue.component('task', {
             return 'none';
         }
     },
+    watch:{
+        description(val:string){
+            sendData({id:this.id,'description':val});
+        },
+        done(val:boolean){
+            sendData({id:this.id,'done':val});
+        },
+        removed(val:boolean){
+            sendData({id:this.id,'removed':val});
+        },
+        parent(val:number){
+            sendData({id:this.id,'parent':val});
+        },
+        name(val:string){
+            sendData({id:this.id,'name':val});
+        }
+    }
 })
 
 Vue.component('tasklist',{
@@ -140,6 +182,9 @@ Vue.component('tasklist',{
             alert('add task');
         }
     },
+    created() {
+        this.loadTasks();
+    }
 })
   
 let currenDesk = new Vue({
