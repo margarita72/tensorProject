@@ -32,7 +32,12 @@ let data:dataMode[] = [
     {id:10,parent:4,name:"Задача 1.1.2"},
     {id:11,parent:5,name:"Задача 1.2.1"},
     {id:12,parent:5,name:"Задача 1.2.2"},
-    {id:13,parent:8,name:"Задача 2.1.1"},
+    {id:13,parent:5,name:"Задача 1.2.3"},
+    {id:14,parent:5,name:"Задача 1.2.4"},
+    {id:15,parent:5,name:"Задача 1.2.5"},
+    {id:16,parent:5,name:"Задача 1.2.6"},
+    {id:17,parent:5,name:"Задача 1.2.7"},
+    {id:18,parent:8,name:"Задача 2.1.1"},
 ];
 
 /**
@@ -57,7 +62,7 @@ function loadChildren(id:number):Promise<dataMode[]>{
 
 /**
  * @description 
- * @param {dataMode} 
+ * @param {dataMode} obj
  * @function
  * @name sendData
  * @returns {Promise<void>}
