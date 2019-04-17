@@ -146,14 +146,14 @@ body {
   background-color: #b9d8c2;
 }
 /*end component task*/
-#main-list {
+#current-desk {
   background-color: #405a69;
   flex: 1;
   display: flex;
   overflow-x: auto;
 }
 @media screen and (max-width: 1280px) {
-  #main-list {
+  #current-desk {
     flex-flow: wrap;
   }
 }

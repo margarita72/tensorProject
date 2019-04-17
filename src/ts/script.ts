@@ -11,7 +11,8 @@
     hasChildren?:boolean,
     done?:boolean,
     description?:string,
-    removed?:boolean
+    removed?:boolean,
+    childs?: dataMode[]
  }
 
 /** 
@@ -39,6 +40,8 @@ let data:dataMode[] = [
     {id:17,parent:5,name:"Задача 1.2.7"},
     {id:18,parent:8,name:"Задача 2.1.1"},
 ];
+
+const currenData: dataMode[] = [];
 
 /**
  * @description Mock-функция, эмулирующая работу запроса к серверу. Получает дочерние элементы по идентификатору объекта и передает в callback.
@@ -96,13 +99,13 @@ $('#desks').bind('click', function (): void {
 Vue.component('task', {
     data: function () {
       return {
-        name: this.gettingTasks.name,
-        description: this.gettingTasks.description,
-        done: this.gettingTasks.done,
-        removed: this.gettingTasks.removed,
+        //name: this.gettingTasks.name,
+        //description: this.gettingTasks.description,
+        //done: this.gettingTasks.done,
+        //removed: this.gettingTasks.removed,
         edit: this.gettingTasks.edit,
-        id: this.gettingTasks.id,
-        parent: this.gettingTasks.parent,
+        //id: this.gettingTasks.id,
+        //parent: this.gettingTasks.parent,
       }
     },
     props:{
@@ -121,7 +124,7 @@ Vue.component('task', {
     template: '#template-task',
     methods: {
         remove():void{
-            this.removed = true;
+            this.gettingTasks.removed = true;
         },
         activeEdit():void{
             this.edit = ! this.edit;
@@ -129,9 +132,9 @@ Vue.component('task', {
     },
     computed: {
         borderStyle():string{
-            if(this.removed) 
+            if(this.gettingTasks.removed) 
                 return '2px solid red';
-            if(this.done)
+            if(this.gettingTasks.done)
                 return '2px solid green';
             return 'none';
         }
@@ -158,11 +161,11 @@ Vue.component('task', {
 Vue.component('tasklist',{
     data() {
         return {
-            description: this.gettingTasksList.description,
-            name: this.gettingTasksList.name,
+            //description: this.gettingTasksList.description,
+            //name: this.gettingTasksList.name,
             id: this.gettingTasksList.id,
-            parent: this.gettingTasksList.parent,
-            tasks: [],
+            //parent: this.gettingTasksList.parent,
+            //tasks: [],
         }
     },
     props:{
@@ -172,6 +175,7 @@ Vue.component('tasklist',{
                 description: 'description',
                 id: null,
                 parent: null,
+                childs: []
             },
         }
     },
@@ -193,19 +197,22 @@ Vue.component('tasklist',{
 })
   
 let currenDesk = new Vue({
-    el:'#main-list',
+    el:'#current-desk',
     data() {
         return {
-            allTasks: [],
+            allTasks: currenData,
         }
     },
     methods: {
         init(arrayOfModel:dataMode[]){
             let i:number;
-            this.allTasks = [];
+            //currenData.length = 0;
+            while (currenData.length > 0) {
+                currenData.pop();
+            }
             for(i = 0; i < arrayOfModel.length; i++){
                 let a = arrayOfModel[i];
-                this.allTasks.push(a)
+                currenData.push(a);
             }
         },
         loadTaskList(id:number = null){
@@ -223,12 +230,12 @@ let tasksNav = new Vue({
     },
     methods:{
         init(arrayOfModel:dataMode[]){
-            let i:number;
-            this.desks = [];
-            for(i = 0; i < arrayOfModel.length; i++){
-                let a = arrayOfModel[i];
-                this.desks.push(a)
-            }
+            //let i:number;
+            this.desks = arrayOfModel;
+            //for(i = 0; i < arrayOfModel.length; i++){
+            //    let a = arrayOfModel[i];
+            //    this.desks.push(a)
+            //}
         },
         openDesks(id:number){
             loadChildren(id).then(currenDesk.init);
