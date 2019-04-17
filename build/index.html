@@ -48,7 +48,7 @@
         <div class="task-list">
             <div @click="loadTasks" class="task-list-title">{{ gettingTasksList.name }}</div>
             <div class="task-list-body">
-                <task v-for="t in gettingTasksList.childs" :getting-tasks="t"></task>
+                <task @updataChildData="updataChildData" v-for="t in gettingTasksList.childs" :getting-tasks="t"></task>
             </div>
             <div @click="addtask" class="task-list-footer">Добавить задачу</div>
         </div>
@@ -58,11 +58,20 @@
         <div class="table-layer-2" :style="{border: borderStyle}">
             <div class="table-layer-2-head">
                 <span class="list-open"> {{ gettingTasks.name }} </span>
-                <input :disabled="gettingTasks.removed" type="checkbox" v-model="gettingTasks.done" class="check">
-                <img src="Imgs/edit.png" class="edit-btn" @click="activeEdit">
+                <input 
+                    :disabled="gettingTasks.removed" 
+                    type="checkbox" 
+                    v-model="gettingTasks.done" 
+                    @click="changeDone"
+                    class="check">
                 <img src="Imgs/remove.png" class="del-btn" @click="remove">
             </div>
-            <textarea :disabled="gettingTasks.removed || !gettingTasks.edit" v-model="gettingTasks.description" class="description"></textarea>
+            <textarea 
+                :disabled="gettingTasks.removed"
+                v-model="gettingTasks.description" 
+                class="description" 
+                v-on:blur="descriptionSave"
+                ></textarea>
         </div>
     </template>
     <!-- scripts -->

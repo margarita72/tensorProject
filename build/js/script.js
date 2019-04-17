@@ -21,8 +21,9 @@ var currenData = [];
  */
 function loadChildren(id) {
     return new Promise(function (resolve) {
-        var res = []; //Пустой массив.   
-        var i = 0;
+        var res = [],
+            //Пустой массив.   
+        i = 0;
         for (i = 0; i < data.length; i++) {
             if (data[i].parent == id) {
                 //Цикл перебирает элемент data и если находит схожий id, то создаётся objectik и обновляется с добавленным значением.
@@ -65,13 +66,7 @@ $('#desks').bind('click', function () {
 /*components */
 Vue.component('task', {
     data: function data() {
-        return {
-            //name: this.gettingTasks.name,
-            //description: this.gettingTasks.description,
-            //done: this.gettingTasks.done,
-            //removed: this.gettingTasks.removed,
-            edit: this.gettingTasks.edit
-        };
+        return {};
     },
     props: {
         gettingTasks: {
@@ -79,7 +74,6 @@ Vue.component('task', {
                 name: 'task',
                 description: 'description',
                 done: false,
-                edit: false,
                 removed: false,
                 id: null,
                 parent: null
@@ -91,8 +85,14 @@ Vue.component('task', {
         remove: function remove() {
             this.gettingTasks.removed = true;
         },
-        activeEdit: function activeEdit() {
-            this.edit = !this.edit;
+        activeEdit: function activeEdit(stat) {
+            this.edit = stat;
+        },
+        descriptionSave: function descriptionSave() {
+            console.log('description Save');
+        },
+        changeDone: function changeDone() {
+            this.$emit('updataChildData', { id: this.id, 'done': this.gettingTasks.done });
         }
     },
     computed: {
@@ -101,32 +101,11 @@ Vue.component('task', {
             if (this.gettingTasks.done) return '2px solid green';
             return 'none';
         }
-    },
-    watch: {
-        description: function description(val) {
-            sendData({ id: this.id, 'description': val });
-        },
-        done: function done(val) {
-            sendData({ id: this.id, 'done': val });
-        },
-        removed: function removed(val) {
-            sendData({ id: this.id, 'removed': val });
-        },
-        parent: function parent(val) {
-            sendData({ id: this.id, 'parent': val });
-        },
-        name: function name(val) {
-            sendData({ id: this.id, 'name': val });
-        }
     }
 });
 Vue.component('tasklist', {
     data: function data() {
-        return {
-            //description: this.gettingTasksList.description,
-            //name: this.gettingTasksList.name,
-            id: this.gettingTasksList.id
-        };
+        return {};
     },
 
     props: {
@@ -143,13 +122,16 @@ Vue.component('tasklist', {
     template: '#template-task-list',
     methods: {
         init: function init(arrayOfModel) {
-            this.tasks = arrayOfModel;
+            //this.tasks = arrayOfModel;
         },
         loadTasks: function loadTasks() {
-            loadChildren(this.id).then(this.init);
+            //loadChildren(this.id).then(this.init);
         },
         addtask: function addtask() {
             alert('add task');
+        },
+        updataChildData: function updataChildData(d) {
+            alert(d);
         }
     },
     created: function created() {
@@ -165,21 +147,28 @@ var currenDesk = new Vue({
     },
 
     methods: {
-        init: function init(arrayOfModel) {
+        loadTaskList: function loadTaskList(arrayOfModel) {
             var i = void 0;
-            //currenData.length = 0;
             while (currenData.length > 0) {
                 currenData.pop();
             }
             for (i = 0; i < arrayOfModel.length; i++) {
                 var a = arrayOfModel[i];
+                a.childs = [];
                 currenData.push(a);
+                loadChildren(a.id).then(this.loadTask);
             }
         },
-        loadTaskList: function loadTaskList() {
-            var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-
-            loadChildren(id).then(this.init);
+        loadTask: function loadTask(arrayOfModel) {
+            if (arrayOfModel.length) {
+                var i = void 0;
+                for (i = 0; i < currenData.length; i++) {
+                    if (currenData[i].id == arrayOfModel[0].parent) {
+                        currenData[i].childs = arrayOfModel;
+                        break;
+                    }
+                }
+            }
         }
     }
 });
@@ -193,15 +182,10 @@ var tasksNav = new Vue({
 
     methods: {
         init: function init(arrayOfModel) {
-            //let i:number;
             this.desks = arrayOfModel;
-            //for(i = 0; i < arrayOfModel.length; i++){
-            //    let a = arrayOfModel[i];
-            //    this.desks.push(a)
-            //}
         },
         openDesks: function openDesks(id) {
-            loadChildren(id).then(currenDesk.init);
+            loadChildren(id).then(currenDesk.loadTaskList);
         },
         load: function load() {
             loadChildren(null).then(this.init);
