@@ -49,3 +49,15 @@ gulp.task("html", function () {
 gulp.task("build",["ts","less","html"], function () {
   console.log('Building');
 });
+
+gulp.task("tsServer", function () {
+  var result = gulp.src("./index.ts")
+  .pipe(typescript(project));
+
+  return merge([
+    result.dts.pipe(gulp.dest('./definitions')),
+    result.js
+      .pipe(babel(babelConf))
+      .pipe(gulp.dest('./'))
+  ]);
+});
