@@ -1,0 +1,145 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+/*Header*/
+header{
+    height: 40px;
+    background: #006b66;
+}
+.headerButtons{
+    display: flex;
+    width: 100%;
+    
+    /*li:hover{
+        background-color: rgb(143, 5, 255);
+    }*/
+}    
+
+.headerButtons > li{
+    text-align: center;
+    height: 30px;
+    border-radius: 3px;
+    margin: 5px;
+    display: inline-block;
+    background:#00c080;
+    cursor: pointer;
+    /* font-family: @fonts; */
+}
+
+
+#home{
+    width: 30px;
+}
+#home > img{
+    margin: 5px;
+    width: 20px;
+    vertical-align: middle;
+}
+#desks{
+    padding: 0 10px;
+    
+}
+#desks >  span{
+    vertical-align: middle;
+    font-size: 14pt;
+}
+#logo{
+    padding: 0 10px;
+    margin: auto;
+}
+#logo > img{
+    width: 20px;
+    vertical-align: middle;
+}
+#logo > span{
+    vertical-align: middle;
+}
+#info{
+    width: 30px;
+    margin-left:auto
+}
+#info > img{
+    width: 20px;
+    vertical-align: middle;
+}
+
+    /*Body*/
+.list-open{
+    display: inline-block;
+    cursor: pointer;
+}
+html{
+    height: 100%;
+}
+main{
+    display: flex;
+    flex: 1;
+}
+@media screen and (max-width: 820px){
+    main{
+        flex-direction: column;
+    }
+}
+#desk-nav{
+    min-width: 200px;    
+    background-color: #6f6f74;
+}
+.desk-list{
+    display: block;
+    margin: 10px;
+    padding: 15px 10px;
+    text-align: center;
+    background: #a1a1a1;
+    border-radius: 5px;
+    /* font-family: @fonts; */
+    cursor: pointer;
+}
+.desk-title{
+    text-align: center;
+    padding: 20px 10px;
+    background-color: #003f4e;
+}
+body{
+   /* // background-image: url(https://www.nasa.gov/sites/default/files/thumbnails/image/columbia_tm5_1986209_lrg.jpg); */
+    color:#f8f8f9;
+    font-size: 14pt;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    /* font-family: @fonts; */
+}
+
+
+#current-desk{
+    background-color: #405a69;
+    flex: 1;
+    display: flex;
+    overflow-x: auto;
+}
+@media screen and (max-width: 1280px){
+    #current-desk{
+        flex-flow: wrap;
+    }
+}
+
+.information{
+    z-index:100;
+    position:absolute;
+    right:10px;
+    top: 50px;
+    height: 130px;
+    width: 400px;
+    text-align: center;
+    border-radius: 8px;
+    background-color: #28f1ffa9;
+    color:#003f4e;
+    /* font-family: @fonts; */
+}
+/*footer*/
+footer{
+    height: 40px;
+    background-color: #006b66;
+    display: flex;
+    flex-direction: row-reverse;
+}

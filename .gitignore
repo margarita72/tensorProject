@@ -4,3 +4,14 @@ doc/
 docs/
 tsdoc.json
 package-lock.json
+
+.DS_Store
+dist/
+npm-debug.log
+yarn-error.log
+
+# Editor directories and files
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
