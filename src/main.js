@@ -1,5 +1,7 @@
 import Vue from 'vue'
-import tasklist from './Tasklist.vue'
+import tasklist from './vue/Tasklist.vue'
+import AddTask from './vue/AddTask.vue'
+
 
 let data = [
   {id: 1, name: "Доска 1", hasChildren:true},
@@ -71,40 +73,42 @@ function sendData(obj) {
 }
 
 let currenDesk = new Vue( {
-  el:'#current-desk',
-  data() {
-      return {
-          allTasks: currenData,
-      }
-  },
-  components:{
-      tasklist
+    el:'#current-desk',
+    data() {
+        return {
+            allTasks: currenData,
+        }
     },
-  methods: {
-      loadTaskList(arrayOfModel) {
-          let i;
-          while (currenData.length > 0) {
-              currenData.pop();
-          }
-          for (i = 0; i < arrayOfModel.length; i++) {
-              let a = arrayOfModel[i];
-              a.childs = [];
-              currenData.push(a);
-              loadChildren(a.id).then(this.loadTask); 
-          }
-      },
-      loadTask(arrayOfModel) {
-          if(arrayOfModel.length)
-          {
-              let i;
-              for ( i = 0; i < currenData.length; i++) {
-                  if (currenData[i].id == arrayOfModel[0].parent) {
-                      currenData[i].childs = arrayOfModel;
-                      break;
-                  }
-              }
-          }
-      }
+    components: {
+        tasklist
+    },
+    methods: {
+        loadTaskList(arrayOfModel) {
+            let i;
+            while (currenData.length > 0) {
+                currenData.pop();
+            }
+            for (i = 0; i < arrayOfModel.length; i++) {
+                let a = arrayOfModel[i];
+                a.childs = [];
+                currenData.push(a);
+                loadChildren(a.id).then(this.loadTask); 
+            }
+        },
+        loadTask(arrayOfModel) {
+            if(arrayOfModel.length) {
+                let i;
+                for ( i = 0; i < currenData.length; i++) {
+                    if (currenData[i].id == arrayOfModel[0].parent) {
+                        currenData[i].childs = arrayOfModel;
+                        break;
+                    }
+                }
+            }
+        },
+        addNew(dat) {
+            alert('new alert ' + dat.id);
+        }
   },
 })
 
@@ -133,3 +137,8 @@ let tasksNav = new Vue( {
 });
 
 tasksNav.load();
+
+let addWindow = new Vue( {
+    el:'#task-add-dialog',
+    render: r => r(AddTask),
+})

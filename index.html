@@ -34,15 +34,14 @@
                 </div>
             </div>
             <div id='current-desk'> 
-                <!-- <div id="app"></div> -->
-                <tasklist v-for="task in allTasks" :getting-tasks-list="task"></tasklist>
+                <tasklist v-for="task in allTasks" :key="task.id" :getting-tasks-list="task"></tasklist>
             </div>
         </main>
         <footer>
             <span id="obj-count"></span>
         </footer>
         <p class="information" style="display: none;">информация по проекту</p>
-    
+        <div id="task-add-dialog"></div>
     <script src="/dist/build.js"></script>
   </body>
 </html>

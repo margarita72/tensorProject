@@ -1,4 +1,4 @@
-<template id="template-task">
+<template>
     <div class="table-layer-2" :style="{border: borderStyle}">
         <div class="table-layer-2-head">
             <span class="list-open"> {{ gettingTasks.name }} </span>
@@ -8,7 +8,7 @@
                 v-model="gettingTasks.done" 
                 @click="changeDone"
                 class="check">
-            <img src="./Imgs/remove.png" class="del-btn" @click="remove">
+            <img src="../Imgs/remove.png" class="del-btn" @click="remove">
         </div>
         <textarea 
             :disabled="gettingTasks.removed"
@@ -39,27 +39,37 @@ export default {
             },
         }
     },
-    template: '#template-task',
     methods: {
         remove() {
-            this.gettingTasks.removed = true;
+           // this.gettingTasks.removed = true;
+            this.$emit('updataChildData',{id:this.id,'removed': true});            
         },
         activeEdit(stat) {
             this.edit = stat;
         },
-        descriptionSave() {
-            console.log('description Save');
+        descriptionSave(val) {
+            if(this.gettingTasks.description !== undefined){
+                this.$emit('updataChildData', {
+                    id:this.id,
+                    'done': this.gettingTasks.description
+                    });
+            }
         },
         changeDone() {
-            this.$emit('updataChildData',{id:this.id,'done': this.gettingTasks.done});
+            this.$emit('updataChildData', {
+                id:this.id,
+                'done': this.gettingTasks.done
+                });
         }
     },
     computed: {
         borderStyle() {
-            if (this.gettingTasks.removed) 
+            if (this.gettingTasks.removed) {
                 return '2px solid red';
-            if (this.gettingTasks.done)
+            }
+            if (this.gettingTasks.done) {
                 return '2px solid green';
+            }
             return 'none';
         },
     }
@@ -77,7 +87,7 @@ export default {
     text-align: left;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
   }
-  .table-layer-2-head{
+  .table-layer-2-head {
     display: flex;
   }
   .description {
@@ -90,7 +100,7 @@ export default {
     color: #545454;
     background-color: #EBEBE4;
   }
-  .description:focus{
+  .description:focus {
     color: #000;
     background-color: #fff;
   }

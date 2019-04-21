@@ -1,4 +1,4 @@
-<template id="template-task-list">
+<template>
     <div class="task-list">
         <div @click="loadTasks" class="task-list-title">{{ gettingTasksList.name }}</div>
         <div class="task-list-body">
@@ -6,6 +6,7 @@
                 @updataChildData="updataChildData" 
                 v-for="t in gettingTasksList.childs" 
                 :getting-tasks="t"
+                :key="t.id"
             ></task>
         </div>
         <div @click="addtask" class="task-list-footer">Добавить задачу</div>
@@ -20,7 +21,7 @@ export default {
         return {
         }
     },
-    components:{
+    components: {
         Task
     },
     props: {
@@ -34,7 +35,6 @@ export default {
             },
         }
     },
-    template: '#template-task-list',
     methods: {
         init(arrayOfModel) {
             //this.tasks = arrayOfModel;
@@ -44,9 +44,11 @@ export default {
         },
         addtask() {
             alert('add task');
+            this.$emit('addNew',{id:this.id});
+            //addWindow.add();
         },
         updataChildData(d) {
-            alert('eeeee ' + d);
+            sendData(d);
         }
     },
     created() {
@@ -57,8 +59,7 @@ export default {
 
 <style scoped>
 
-/*begin component taskList*/
-.task-list{
+.task-list {
     color: #000;
     display: flex;
     flex-direction: column;
@@ -70,12 +71,12 @@ export default {
     border-radius: 5px;
 	
 }
-@media screen and (max-width: 1280px){
-    .task-list{
+@media screen and (max-width: 1280px) {
+    .task-list {
         flex: 1;
     }
 }
-.task-list-title{
+.task-list-title {
     cursor: pointer;
     background-color: #a1a1a1;
     border-radius: 5px;
@@ -84,12 +85,12 @@ export default {
     margin-bottom: 10px;
     text-align: center;
 }
-.task-list-body{
+.task-list-body {
     width: 100%;
     flex: 1;
     overflow-y: auto;
 }
-.task-list-footer{
+.task-list-footer {
     cursor: pointer;
     background-color: #a1a1a1;
     border-radius: 5px;
