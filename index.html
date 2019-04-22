@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <link rel="stylesheet" href="./src/css/main.css">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
         <script src="https://unpkg.com/vue"></script>
         <title>Морские котики</title>
     </head>
@@ -27,12 +27,7 @@
             </ul>
         </header>
         <main>
-            <div id="desk-nav">
-                <div class="desk-title">Доступные доски</div>
-                <div id="nav-desks">
-                    <div class="desk-list" @click="openDesks(desk.id)" :id="'desk' + desk.id" v-for="desk in desks">{{ desk.name }}</div>
-                </div>
-            </div>
+            <div id="desk-nav"></div>
             <div id='current-desk'> 
                 <tasklist v-for="task in allTasks" :key="task.id" :getting-tasks-list="task"></tasklist>
             </div>

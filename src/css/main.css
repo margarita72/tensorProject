@@ -81,25 +81,7 @@ main{
         flex-direction: column;
     }
 }
-#desk-nav{
-    min-width: 200px;    
-    background-color: #6f6f74;
-}
-.desk-list{
-    display: block;
-    margin: 10px;
-    padding: 15px 10px;
-    text-align: center;
-    background: #a1a1a1;
-    border-radius: 5px;
-    /* font-family: @fonts; */
-    cursor: pointer;
-}
-.desk-title{
-    text-align: center;
-    padding: 20px 10px;
-    background-color: #003f4e;
-}
+
 body{
    /* // background-image: url(https://www.nasa.gov/sites/default/files/thumbnails/image/columbia_tm5_1986209_lrg.jpg); */
     color:#f8f8f9;
