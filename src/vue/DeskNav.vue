@@ -1,5 +1,5 @@
 <template>
-    <div class="root">
+    <div class="root" :class="{ hidden: isHhidden }">
         <div class="desk-title">Доступные доски</div>
         <div id="nav-desks">
             <div>
@@ -29,8 +29,7 @@ export default {
             this.desks = arrayOfModel;
         },
         openDesks(id) {
-            
-            //loadChildren(id).then(currenDesk.loadTaskList);
+            this.$store.dispatch('loadDesksList',id);
         },
         load() {
             this.$store.dispatch('loadDesks');
@@ -42,6 +41,9 @@ export default {
     computed: {
         desks() {
             return this.$store.state.Desks;
+        },
+        isHhidden(){
+            return this.$store.state.navHidden;
         }
     }
 }
@@ -49,9 +51,27 @@ export default {
 
 <style scoped>
 .root{
-    background-color: gray;
+    width: 200px;
+    min-width: 200px;
+    background-color: #c1cbd1;
     height: 100%;
+    transition: all ease 0.3s;
     overflow-y: auto;
+    overflow-x: hidden;
+}
+@media screen and (max-width: 820px){
+    .root{
+        width: unset;
+        height: unset;
+    }
+    .hidden{
+        height: 0;
+    }
+}
+.hidden{
+    min-width: unset;
+    transition: all ease 0.3s;
+    width: 0;
 }
 #desk-nav{
     min-width: 200px;    
@@ -62,7 +82,7 @@ export default {
     margin: 10px;
     padding: 15px 10px;
     text-align: center;
-    background: #a1a1a1;
+    background: #dfdfdf;
     border-radius: 5px;
     /* font-family: @fonts; */
     cursor: pointer;
@@ -70,6 +90,6 @@ export default {
 .desk-title{
     text-align: center;
     padding: 20px 10px;
-    background-color: #003f4e;
+    background-color: #9dacb4;
 }
 </style>

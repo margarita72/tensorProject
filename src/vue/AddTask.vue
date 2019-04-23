@@ -31,7 +31,7 @@ export default {
     name: "add-task",
     data() {
         return {
-            visible: true
+            visible: false
         }
     },
     methods: {

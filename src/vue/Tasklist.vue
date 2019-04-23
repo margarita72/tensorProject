@@ -1,15 +1,20 @@
 <template>
     <div class="task-list">
-        <div @click="loadTasks" class="task-list-title">{{ gettingTasksList.name }}</div>
-        <div class="task-list-body">
+        <div 
+            @click="loadTasks" 
+            class="task-list-title" 
+            :class="{ opened: isCollapsed }"
+        >
+            {{ gettingTasksList.name }}
+        </div>
+        <div class="task-list-body" :class="{ hidden: isCollapsed }">
             <task
-                @updataChildData="updataChildData" 
                 v-for="t in gettingTasksList.childs" 
                 :getting-tasks="t"
                 :key="t.id"
             ></task>
         </div>
-        <div @click="addtask" class="task-list-footer">Добавить задачу</div>
+        <div @click="addtask" class="task-list-footer" :class="{ hidden: isCollapsed }" >Добавить задачу</div>
     </div>
 </template>
 
@@ -19,6 +24,7 @@ export default {
     name: 'tasklist', 
     data() {
         return {
+            isCollapsed: true
         }
     },
     components: {
@@ -40,19 +46,17 @@ export default {
             //this.tasks = arrayOfModel;
         },
         loadTasks() {
-            //loadChildren(this.id).then(this.init);
+            this.isCollapsed = !this.isCollapsed;
         },
         addtask() {
             alert('add task');
-            this.$emit('addNew',{id:this.id});
-            //addWindow.add();
         },
         updataChildData(d) {
             sendData(d);
         }
     },
     created() {
-        this.loadTasks();
+        //this.loadTasks();
     }
 }
 </script>
@@ -60,29 +64,29 @@ export default {
 <style scoped>
 
 .task-list {
-    color: #000;
-    display: flex;
-    flex-direction: column;
+    display: block;
+    /* flex-direction: column; */
     width: 300px;
     min-width: 300px;
-    max-height: 85vh;
-    background-color: #28f1ff;
+    height: max-content;
+    background-color: #bebebe;
     margin: 5px;
     border-radius: 5px;
 	
 }
 @media screen and (max-width: 1280px) {
     .task-list {
-        flex: 1;
+        /* flex: 1; */
     }
 }
 .task-list-title {
     cursor: pointer;
-    background-color: #a1a1a1;
+    background-color: #9dacb4;
     border-radius: 5px;
     width: 100%;
     padding: 15px 0;
     margin-bottom: 10px;
+    transition: all ease 0.3s;
     text-align: center;
 }
 .task-list-body {
@@ -92,12 +96,19 @@ export default {
 }
 .task-list-footer {
     cursor: pointer;
-    background-color: #a1a1a1;
+    background-color: #595959;
     border-radius: 5px;
     width: 100%;
     padding: 15px 0;
     margin-top: 10px;
     text-align: center;
+    color: #fff;
 }
-
+.hidden{
+    display: none;
+}
+.opened{
+    height: 60px;
+    margin-bottom: 0;
+}
 </style>
