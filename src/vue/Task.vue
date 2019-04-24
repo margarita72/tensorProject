@@ -46,8 +46,13 @@ export default {
     },
     methods: {
         remove() {
-           // this.gettingTasks.removed = true;
-           // this.$emit('updataChildData',{id:this.id,'removed': true});
+            if(this.gettingTasks.removed){
+                return;
+            }
+            this.$store.dispatch('taskChanges', {
+                id: this.gettingTasks.id,
+                removed: true
+            });
         },
         activeEdit(stat) {
             this.edit = stat;
@@ -61,10 +66,10 @@ export default {
             }
         },
         changeDone() {
-            this.$emit('updataChildData', {
-                id:this.id,
-                'done': this.gettingTasks.done
-                });
+            this.$store.dispatch('taskChanges', {
+                id: this.gettingTasks.id,
+                done: !this.gettingTasks.done
+            });
         },
         collapse(){
             this.isCollapsed = ! this.isCollapsed;

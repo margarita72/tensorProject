@@ -4,28 +4,11 @@
         <meta charset="utf-8">
         <link rel="stylesheet" href="./src/css/main.css">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
-        <script src="https://unpkg.com/vue"></script>
+        <!-- <script src="https://unpkg.com/vue"></script> -->
         <title>Морские котики</title>
     </head>
     <body>
-        <header>
-            <ul class="headerButtons">
-                <li id="home">
-                    <img src="./src/Imgs/home.png" alt="home page">
-                </li>
-                <li  id="desks">
-                    <span>Доски</span>
-                </li>
-                <li id="logo">
-                    <img src="./src/Imgs/logo.png" alt="logo">
-                    <span>Морские котики</span>
-                </li>
-                <li id="info">
-                    <img src="./src/Imgs/info.png" alt="info">
-                </li>
-            </ul>
-        </header>
+        <header id="header"></header>
         <main>
             <div id="desk-nav"></div>
             <div id="current-desk"></div>
@@ -34,7 +17,7 @@
             <span id="obj-count"></span>
         </footer>
         <p class="information" style="display: none;">информация по проекту</p>
-        <div id="task-add-dialog"></div>
-    <script src="/dist/build.js"></script>
+        <div :record="record" id="task-add-dialog"></div>
+    <script src="./dist/build.js"></script>
   </body>
 </html>

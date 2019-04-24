@@ -7,7 +7,7 @@
                 :key="task.id"
                 :getting-tasks-list="task"
             ></tasklist>
-            <div id="new-task-list">Добавить список</div>
+            <div id="new-task-list" @click="addTaskList()">Добавить список</div>
         </div>
     </div>
 </template>
@@ -15,25 +15,34 @@
 
 <script>
 import tasklist from './Tasklist.vue'
+import localServer from '../server'
 
 export default {
     name: "currentDesk",
     data() {
         return {
-            title: 'title'
         }
     },
     components: {
         tasklist
     },
     methods: {
-        addNew(dat) {
-            //alert('new alert ' + dat.id);
+        addTaskList(dat) {
+            this.$store.dispatch('openDialog',{
+                id: this.$store.state.currendDesk,
+                title: 'Добавить доску'
+            });
         }
     }, 
     computed: {
         allTasks(){
             return this.$store.state.TaskLists;
+        },
+        title(){
+            //don't work (((
+            let desls = this.$store.state.Desks.filter( a => a == this.$store.state.currendDesk);
+            console.log(desls);
+            return  desls.length ? desls[0].name : '';
         }
     }   
 }

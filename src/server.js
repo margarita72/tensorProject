@@ -1,22 +1,22 @@
 let data = [
-    {id: 1, name: "Доска 1", hasChildren:true},
-    {id: 2, name: "Доска 2"},
-    {id: 3, name: "Доска 3"},
-    {id: 4, parent: 1, name: "Список задач 1.1", hasChildren: true},
-    {id: 5, parent: 1, name: "Список задач 1.2", hasChildren: true},
-    {id: 6, parent: 1, name: "Список задач 1.3"},
-    {id: 7, parent: 1, name: "Список задач 1.4"},
-    {id: 8, parent: 2, name: "Список задач 2.1"},
-    {id: 9, parent: 4, name: "Задача 1.1.1", done: true, description: "Programmers never sleep"},
-    {id: 10, parent: 4, name: "Задача 1.1.2"},
-    {id: 11, parent: 5, name: "Задача 1.2.1"},
-    {id: 12, parent: 5, name: "Задача 1.2.2"},
-    {id: 13, parent: 5, name: "Задача 1.2.3"},
-    {id: 14, parent: 5, name: "Задача 1.2.4"},
-    {id: 15, parent: 5, name: "Задача 1.2.5"},
-    {id: 16, parent: 5, name: "Задача 1.2.6"},
-    {id: 17, parent: 5, name: "Задача 1.2.7"},
-    {id: 18, parent: 8, name: "Задача 2.1.1"},
+    {id: 1, name: "Доска 1", removed:false, hasChildren:true},
+    {id: 2, name: "Доска 2", removed:false},
+    {id: 3, name: "Доска 3", removed:false},
+    {id: 4, parent: 1, name: "Список задач 1.1", removed:false, hasChildren: true},
+    {id: 5, parent: 1, name: "Список задач 1.2", removed:false, hasChildren: true},
+    {id: 6, parent: 1, name: "Список задач 1.3", removed:false},
+    {id: 7, parent: 1, name: "Список задач 1.4", removed:false},
+    {id: 8, parent: 2, name: "Список задач 2.1", removed:false},
+    {id: 9, parent: 4, name: "Задача 1.1.1", removed:false, done: true, description: "Programmers never sleep"},
+    {id: 10, parent: 4, name: "Задача 1.1.2", removed: false},
+    {id: 11, parent: 5, name: "Задача 1.2.1", removed: false},
+    {id: 12, parent: 5, name: "Задача 1.2.2", removed: false},
+    {id: 13, parent: 5, name: "Задача 1.2.3", removed: false},
+    {id: 14, parent: 5, name: "Задача 1.2.4", removed: false},
+    {id: 15, parent: 5, name: "Задача 1.2.5", removed: false},
+    {id: 16, parent: 5, name: "Задача 1.2.6", removed: false},
+    {id: 17, parent: 5, name: "Задача 1.2.7", removed: false},
+    {id: 18, parent: 8, name: "Задача 2.1.1", removed: false},
 ];
 let currentID = 19;
 
@@ -59,7 +59,9 @@ exports.sendData = function (obj) {
                 for (j = 0; j < keys.length; j++) {
                     data[i][keys[j]] = obj[keys[j]];
                 }
-                resolve();        
+                let res = [];
+                res[0] = data[i];
+                resolve(res);
                 return;
             }
         }
@@ -67,11 +69,17 @@ exports.sendData = function (obj) {
     });
 }
 
-
+/**
+ * @description
+ * @param {Object} obj
+ * @function
+ * @name newRecord
+ * @returns {Promise}
+ */
 exports.newRecord = function(obj) {
     return new Promise(function(resolve,reject) {
         data = data.concat(obj);
-        data[data.length-1].id = currentID;
+        data[data.length-1].id = currentID++;
         resolve(data[data.length-1]);
         //reject();
     });

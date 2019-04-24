@@ -16,7 +16,13 @@
                 ></task>
             </div>
         </div>
-        <div @click="addtask" class="task-list-footer" :class="{ hidden: isCollapsed }" >Добавить задачу</div>
+        <div 
+            @click="addtask(gettingTasksList.id)"
+            class="task-list-footer" 
+            :class="{ hidden: isCollapsed }"
+            >
+                Добавить задачу
+            </div>
     </div>
 </template>
 
@@ -55,15 +61,15 @@ export default {
                 this.once = false;
             }
         },
-        addtask() {
-            alert('add task');
+        addtask(id) {
+            this.$store.dispatch('openDialog', {
+                id:id,
+                title: 'Добавить задачу'
+            });
         },
         updataChildData(d) {
             sendData(d);
         }
-    },
-    created() {
-        //this.loadTasks();
     },
     computed: {
         tasks(){
