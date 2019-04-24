@@ -4,22 +4,24 @@ import localServer from '../server'
 
 Vue.use(Vuex);
 
+function unicue(baseData){
+    let comp = function(a,b){return a.id - b.id;}
+    baseData.sort(comp);
+    let i, res = [];
+    for (i = 0; i < baseData.length - 1; i++) {
+        if(baseData[i].id != baseData[i+1].id){
+            res = res.concat(baseData[i]);
+        }
+    }
+    res = res.concat(baseData[i]);
+    return res;
+}
+
 export default new Vuex.Store({
     state:{
         Desks:[],
         TaskLists:[],
-        Tasks:[
-            {id: 9, parent: 4, name: "Задача 1.1.1", done: true, description: "Programmers never sleep"},
-            {id: 10, parent: 4, name: "Задача 1.1.2"},
-            {id: 11, parent: 5, name: "Задача 1.2.1"},
-            {id: 12, parent: 5, name: "Задача 1.2.2"},
-            {id: 13, parent: 5, name: "Задача 1.2.3"},
-            {id: 14, parent: 5, name: "Задача 1.2.4"},
-            {id: 15, parent: 5, name: "Задача 1.2.5"},
-            {id: 16, parent: 5, name: "Задача 1.2.6"},
-            {id: 17, parent: 5, name: "Задача 1.2.7"},
-            {id: 18, parent: 8, name: "Задача 2.1.1"},
-        ],
+        Tasks:[],
         navHidden: false
     },
     actions: {
@@ -30,20 +32,36 @@ export default new Vuex.Store({
                 }
             );
         },
-        loadDesksList(context, id) {
+        loadTasksList(context, id) {
             localServer.loadChildren(id).then(
                 function(data) {
-                    context.commit('loadDesksList', data);
+                    context.commit('loadTasksList', data);
                 }
             );
+        },
+        loadTasks(context, id) {
+            localServer.loadChildren(id).then(
+                function(data) {
+                    context.commit('loadTasks', data);
+                }
+            );
+        },
+        taskChanges(context, changes) {
+            console.log(changes);
         }
     },
     mutations: {
         loadDesks(state, data) {
             state.Desks = data;
         },
-        loadDesksList(state, data) {
+        loadTasksList(state, data) {
             state.TaskLists = data;
+        },
+        loadTasks(state, data) {
+            if(data.length == 0) {
+                return;
+            }
+            state.Tasks = unicue(state.Tasks.concat(data));
         }
     }
 });

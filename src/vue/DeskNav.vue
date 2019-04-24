@@ -29,7 +29,7 @@ export default {
             this.desks = arrayOfModel;
         },
         openDesks(id) {
-            this.$store.dispatch('loadDesksList',id);
+            this.$store.dispatch('loadTasksList',id);
         },
         load() {
             this.$store.dispatch('loadDesks');

@@ -18,6 +18,7 @@ let data = [
     {id: 17, parent: 5, name: "Задача 1.2.7"},
     {id: 18, parent: 8, name: "Задача 2.1.1"},
 ];
+let currentID = 19;
 
 
 /**
@@ -63,5 +64,15 @@ exports.sendData = function (obj) {
             }
         }
         reject();
+    });
+}
+
+
+exports.newRecord = function(obj) {
+    return new Promise(function(resolve,reject) {
+        data = data.concat(obj);
+        data[data.length-1].id = currentID;
+        resolve(data[data.length-1]);
+        //reject();
     });
 }

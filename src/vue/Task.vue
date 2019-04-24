@@ -1,20 +1,23 @@
 <template>
     <div class="table-layer-2" :style="{border: borderStyle}">
         <div class="table-layer-2-head">
-            <span class="list-open"> {{ gettingTasks.name }} </span>
+            <span class="list-open" @click="collapse"> {{ gettingTasks.name }} </span>
             <input 
                 :disabled="gettingTasks.removed" 
                 type="checkbox" 
                 v-model="gettingTasks.done" 
                 @click="changeDone"
-                class="check">
-            <img src="../Imgs/remove.png" class="del-btn" @click="remove">
+                class="check"
+                :class="{ hidden: isCollapsed }"
+                >                
+            <img src="../Imgs/remove.png" class="del-btn" @click="remove" :class="{ hidden: isCollapsed }">
         </div>
         <textarea 
             :disabled="gettingTasks.removed"
             v-model="gettingTasks.description" 
             class="description" 
             v-on:blur="descriptionSave"
+            :class="{ hidden: isCollapsed }"
         ></textarea>
     </div>
 </template>
@@ -24,6 +27,8 @@
 export default {
     data: function () {
       return {
+            isCollapsed: true,
+            once: true
       }
     },
     name: 'task',
@@ -42,17 +47,17 @@ export default {
     methods: {
         remove() {
            // this.gettingTasks.removed = true;
-            this.$emit('updataChildData',{id:this.id,'removed': true});            
+           // this.$emit('updataChildData',{id:this.id,'removed': true});
         },
         activeEdit(stat) {
             this.edit = stat;
         },
         descriptionSave(val) {
             if(this.gettingTasks.description !== undefined){
-                this.$emit('updataChildData', {
-                    id:this.id,
-                    'done': this.gettingTasks.description
-                    });
+                this.$store.dispatch('taskChanges', {
+                    id: this.gettingTasks.id,
+                    description: this.gettingTasks.description
+                });
             }
         },
         changeDone() {
@@ -60,6 +65,9 @@ export default {
                 id:this.id,
                 'done': this.gettingTasks.done
                 });
+        },
+        collapse(){
+            this.isCollapsed = ! this.isCollapsed;
         }
     },
     computed: {
@@ -79,7 +87,7 @@ export default {
 <style scoped>
 .table-layer-2 {
     display: block;
-    margin: 5px auto 0;
+    margin: 5px 10px 0;
     padding: 10px 20px;
     transition: 0.5s;
     background-color: #f3f3f3;
@@ -119,5 +127,8 @@ export default {
   }
   .del-btn:hover {
     background-color: #b9d8c2;
+  }
+  .hidden{
+      display: none;
   }
 </style>

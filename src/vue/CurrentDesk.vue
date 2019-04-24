@@ -20,6 +20,7 @@ export default {
     name: "currentDesk",
     data() {
         return {
+            title: 'title'
         }
     },
     components: {

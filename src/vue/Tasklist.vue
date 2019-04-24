@@ -8,11 +8,13 @@
             {{ gettingTasksList.name }}
         </div>
         <div class="task-list-body" :class="{ hidden: isCollapsed }">
-            <task
-                v-for="t in gettingTasksList.childs" 
-                :getting-tasks="t"
-                :key="t.id"
-            ></task>
+            <div>
+                <task
+                    v-for="t in tasks" 
+                    :getting-tasks="t"
+                    :key="t.id"
+                ></task>
+            </div>
         </div>
         <div @click="addtask" class="task-list-footer" :class="{ hidden: isCollapsed }" >Добавить задачу</div>
     </div>
@@ -24,7 +26,8 @@ export default {
     name: 'tasklist', 
     data() {
         return {
-            isCollapsed: true
+            isCollapsed: true,
+            once: true
         }
     },
     components: {
@@ -47,6 +50,10 @@ export default {
         },
         loadTasks() {
             this.isCollapsed = !this.isCollapsed;
+            if(this.once) {
+                this.$store.dispatch('loadTasks', this.gettingTasksList.id);
+                this.once = false;
+            }
         },
         addtask() {
             alert('add task');
@@ -57,6 +64,12 @@ export default {
     },
     created() {
         //this.loadTasks();
+    },
+    computed: {
+        tasks(){
+            let t = this.$store.state.Tasks;
+            return t.filter(task => task.parent == this.gettingTasksList.id );
+        }
     }
 }
 </script>
@@ -69,16 +82,17 @@ export default {
     width: 300px;
     min-width: 300px;
     height: max-content;
+    max-height: 90%;
     background-color: #bebebe;
     margin: 5px;
     border-radius: 5px;
-	
+	overflow: auto;
 }
-@media screen and (max-width: 1280px) {
+/* @media screen and (max-width: 1280px) {
     .task-list {
-        /* flex: 1; */
+        flex: 1; 
     }
-}
+} */
 .task-list-title {
     cursor: pointer;
     background-color: #9dacb4;
@@ -91,6 +105,7 @@ export default {
 }
 .task-list-body {
     width: 100%;
+    /* max-height: 100%; */
     flex: 1;
     overflow-y: auto;
 }
