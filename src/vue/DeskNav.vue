@@ -9,6 +9,7 @@
                     :id="'desk' + desk.id"
                     v-for="desk in desks"
                     :key="desk.id"
+                    :class="curId == desk.id ? 'selected': ''"
                     >
                         {{ desk.name }}
                 </div>
@@ -44,6 +45,9 @@ export default {
         },
         isHhidden(){
             return this.$store.state.navHidden;
+        },
+        curId(){
+            return this.$store.state.currentDesk;
         }
     }
 }
@@ -63,13 +67,14 @@ export default {
     .root{
         width: unset;
         height: unset;
+        overflow: unset;
     }
     .hidden{
-        height: 0;
+        display: none;
     }
 }
 .hidden{
-    min-width: unset;
+    min-width: 0;
     transition: all ease 0.3s;
     width: 0;
 }
@@ -91,5 +96,8 @@ export default {
     text-align: center;
     padding: 20px 10px;
     background-color: #9dacb4;
+}
+.selected{
+    background-color: #6f6f74;
 }
 </style>

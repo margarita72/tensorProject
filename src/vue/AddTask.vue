@@ -53,8 +53,9 @@ export default {
                 name: this.name,
                 description: this.description,
                 comment: this.comment,
-                done: this.comment,
-                parent: this.$store.state.dialog.id
+                done: this.done,
+                parent: this.$store.state.dialog.id,
+                removed: false
             }
             let context = this;
             localServer.newRecord(sendData).then(function(data){

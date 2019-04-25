@@ -7,7 +7,13 @@
                 :key="task.id"
                 :getting-tasks-list="task"
             ></tasklist>
-            <div id="new-task-list" @click="addTaskList()">Добавить список</div>
+            <div 
+                :hidden="title==''" 
+                id="new-task-list" 
+                @click="addTaskList()"
+            >
+                Добавить список
+            </div>
         </div>
     </div>
 </template>
@@ -38,14 +44,14 @@ export default {
     computed: {
         allTasks(){
             let id = this.$store.state.currentDesk;
-            let desls = this.$store.state.TaskLists.filter( a => a.parent == id);
-            return desls;
+            let desks = this.$store.state.TaskLists.filter( a => a.parent == id);
+            return desks;
         },
         title(){
-            //don't work (((
-            //let desls = this.$store.state.Desks.filter( a => a == this.$store.state.currendDesk);
-            //return  desls.length ? desls[0].name : '';
-            return '';
+            //it's work )))
+            let id = this.$store.state.currentDesk;
+            let desks = this.$store.state.Desks.filter( a => a.id == id);
+            return  desks.length ? desks[0].name : '';
         }
     }   
 }
@@ -65,7 +71,7 @@ export default {
     .task-list{
         margin: 10px;
         background-color: #e9e9e9;
-        width: 100%;
+        /* width: 100%; */
         display: flex;
         overflow-x: auto;
         flex: 1;
@@ -73,20 +79,26 @@ export default {
 
     @media screen and (max-width: 820px){
         .task-list{
-            overflow-x: unset;
+            /* overflow-x: unset; */
             flex-flow: wrap;
             margin: 10px 0;
             flex: 1;
+        }
+        #new-task-list{
+            text-align: center;
+            height: unset!important;
+            margin: 5px!important;
+            flex: auto;
         }
     }
     #new-task-list{
         cursor: pointer;
         background-color: #9dacb4;
-        border-radius: 5px;
-        width: 140px;
-        height: 50px;    
-        margin: 5px;
+        min-width: 135px;
+        height: 50px; 
+        margin: 5px 0;
         padding: 10px 20px;
+        border-radius: 5px;
     }
 
 </style>

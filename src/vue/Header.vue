@@ -1,14 +1,13 @@
 <template>
     <header>
         <ul class="headerButtons">
-            <li id="home">
+            <li id="points" @click="collapse">
                 <img 
                     :src="menuCollapsed ? './src/Imgs/menu-fill.png' : './src/Imgs/menu-thin.png'"
                     alt="menu"
-                    @click="collapse"
                 >
             </li>
-            <li id="home">
+            <li id="home" @click="homeDir">
                 <img src="../Imgs/home.png" alt="home page">
             </li>
             <li id="logo">
@@ -36,6 +35,9 @@ export default {
     methods:{
         collapse(){
             this.$store.commit('navCollapse');
+        },
+        homeDir(){
+            this.$store.dispatch('loadTasksList',0);
         }
     }
 }
@@ -63,10 +65,10 @@ header{
     /* font-family: @fonts; */
 }
 
-#home{
+#home, #points{
     width: 30px;
 }
-#home > img{
+#home > img, #points > img {
     margin: 5px;
     width: 20px;
     vertical-align: middle;
