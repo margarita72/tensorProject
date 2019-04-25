@@ -29,20 +29,23 @@ export default {
     methods: {
         addTaskList(dat) {
             this.$store.dispatch('openDialog',{
-                id: this.$store.state.currendDesk,
-                title: 'Добавить доску'
+                id: this.$store.state.currentDesk,
+                title: 'Добавить список задач',
+                mutation: 'loadTasksList'
             });
         }
     }, 
     computed: {
         allTasks(){
-            return this.$store.state.TaskLists;
+            let id = this.$store.state.currentDesk;
+            let desls = this.$store.state.TaskLists.filter( a => a.parent == id);
+            return desls;
         },
         title(){
             //don't work (((
-            let desls = this.$store.state.Desks.filter( a => a == this.$store.state.currendDesk);
-            console.log(desls);
-            return  desls.length ? desls[0].name : '';
+            //let desls = this.$store.state.Desks.filter( a => a == this.$store.state.currendDesk);
+            //return  desls.length ? desls[0].name : '';
+            return '';
         }
     }   
 }

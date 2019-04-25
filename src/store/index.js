@@ -25,9 +25,10 @@ export default new Vuex.Store({
         navHidden: false,
         currentDesk: null,
         dialog:{
-            visible: true,
+            visible: false,
             id: null,
-            title: 'Добавление'
+            title: 'Добавление',
+            mutation: ''
         }
     },
     actions: {
@@ -54,14 +55,16 @@ export default new Vuex.Store({
             );
         },
         taskChanges(context, changes) {
-            console.log(changes);
             localServer.sendData(changes).then(function(data) {
-                console.log(data);
                 context.commit('loadTasks', data);
             });
         },
         openDialog(context,param){
             context.commit('openDialog', param);
+        },
+        addData(context,param){
+           // context.dispatch(context.state.dialog.mutation, param);
+            context.commit(context.state.dialog.mutation, param);
         }
     },
     mutations: {
@@ -69,7 +72,10 @@ export default new Vuex.Store({
             state.Desks = data;
         },
         loadTasksList(state, data) {
-            state.TaskLists = data;
+            if(data.length == 0) {
+                return;
+            }
+            state.TaskLists = unicue(state.TaskLists.concat(data));
         },
         loadTasks(state, data) {
             if(data.length == 0) {
@@ -87,6 +93,7 @@ export default new Vuex.Store({
             state.dialog.visible = true;
             state.dialog.id = param.id || null;
             state.dialog.title =  param.title || "Добавление";
+            state.dialog.mutation =  param.mutation;
         },
         setCurrentDesk(state,id){
             state.currentDesk = id;

@@ -64,7 +64,8 @@ export default {
         addtask(id) {
             this.$store.dispatch('openDialog', {
                 id:id,
-                title: 'Добавить задачу'
+                title: 'Добавить задачу',
+                mutation: 'loadTasks'
             });
         },
         updataChildData(d) {

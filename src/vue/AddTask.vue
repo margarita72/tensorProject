@@ -34,7 +34,6 @@ export default {
     name: "add-task",
     data() {
         return {
-            // visible: false,
             name: '',
             description: '',
             comment: '',
@@ -59,7 +58,7 @@ export default {
             }
             let context = this;
             localServer.newRecord(sendData).then(function(data){
-                context.$store.commit('loadTasks', data);
+                context.$store.dispatch('addData', data);
                 context.close();
             });
         }
