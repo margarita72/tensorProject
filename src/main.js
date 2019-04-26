@@ -4,6 +4,7 @@ import AddTask from './vue/AddTask.vue'
 import DeskNav from './vue/DeskNav.vue'
 import CurrentDesk from './vue/CurrentDesk.vue'
 import Header from './vue/Header.vue'
+import Trash from './vue/TrashWindow.vue'
 import store from './store/index'
 
 
@@ -29,4 +30,10 @@ let header = new Vue({
     el: 'header',
     store,
     render: r => r(Header)
+})
+
+let trash = new Vue({
+    el: '#trash-dialog',
+    store,
+    render: r => r(Trash)
 })

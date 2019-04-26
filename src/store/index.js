@@ -29,6 +29,9 @@ export default new Vuex.Store({
             id: null,
             title: 'Добавление',
             mutation: ''
+        },
+        trash:{
+            visible: false,
         }
     },
     actions: {
@@ -97,6 +100,9 @@ export default new Vuex.Store({
         },
         setCurrentDesk(state,id){
             state.currentDesk = id;
+        },
+        setTrashVisible(state, val){
+            state.trash.visible = val;
         }
     }
 });

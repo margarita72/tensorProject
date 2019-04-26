@@ -1,6 +1,6 @@
 <template>
     <div class="back" v-if="visible">
-        <div class="window" v-if="visible">
+        <div class="window">
             <h2>{{ title }}</h2>
             <table>
                 <tr>
@@ -51,7 +51,7 @@ export default {
             this.comment = '';
         },
         addData(){
-            if(name == ''){
+            if(this.name == ''){
                 alert('Название обязательное поле!');
                 return;
             }

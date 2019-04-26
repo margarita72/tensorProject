@@ -14,8 +14,8 @@
                 <img src="../Imgs/logo.png" alt="logo">
                 <span>Морские котики</span>
             </li>
-            <li id="info">
-                <img src="../Imgs/info.png" alt="info">
+            <li @click="showTrash" id="trash">
+                <img src="../Imgs/trash.png" alt="trash">
             </li>
             <li id="login">
                 <img src="../Imgs/info.png" alt="login">
@@ -41,6 +41,9 @@ export default {
         },
         homeDir(){
             this.$store.dispatch('loadTasksList',0);
+        },
+        showTrash(){
+            this.$store.commit('setTrashVisible',true);
         }
     }
 }
@@ -87,11 +90,11 @@ header{
 #logo > span{
     vertical-align: middle;
 }
-#info{
+#trash, #info{
     width: 30px;
     margin-left:auto
 }
-#info > img{
+ #trash > img, #info > img{
     width: 20px;
     vertical-align: middle;
 }
