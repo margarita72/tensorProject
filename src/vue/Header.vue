@@ -17,6 +17,9 @@
             <li id="info">
                 <img src="../Imgs/info.png" alt="info">
             </li>
+            <li id="login">
+                <img src="../Imgs/info.png" alt="login">
+            </li>
         </ul>
     </header>
 </template>

@@ -75,7 +75,7 @@ export default {
     computed: {
         tasks(){
             let t = this.$store.state.Tasks;
-            return t.filter(task => task.parent == this.gettingTasksList.id );
+            return t.filter(task => task.parent == this.gettingTasksList.id && !task.removed);
         }
     }
 }
