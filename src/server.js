@@ -20,6 +20,9 @@ let data = [
 ];
 let currentID = 19;
 
+let users = [
+    {username: 'admin', pass: '1234', name: 'Администратор'}
+];
 
 /**
  * @description Mock-функция, эмулирующая работу запроса к серверу. Получает дочерние элементы по идентификатору объекта и передает в callback.
@@ -83,4 +86,24 @@ exports.newRecord = function(obj) {
         resolve(data[data.length-1]);
         //reject();
     });
+}
+
+/**
+ * @description
+ * @param {Object} user
+ * @function
+ * @name LogIn
+ * @returns {Promise}
+ */
+exports.logIn = function(user){
+    return new Promise(function(resolve,reject){
+        let i;
+        for (i = 0; i < users.length; i++) {
+            if(users[i].username == user.username && users[i].pass == user.pass){
+                resolve(users[i]);
+                return;
+            }
+        }
+        reject();
+    });    
 }

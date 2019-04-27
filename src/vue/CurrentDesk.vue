@@ -90,6 +90,9 @@ export default {
             margin: 5px!important;
             flex: auto;
         }
+        .task-body{
+            flex: unset;
+        }
     }
     #new-task-list{
         cursor: pointer;

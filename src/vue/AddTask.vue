@@ -111,7 +111,7 @@ h2 {
     color: black;
     font-size: 18pt;
 }
-@media screen and (max-width: 820px){
+@media screen and (max-width: 500px){
     .window {
         width: 100%;
         height: 100%;

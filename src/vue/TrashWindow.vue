@@ -4,8 +4,12 @@
             <h2>Корзина</h2>
             <div class="desk" v-for="desk in desks" :key="desk.id">
                 <div id="name">{{ desk.name }} </div>
-                <div class="btms"> <img src="../Imgs/remove.png" alt="remove"> </div>
-                <div class="btms"> <img src="../Imgs/restore.png" alt="restore"> </div>
+                <div class="btms">
+                    <img src="../Imgs/remove.png" alt="remove"> 
+                </div>
+                <div class="btms" @click="restore(desk.id)">
+                    <img src="../Imgs/restore.png" alt="restore"> 
+                </div>
             </div>
             <button @click="close">Выход</button>
         </div>
@@ -26,6 +30,12 @@ export default {
     methods:{
         close(){
             this.$store.commit('setTrashVisible',false);
+        },
+        restore(id){
+            this.$store.dispatch('taskChanges', {
+                id: id,
+                removed: false
+            });
         }
     }
 }
@@ -92,7 +102,7 @@ button{
     margin: 0 5px;
     border-radius: 5px;
 }
-@media screen and (max-width: 820px) {
+@media screen and (max-width: 500px) {
     .window {
         width: 100%;
         height: 100%;

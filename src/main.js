@@ -5,6 +5,7 @@ import DeskNav from './vue/DeskNav.vue'
 import CurrentDesk from './vue/CurrentDesk.vue'
 import Header from './vue/Header.vue'
 import Trash from './vue/TrashWindow.vue'
+import User from './vue/SignIn.vue'
 import store from './store/index'
 
 
@@ -36,4 +37,10 @@ let trash = new Vue({
     el: '#trash-dialog',
     store,
     render: r => r(Trash)
+})
+
+let user = new Vue({
+    el: '#user-dialog',
+    store,
+    render: r => r(User)
 })

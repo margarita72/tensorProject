@@ -12,13 +12,13 @@
             </li>
             <li id="logo">
                 <img src="../Imgs/logo.png" alt="logo">
-                <span>Морские котики</span>
+                <span>Котики</span>
             </li>
             <li @click="showTrash" id="trash">
                 <img src="../Imgs/trash.png" alt="trash">
             </li>
-            <li id="login">
-                <img src="../Imgs/info.png" alt="login">
+            <li @click="signIn" id="login">
+                <img src="../Imgs/log-in.png" alt="login">
             </li>
         </ul>
     </header>
@@ -44,6 +44,9 @@ export default {
         },
         showTrash(){
             this.$store.commit('setTrashVisible',true);
+        },
+        signIn(){
+            this.$store.commit('signInVisible',true);
         }
     }
 }
@@ -90,13 +93,15 @@ header{
 #logo > span{
     vertical-align: middle;
 }
-#trash, #info{
+#trash{
     width: 30px;
     margin-left:auto
 }
- #trash > img, #info > img{
+ #trash > img, #login > img{
     width: 20px;
     vertical-align: middle;
 }
-
+#login{
+    width: 30px;
+}
 </style>
