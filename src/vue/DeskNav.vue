@@ -37,7 +37,7 @@ export default {
         },
     },
     mounted() {
-        this.load();
+        //this.load();
     },
     computed: {
         desks() {

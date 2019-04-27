@@ -22,7 +22,7 @@ export default new Vuex.Store({
         Desks:[],
         TaskLists:[],
         Tasks:[],
-        navHidden: true,
+        navHidden: false,
         currentDesk: null,
         dialog:{
             visible: false,
@@ -36,7 +36,7 @@ export default new Vuex.Store({
         user:{
             id: null,
             name: "",
-            visible: true,
+            visible: false,
             error: false
         }
     },
@@ -72,13 +72,13 @@ export default new Vuex.Store({
             context.commit('openDialog', param);
         },
         addData(context,param){
-           // context.dispatch(context.state.dialog.mutation, param);
             context.commit(context.state.dialog.mutation, param);
         },
         signIn(context,userInfo){
             localServer.logIn(userInfo).then(function(user){
                 context.commit('signInVisible',false);
-                context.commit('navCollapse');
+                context.commit('initUser', user);
+                context.dispatch('loadDesks');
             }, function(){
                 context.commit('authError');
             });
@@ -119,8 +119,12 @@ export default new Vuex.Store({
         setTrashVisible(state, val){
             state.trash.visible = val;
         },
-        signInVisible(state,val){
+        signInVisible(state, val){
             state.user.visible = val;
+        },
+        initUser(state, user){
+            state.user.id = user.id;
+            state.user.name = user.name;
         },
         authError(state){
             state.user.error = true;

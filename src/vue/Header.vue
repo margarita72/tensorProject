@@ -18,7 +18,11 @@
                 <img src="../Imgs/trash.png" alt="trash">
             </li>
             <li @click="signIn" id="login">
-                <img src="../Imgs/log-in.png" alt="login">
+                <img 
+                    :src=" nameOfUser == '' ? './src/Imgs/log-in.png' : './src/Imgs/user.png'"
+                    alt="login"
+                >
+                <span>{{ nameOfUser }}</span>
             </li>
         </ul>
     </header>
@@ -33,6 +37,9 @@ export default {
     computed:{
         menuCollapsed(){
             return this.$store.state.navHidden;
+        },
+        nameOfUser(){
+            return this.$store.state.user.name;
         }
     }, 
     methods:{
@@ -46,7 +53,9 @@ export default {
             this.$store.commit('setTrashVisible',true);
         },
         signIn(){
-            this.$store.commit('signInVisible',true);
+            if(this.nameOfUser == ''){
+                this.$store.commit('signInVisible',true);
+            }
         }
     }
 }
@@ -102,6 +111,7 @@ header{
     vertical-align: middle;
 }
 #login{
-    width: 30px;
+    /* width: 30px; */
+    padding: 0 5px;
 }
 </style>
