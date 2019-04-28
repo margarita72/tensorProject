@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex'
 
 export default {
     data: function () {
@@ -45,11 +46,12 @@ export default {
         }
     },
     methods: {
+        ...mapActions(['taskChanges']),
         remove() {
             if(this.gettingTasks.removed){
                 return;
             }
-            this.$store.dispatch('taskChanges', {
+            this.taskChanges({
                 id: this.gettingTasks.id,
                 removed: true
             });
@@ -59,14 +61,14 @@ export default {
         },
         descriptionSave(val) {
             if(this.gettingTasks.description !== undefined){
-                this.$store.dispatch('taskChanges', {
+                this.taskChanges({
                     id: this.gettingTasks.id,
                     description: this.gettingTasks.description
                 });
             }
         },
         changeDone() {
-            this.$store.dispatch('taskChanges', {
+            this.taskChanges({
                 id: this.gettingTasks.id,
                 done: !this.gettingTasks.done
             });

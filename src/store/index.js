@@ -40,6 +40,23 @@ export default new Vuex.Store({
             error: false
         }
     },
+    getters:{
+        Desks: state => state.Desks,
+        TaskLists: state => state.TaskLists,
+        Tasks: state => state.Tasks,
+        navHidden: state => state.navHidden,
+        currentDesk: state => state.currentDesk,
+        /* adding dialog */
+        dialogVisible: state => state.dialog.visible,
+        dialogTitle: state => state.dialog.title,
+        dialogID: state => state.dialog.id,
+        /* user */
+        userName: state => state.user.name,
+        userVisible: state => state.user.visible,
+        userError: state => state.user.error,
+        /* trash */
+        trashVisible: state => state.trash.visible,
+    },
     actions: {
         loadDesks(context) {
             localServer.loadChildren(null).then(

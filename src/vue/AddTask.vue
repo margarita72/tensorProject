@@ -31,6 +31,7 @@
 <script>
 
 import localServer from '../server'
+import {mapGetters, mapMutations, mapActions} from 'vuex'
 
 export default {
     name: "add-task",
@@ -43,8 +44,14 @@ export default {
         }
     },
     methods: {
+        ...mapMutations([
+            'dialogClose'
+        ]),
+        ...mapActions({
+            sendData: 'addData'
+        }),
         close() {
-            this.$store.commit('dialogClose');
+            this.dialogClose();
             this.name = '';
             this.description = '';
             this.done = false;
@@ -55,28 +62,27 @@ export default {
                 alert('Название обязательное поле!');
                 return;
             }
-            let sendData = {
+            let context = this;
+            let dat = {
                 name: this.name,
                 description: this.description,
                 comment: this.comment,
                 done: this.done,
-                parent: this.$store.state.dialog.id,
+                parent: context.dialogID,
                 removed: false
             }
-            let context = this;
-            localServer.newRecord(sendData).then(function(data){
-                context.$store.dispatch('addData', data);
+            localServer.newRecord(dat).then(function(data){
+                context.sendData(data);
                 context.close();
             });
         }
     },
     computed:{
-        visible(){
-            return this.$store.state.dialog.visible;
-        },
-        title(){
-            return this.$store.state.dialog.title;
-        }
+        ...mapGetters({
+            visible: 'dialogVisible',
+            title: 'dialogTitle',
+            dialogID: 'dialogID'
+        }),
     }
     
 }

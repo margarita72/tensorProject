@@ -1,5 +1,4 @@
 import Vue from 'vue'
-//import tasklist from './vue/Tasklist.vue'
 import AddTask from './vue/AddTask.vue'
 import DeskNav from './vue/DeskNav.vue'
 import CurrentDesk from './vue/CurrentDesk.vue'

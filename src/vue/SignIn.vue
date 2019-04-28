@@ -14,27 +14,29 @@
 
 
 <script>
+import {mapGetters, mapActions} from 'vuex'
 export default {
     data(){
         return {
-            username: '',
-            pass: ''
+            username: 'admin',
+            pass: '1234'
         }
     },
     computed: {
-        visible(){
-            return this.$store.state.user.visible;
-        },
-        authError(){
-            return this.$store.state.user.error;
-        }
+        ...mapGetters({
+            visible: 'userVisible',
+            authError: 'userError'
+        }),
     },
     methods:{
+        ...mapActions({
+            sign:'signIn'
+        }),
         signIn(){
-            this.$store.dispatch('signIn',{
+            this.sign({
                 username: this.username,
                 pass: this.pass
-            })
+            });
         }
     }
     

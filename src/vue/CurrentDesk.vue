@@ -22,7 +22,7 @@
 <script>
 import tasklist from './Tasklist.vue'
 import localServer from '../server'
-
+import {mapGetters, mapActions} from 'vuex'
 export default {
     name: "currentDesk",
     data() {
@@ -33,24 +33,32 @@ export default {
         tasklist
     },
     methods: {
+        ...mapActions([
+            'openDialog'
+        ]),
         addTaskList(dat) {
-            this.$store.dispatch('openDialog',{
-                id: this.$store.state.currentDesk,
+            this.openDialog({
+                id: this.currentDesk,
                 title: 'Добавить список задач',
                 mutation: 'loadTasksList'
             });
         }
     }, 
     computed: {
+        ...mapGetters([
+            'Desks',
+            'TaskLists',
+            'currentDesk'
+        ]),
         allTasks(){
-            let id = this.$store.state.currentDesk;
-            let desks = this.$store.state.TaskLists.filter( a => a.parent == id);
+            let id = this.currentDesk;
+            let desks = this.TaskLists.filter( a => a.parent == id);
             return desks;
         },
         title(){
             //it's work )))
-            let id = this.$store.state.currentDesk;
-            let desks = this.$store.state.Desks.filter( a => a.id == id);
+            let id = this.currentDesk;
+            let desks = this.Desks.filter( a => a.id == id);
             return  desks.length ? desks[0].name : '';
         }
     }   

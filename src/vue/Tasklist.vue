@@ -28,6 +28,7 @@
 
 <script>
 import Task from './Task.vue'
+import {mapGetters, mapActions} from 'vuex'
 export default {
     name: 'tasklist', 
     data() {
@@ -51,30 +52,31 @@ export default {
         }
     },
     methods: {
-        init(arrayOfModel) {
-            //this.tasks = arrayOfModel;
-        },
+        ...mapActions({
+            loadTask: 'loadTasks',
+            openDialog: 'openDialog'
+        }),
         loadTasks() {
             this.isCollapsed = !this.isCollapsed;
             if(this.once) {
-                this.$store.dispatch('loadTasks', this.gettingTasksList.id);
+                this.loadTask(this.gettingTasksList.id);
                 this.once = false;
             }
         },
         addtask(id) {
-            this.$store.dispatch('openDialog', {
+            this.openDialog({
                 id:id,
                 title: 'Добавить задачу',
                 mutation: 'loadTasks'
             });
         },
-        updataChildData(d) {
-            sendData(d);
-        }
     },
     computed: {
+        ...mapGetters({
+            allTasks: 'Tasks'
+        }),
         tasks(){
-            let t = this.$store.state.Tasks;
+            let t = this.allTasks;
             return t.filter(task => task.parent == this.gettingTasksList.id && !task.removed);
         }
     }

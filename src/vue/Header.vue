@@ -7,14 +7,14 @@
                     alt="menu"
                 >
             </li>
-            <li id="home" @click="homeDir">
+            <li id="home" @click="homeDir(0)">
                 <img src="../Imgs/home.png" alt="home page">
             </li>
             <li id="logo">
                 <img src="../Imgs/logo.png" alt="logo">
                 <span>Котики</span>
             </li>
-            <li @click="showTrash" id="trash">
+            <li @click="showTrash(true)" id="trash">
                 <img src="../Imgs/trash.png" alt="trash">
             </li>
             <li @click="signIn" id="login">
@@ -29,32 +29,30 @@
 </template>
 
 <script>
+import {mapGetters, mapActions, mapMutations} from 'vuex'
 export default {
     data(){
         return{
         }
     },
     computed:{
-        menuCollapsed(){
-            return this.$store.state.navHidden;
-        },
-        nameOfUser(){
-            return this.$store.state.user.name;
-        }
+        ...mapGetters({
+            menuCollapsed: 'navHidden',
+            nameOfUser: 'userName'
+        }),
     }, 
     methods:{
-        collapse(){
-            this.$store.commit('navCollapse');
-        },
-        homeDir(){
-            this.$store.dispatch('loadTasksList',0);
-        },
-        showTrash(){
-            this.$store.commit('setTrashVisible',true);
-        },
+        ...mapMutations({
+            collapse: 'navCollapse',
+            showTrash: 'setTrashVisible',
+            signInVisible: 'signInVisible'
+        }),
+        ...mapActions({
+            homeDir: 'loadTasksList'
+        }),
         signIn(){
             if(this.nameOfUser == ''){
-                this.$store.commit('signInVisible',true);
+                this.signInVisible(true);
             }
         }
     }

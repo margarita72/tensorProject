@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions} from 'vuex'
+
 export default {
     data() {
         return { 
@@ -26,29 +28,22 @@ export default {
         }
     },
     methods: {
+        ...mapActions([
+            'loadTasksList',
+        ]),
         init(arrayOfModel) {
             this.desks = arrayOfModel;
         },
         openDesks(id) {
-            this.$store.dispatch('loadTasksList',id);
+            this.loadTasksList(id);
         },
-        load() {
-            this.$store.dispatch('loadDesks');
-        },
-    },
-    mounted() {
-        //this.load();
     },
     computed: {
-        desks() {
-            return this.$store.state.Desks;
-        },
-        isHhidden(){
-            return this.$store.state.navHidden;
-        },
-        curId(){
-            return this.$store.state.currentDesk;
-        }
+        ...mapGetters({
+            desks: 'Desks',
+            isHhidden: 'navHidden',
+            curId: 'currentDesk'
+        })
     }
 }
 </script>

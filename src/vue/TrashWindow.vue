@@ -11,28 +11,31 @@
                     <img src="../Imgs/restore.png" alt="restore"> 
                 </div>
             </div>
-            <button @click="close">Выход</button>
+            <button @click="close(false)">Выход</button>
         </div>
     </div>
 </template>
 
 <script>
+import {mapGetters, mapActions, mapMutations} from 'vuex'
 export default {
     computed:{
+        ...mapGetters({
+            Tasks: 'Tasks',
+            visible: 'trashVisible'
+        }),
         desks(){
-            let desks = this.$store.state.Tasks.filter( a => a.removed);
-            return  desks;
+            let desks = this.Tasks.filter( a => a.removed);
+            return desks;
         },
-        visible(){
-            return this.$store.state.trash.visible;
-        }
     },
     methods:{
-        close(){
-            this.$store.commit('setTrashVisible',false);
-        },
+        ...mapActions(['taskChanges']),
+        ...mapMutations({
+            close: 'setTrashVisible'
+        }),
         restore(id){
-            this.$store.dispatch('taskChanges', {
+            this.taskChanges({
                 id: id,
                 removed: false
             });
