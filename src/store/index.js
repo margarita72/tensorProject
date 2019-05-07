@@ -80,6 +80,11 @@ export default new Vuex.Store({
                 }
             );
         },
+        taskListChanges(context, changes) {
+            localServer.sendData(changes).then(function(data) {
+                context.commit('loadTasksList', data);
+            });
+        },
         taskChanges(context, changes) {
             localServer.sendData(changes).then(function(data) {
                 context.commit('loadTasks', data);

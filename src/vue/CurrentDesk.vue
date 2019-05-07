@@ -52,7 +52,7 @@ export default {
         ]),
         allTasks(){
             let id = this.currentDesk;
-            let desks = this.TaskLists.filter( a => a.parent == id);
+            let desks = this.TaskLists.filter( a => a.parent == id && !a.removed);
             return desks;
         },
         title(){

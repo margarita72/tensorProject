@@ -1,11 +1,22 @@
 <template>
-    <div class="task-list">
+    <div class="task-list" @click="menuIsOpen = false" >
         <div 
-            @click="loadTasks" 
-            class="task-list-title" 
+            
+            class="task-list-head" 
             :class="{ opened: isCollapsed }"
         >
-            {{ gettingTasksList.name }}
+            <div @click="loadTasks" class="task-list-title" >
+                {{ gettingTasksList.name }}
+            </div>
+            <div class="task-list-menu" @click.stop="openMenu">
+                <img class="task-list-menu-img" src="../Imgs/menu.png" alt="">
+                
+                <ul class="menu-btms" v-if="menuIsOpen">
+                    <li @click.stop="remove">Удалить</li>
+                    <li @click.stop="edit">Редактировать</li>
+                </ul>
+                
+            </div>
         </div>
         <div class="task-list-body" :class="{ hidden: isCollapsed }">
             <div>
@@ -34,7 +45,8 @@ export default {
     data() {
         return {
             isCollapsed: true,
-            once: true
+            once: true,
+            menuIsOpen: false
         }
     },
     components: {
@@ -54,7 +66,8 @@ export default {
     methods: {
         ...mapActions({
             loadTask: 'loadTasks',
-            openDialog: 'openDialog'
+            openDialog: 'openDialog',
+            sendChanges: 'taskListChanges'
         }),
         loadTasks() {
             this.isCollapsed = !this.isCollapsed;
@@ -70,6 +83,19 @@ export default {
                 mutation: 'loadTasks'
             });
         },
+        openMenu(){
+            this.menuIsOpen = !this.menuIsOpen;
+        },
+        remove(){
+            this.menuIsOpen = false;
+            this.sendChanges({
+                id: this.gettingTasksList.id,
+                removed: true
+            })
+        },
+        edit(){
+            this.menuIsOpen = false;
+        }
     },
     computed: {
         ...mapGetters({
@@ -102,8 +128,7 @@ export default {
         flex: 1; 
     }
 } */
-.task-list-title {
-    cursor: pointer;
+.task-list-head {
     background-color: #9dacb4;
     border-radius: 5px;
     width: 100%;
@@ -111,6 +136,45 @@ export default {
     margin-bottom: 10px;
     transition: all ease 0.3s;
     text-align: center;
+    display: flex;
+    justify-content: flex-end;
+}
+.task-list-title{
+    cursor: pointer;
+    margin-left: auto;
+    margin-right: auto;
+}
+.task-list-menu{
+    background-color: #c1cbd1;
+    height: 30px;
+    width: 30px;
+    border-radius: 5px;
+    margin-right: 2px;
+    cursor: pointer;
+}
+.menu-btms{
+    position: absolute;
+    background-color: #dae0e6;
+    border-radius: 5px;
+}
+li{
+    min-width: 150px;
+    display: block;
+    text-align: left;
+    margin-left: 5px;
+    transition: all ease 0.3s;
+}
+li:hover{
+    margin-left: 0;
+    border-radius: 5px;
+    background-color: #c1cbd1;
+}
+.task-list-menu:hover{
+    background-color: #a0d9f3;
+}
+.task-list-menu-img{
+    width: 20px;
+    margin-top: 4px;
 }
 .task-list-body {
     width: 100%;

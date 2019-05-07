@@ -2,13 +2,26 @@
     <div class="back" v-if="visible">
         <div class="window">
             <h2>Корзина</h2>
-            <div class="desk" v-for="desk in desks" :key="desk.id">
-                <div id="name">{{ desk.name }} </div>
-                <div class="btms">
-                    <img src="../Imgs/remove.png" alt="remove"> 
+            <div class="body">
+                <div v-if="desks.length != 0">Задачи</div>
+                <div class="desk" v-for="desk in desks" :key="desk.id">
+                    <div id="name">{{ desk.name }} </div>
+                    <div class="btms">
+                        <img src="../Imgs/remove.png" alt="remove"> 
+                    </div>
+                    <div class="btms" @click="restore(desk.id,'tasks')">
+                        <img src="../Imgs/restore.png" alt="restore"> 
+                    </div>
                 </div>
-                <div class="btms" @click="restore(desk.id)">
-                    <img src="../Imgs/restore.png" alt="restore"> 
+                <div v-if="deskList.length != 0">Списки Задач</div>
+                <div class="desk" v-for="desk in deskList" :key="desk.id">
+                    <div id="name">{{ desk.name }} </div>
+                    <div class="btms">
+                        <img src="../Imgs/remove.png" alt="remove"> 
+                    </div>
+                    <div class="btms" @click="restore(desk.id,'taskList')">
+                        <img src="../Imgs/restore.png" alt="restore"> 
+                    </div>
                 </div>
             </div>
             <button @click="close(false)">Выход</button>
@@ -22,23 +35,38 @@ export default {
     computed:{
         ...mapGetters({
             Tasks: 'Tasks',
-            visible: 'trashVisible'
+            TaskLists: 'TaskLists',
+            visible: 'trashVisible',
         }),
         desks(){
-            let desks = this.Tasks.filter( a => a.removed);
-            return desks;
+            return this.Tasks.filter( a => a.removed);
         },
+        deskList(){
+            return this.TaskLists.filter( a => a.removed);
+        }
     },
     methods:{
-        ...mapActions(['taskChanges']),
+        ...mapActions(['taskChanges','taskListChanges']),
         ...mapMutations({
             close: 'setTrashVisible'
         }),
-        restore(id){
-            this.taskChanges({
-                id: id,
-                removed: false
-            });
+        restore(id,type){
+            switch (type) {
+                case 'tasks':
+                    this.taskChanges({
+                        id: id,
+                        removed: false
+                    });
+                    break;
+                case 'taskList':
+                    this.taskListChanges({
+                        id: id,
+                        removed: false
+                    });
+                    break;            
+                default:
+                    break;
+            }
         }
     }
 }
@@ -104,6 +132,10 @@ button{
     padding: 7px 20px;
     margin: 0 5px;
     border-radius: 5px;
+}
+.body{
+    height: 80%;
+    overflow-y: auto;
 }
 @media screen and (max-width: 500px) {
     .window {
