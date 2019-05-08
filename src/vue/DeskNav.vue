@@ -1,51 +1,67 @@
 <template>
     <div class="root" :class="{ hidden: isHhidden }">
         <div class="desk-title">Доступные доски</div>
+        <div 
+            v-if="userName != ''"
+            class="desk-add"
+            @click="addDesk"
+        >
+            Добавить доску
+        </div>
         <div id="nav-desks">
-            <div>
-                <div 
-                    class="desk-list"
-                    @click="openDesks(desk.id)"
-                    :id="'desk' + desk.id"
-                    v-for="desk in desks"
-                    :key="desk.id"
-                    :class="curId == desk.id ? 'selected': ''"
-                    >
-                        {{ desk.name }}
-                </div>
-            </div>
+            <deskBtm v-for="d in desks" :key="d.id" :desk="d"></deskBtm>                
         </div>
     </div>
 </template>
 
 <script>
 import { mapGetters, mapActions} from 'vuex'
+import deskBtm from './DeskBtm.vue'
 
 export default {
     data() {
         return { 
-            
         }
     },
+    components:{deskBtm},
     methods: {
         ...mapActions([
-            'loadTasksList',
+            'openDialog',
         ]),
-        init(arrayOfModel) {
-            this.desks = arrayOfModel;
-        },
-        openDesks(id) {
-            this.loadTasksList(id);
+        addDesk(){
+            this.openDialog({
+                id:null,
+                title: 'Добавить доску',
+                mutation: 'loadDesks'
+            });
         },
     },
     computed: {
         ...mapGetters({
-            desks: 'Desks',
+            _desks: 'Desks',
             isHhidden: 'navHidden',
-            curId: 'currentDesk'
-        })
+            userName: 'userName'
+        }),
+        desks(){
+            return this._desks.filter( a => !a.removed);
+        } 
     }
 }
+
+
+// <div 
+//                 class="desk-list"
+//                 @click="openDesks(desk.id)"
+//                 @mouseover="tmp = true"
+//                 @mouseout="tmp = false"
+//                 :id="'desk' + desk.id"
+//                 v-for="desk in desks"
+//                 :key="desk.id"
+//                 :class="curId == desk.id ? 'selected': ''"
+//                 >
+//                 <input class="name" :value="desk.name" type="text">
+//                 <img :v-if="tmp" class="img-remove" src="../Imgs/remove.png" alt="">
+//             </div>
 </script>
 
 <style scoped>
@@ -77,22 +93,19 @@ export default {
     min-width: 200px;    
     background-color: #6f6f74;
 }
-.desk-list{
-    display: block;
-    margin: 10px;
-    padding: 15px 10px;
-    text-align: center;
-    background: #dfdfdf;
-    border-radius: 5px;
-    /* font-family: @fonts; */
-    cursor: pointer;
-}
+
 .desk-title{
     text-align: center;
     padding: 20px 10px;
     background-color: #9dacb4;
 }
-.selected{
-    background-color: #6f6f74;
+.desk-add{
+    text-align: center;
+    background-color: #abbac2;
+    padding: 5px 0;
+    cursor: pointer;
+}
+.desk-add:hover{
+    background-color: #b7c5cc;
 }
 </style>

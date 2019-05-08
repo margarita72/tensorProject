@@ -9,7 +9,7 @@
                 {{ gettingTasksList.name }}
             </div>
             <div class="task-list-menu" @click.stop="openMenu">
-                <img class="task-list-menu-img" src="../Imgs/menu.png" alt="">
+                <img class="task-list-menu-img" src="../Imgs/menu-fill.png" alt="">
                 
                 <ul class="menu-btms" v-if="menuIsOpen">
                     <li @click.stop="remove">Удалить</li>
@@ -145,15 +145,17 @@ export default {
     margin-right: auto;
 }
 .task-list-menu{
-    background-color: #c1cbd1;
-    height: 30px;
-    width: 30px;
+    /* background-color: #c1cbd1; */
+    height: 20px;
+    width: 20px;
     border-radius: 5px;
-    margin-right: 2px;
+    margin-right: 15px;
     cursor: pointer;
+    position: relative;
 }
 .menu-btms{
     position: absolute;
+    left: -125px;
     background-color: #dae0e6;
     border-radius: 5px;
 }
@@ -173,7 +175,7 @@ li:hover{
     background-color: #a0d9f3;
 }
 .task-list-menu-img{
-    width: 20px;
+    width: 12px;
     margin-top: 4px;
 }
 .task-list-body {

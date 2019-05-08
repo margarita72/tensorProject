@@ -80,6 +80,11 @@ export default new Vuex.Store({
                 }
             );
         },
+        desksChanges(context, changes) {
+            localServer.sendData(changes).then(function(data) {
+                context.commit('loadDesks', data);
+            });
+        },
         taskListChanges(context, changes) {
             localServer.sendData(changes).then(function(data) {
                 context.commit('loadTasksList', data);
@@ -109,7 +114,10 @@ export default new Vuex.Store({
     },
     mutations: {
         loadDesks(state, data) {
-            state.Desks = data;
+            if(data.length == 0) {
+                return;
+            }
+            state.Desks = unicue(state.Desks.concat(data));
         },
         loadTasksList(state, data) {
             if(data.length == 0) {

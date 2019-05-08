@@ -3,8 +3,8 @@
         <div class="window">
             <h2>Корзина</h2>
             <div class="body">
-                <div v-if="desks.length != 0">Задачи</div>
-                <div class="desk" v-for="desk in desks" :key="desk.id">
+                <div v-if="tasks.length != 0">Задачи</div>
+                <div class="desk" v-for="desk in tasks" :key="desk.id">
                     <div id="name">{{ desk.name }} </div>
                     <div class="btms">
                         <img src="../Imgs/remove.png" alt="remove"> 
@@ -13,13 +13,23 @@
                         <img src="../Imgs/restore.png" alt="restore"> 
                     </div>
                 </div>
-                <div v-if="deskList.length != 0">Списки Задач</div>
-                <div class="desk" v-for="desk in deskList" :key="desk.id">
+                <div v-if="taskList.length != 0">Списки Задач</div>
+                <div class="desk" v-for="desk in taskList" :key="desk.id">
                     <div id="name">{{ desk.name }} </div>
                     <div class="btms">
                         <img src="../Imgs/remove.png" alt="remove"> 
                     </div>
                     <div class="btms" @click="restore(desk.id,'taskList')">
+                        <img src="../Imgs/restore.png" alt="restore"> 
+                    </div>
+                </div>
+                <div v-if="desks.length != 0">Доски</div>
+                <div class="desk" v-for="desk in desks" :key="desk.id">
+                    <div id="name">{{ desk.name }} </div>
+                    <div class="btms">
+                        <img src="../Imgs/remove.png" alt="remove"> 
+                    </div>
+                    <div class="btms" @click="restore(desk.id,'desks')">
                         <img src="../Imgs/restore.png" alt="restore"> 
                     </div>
                 </div>
@@ -36,17 +46,21 @@ export default {
         ...mapGetters({
             Tasks: 'Tasks',
             TaskLists: 'TaskLists',
+            Desks: 'Desks',
             visible: 'trashVisible',
         }),
-        desks(){
+        tasks(){
             return this.Tasks.filter( a => a.removed);
         },
-        deskList(){
+        taskList(){
             return this.TaskLists.filter( a => a.removed);
-        }
+        },
+        desks(){
+            return this.Desks.filter( a => a.removed);
+        },
     },
     methods:{
-        ...mapActions(['taskChanges','taskListChanges']),
+        ...mapActions(['taskChanges','taskListChanges','desksChanges']),
         ...mapMutations({
             close: 'setTrashVisible'
         }),
@@ -63,7 +77,13 @@ export default {
                         id: id,
                         removed: false
                     });
-                    break;            
+                    break; 
+                case 'desks':
+                    this.desksChanges({
+                        id: id,
+                        removed: false
+                    });
+                    break;
                 default:
                     break;
             }
