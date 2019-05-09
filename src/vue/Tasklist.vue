@@ -95,6 +95,16 @@ export default {
         },
         edit(){
             this.menuIsOpen = false;
+            this.openDialog({
+                mode: 'edit',
+                mutation: 'loadTasksList',
+                title: 'Список задач',
+                id: this.gettingTasksList.id,
+                name: this.gettingTasksList.name,
+                description: this.gettingTasksList.description,
+                comment: this.gettingTasksList.comment,
+                done: this.gettingTasksList.done,
+            });
         }
     },
     computed: {

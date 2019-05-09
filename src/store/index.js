@@ -26,9 +26,14 @@ export default new Vuex.Store({
         currentDesk: null,
         dialog:{
             visible: false,
-            id: null,
+            mode: '',
+            mutation: '',
             title: 'Добавление',
-            mutation: ''
+            id: null,
+            name: '',
+            description: '',
+            comment: '',
+            done: false,
         },
         trash:{
             visible: false,
@@ -50,6 +55,7 @@ export default new Vuex.Store({
         dialogVisible: state => state.dialog.visible,
         dialogTitle: state => state.dialog.title,
         dialogID: state => state.dialog.id,
+        addingDialog: state => state.dialog,
         /* user */
         userName: state => state.user.name,
         userVisible: state => state.user.visible,
@@ -95,18 +101,29 @@ export default new Vuex.Store({
                 context.commit('loadTasks', data);
             });
         },
-        openDialog(context,param){
+        openDialog(context,param) {
             context.commit('openDialog', param);
         },
-        addData(context,param){
-            context.commit(context.state.dialog.mutation, param);
+        dialogComplete(context,param) {
+            console.log(param.parent);
+            if (param.id) {
+                localServer.sendData(param).then(function(data) {
+                    context.commit('dialogClose');
+                    context.commit(context.state.dialog.mutation, data);
+                });
+            } else {
+                localServer.newRecord(param).then(function(data) {
+                    context.commit('dialogClose');
+                    context.commit(context.state.dialog.mutation, data);
+                });
+            }
         },
-        signIn(context,userInfo){
-            localServer.logIn(userInfo).then(function(user){
+        signIn(context,userInfo) {
+            localServer.logIn(userInfo).then(function(user) {
                 context.commit('signInVisible',false);
                 context.commit('initUser', user);
                 context.dispatch('loadDesks');
-            }, function(){
+            }, function() {
                 context.commit('authError');
             });
         }
@@ -139,9 +156,15 @@ export default new Vuex.Store({
         },
         openDialog(state,param){
             state.dialog.visible = true;
-            state.dialog.id = param.id || null;
-            state.dialog.title =  param.title || "Добавление";
             state.dialog.mutation =  param.mutation;
+            state.dialog.title =  param.title || "Добавление";
+            state.dialog.id = param.id || null;
+            state.dialog.name = param.name;
+            state.dialog.description = param.description;
+            state.dialog.comment = param.comment;
+            state.dialog.done = param.done;
+
+            state.dialog.mode = param.mode || 'insert';
         },
         setCurrentDesk(state,id){
             state.currentDesk = id;

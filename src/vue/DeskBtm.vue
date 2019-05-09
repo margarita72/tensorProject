@@ -4,8 +4,7 @@
             @click="openDesks(desk.id)"
             :class="curId == desk.id ? 'selected': ''"
             >
-            <div @dblclick="edit = true" class="name" v-if="!edit">{{ desk.name }}</div>
-            <input v-on:blur="edit = false; update($event);" v-else class="name" :value="desk.name" type="text">
+            <div class="name">{{ desk.name }}</div>
             <div class="img-back">
                 <img 
                     @click.stop="remove"
@@ -22,7 +21,7 @@ import {mapActions, mapGetters, mapMutations} from 'vuex'
 export default {
     data(){
         return {
-            edit: false
+            
         }
     },
     props:['desk'],
@@ -44,12 +43,7 @@ export default {
             });
             this.setCurrentDesk(0);
         },
-        update(ev){
-             this.sendChanges({
-                id: this.desk.id,
-                name: ev.target.value
-            });
-        }
+        
     },
     computed:{
         ...mapGetters({

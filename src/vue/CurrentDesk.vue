@@ -1,6 +1,23 @@
 <template>
     <div class="task-body">
-        <h2 id="desk-title"> {{ title }}</h2>
+        <div class="head">
+            <h2 
+                @dblclick="editStart"
+                :class="edit?'hidden':''"
+                id="desk-title"
+            > {{ title }}</h2>
+            <input 
+                v-on:blur="edit = false; update($event);"
+                :value="title"
+                :class="!edit?'hidden':''"
+                class="desk-title-edit"
+                type="text"
+                ref="search"
+            >
+            <div class="img-back" @click="editDesk" v-if="title!=''">
+                <img class="img-share" src="../Imgs/share.png" alt="">
+            </div>
+        </div>
         <div class="task-list">
             <tasklist 
                 v-for="task in allTasks"
@@ -8,7 +25,7 @@
                 :getting-tasks-list="task"
             ></tasklist>
             <div 
-                :hidden="title==''" 
+                v-if="title!=''"
                 id="new-task-list" 
                 @click="addTaskList()"
             >
@@ -27,20 +44,51 @@ export default {
     name: "currentDesk",
     data() {
         return {
+            edit: false
         }
     },
     components: {
         tasklist
     },
     methods: {
-        ...mapActions([
-            'openDialog'
-        ]),
+        ...mapActions({
+            openDialog: 'openDialog',
+            sendChanges: 'desksChanges'
+        }),
         addTaskList(dat) {
             this.openDialog({
                 id: this.currentDesk,
                 title: 'Добавить список задач',
                 mutation: 'loadTasksList'
+            });
+        },
+        editStart(){
+            this.edit = true;
+            setTimeout(function(el){
+                el.focus();
+            },0,this.$refs.search)
+        },
+        update(ev){
+            if(ev.target.value == ''){
+                alert('a-ta-ta');
+                this.editStart();
+            } else {
+                this.sendChanges({
+                    id: this.currentDesk,
+                    name: ev.target.value
+                });
+            }
+        },
+        editDesk(){
+            this.openDialog({
+                mode: 'edit',
+                mutation: 'loadDesks',
+                title: 'Доска',
+                id: this.currentDesk,
+                name: this.title,
+                description: this.curData.description,
+                comment: this.curData.comment,
+                done: this.curData.done,
             });
         }
     }, 
@@ -60,6 +108,11 @@ export default {
             let id = this.currentDesk;
             let desks = this.Desks.filter( a => a.id == id);
             return  desks.length ? desks[0].name : '';
+        },
+        curData(){
+            let id = this.currentDesk;
+            let desks = this.Desks.filter( a => a.id == id);
+            return  desks.length ? desks[0] : '';
         }
     }   
 }
@@ -70,11 +123,24 @@ export default {
         overflow: hidden;
         display: flex;
         flex-direction: column;
+        width: 100%;
     }
     #desk-title{
         margin: 20px;
-        display:inline-block;
+        display: inline-block;
         width: 500px;
+        cursor: pointer;
+        flex: 1;
+    }
+    .desk-title-edit{
+        margin: 20px;
+        font-size: 21pt;
+        font-weight: bold;
+        font-family: 'Times New Roman', Times, serif;
+        border: none;
+        background-color: #e9e9e9;
+        cursor: text;
+        flex: 1;
     }
     .task-list{
         margin: 10px;
@@ -111,5 +177,26 @@ export default {
         padding: 10px 20px;
         border-radius: 5px;
     }
-
+    .hidden{
+        display: none!important;
+    }
+    .img-back{
+        display: inline-block;
+        background-color: #dae0e6;
+        width: 30px;
+        height: 30px;
+        border-radius: 5px;
+        margin: 20px 20px 20px auto;
+    }
+    .img-back:hover{
+        background-color: #c1cbd1;
+    }
+    .img-share{
+        width: 20px;
+        margin: 5px;
+        cursor: pointer;        
+    }
+    .head{
+        display: flex;
+    }
 </style>

@@ -5,24 +5,24 @@
             <table>
                 <tr>
                     <td><label for="add-form-name">Название *</label></td>
-                    <td><input type="text" id="add-form-name" v-model="name"></td>
+                    <td><input type="text" id="add-form-name" v-model="Dialog.name"></td>
                 </tr>
                 <tr>
                     <td><label for="add-form-description">Описание</label></td>
-                    <td><textarea id="add-form-description" v-model="description"></textarea></td>
+                    <td><textarea id="add-form-description" v-model="Dialog.description"></textarea></td>
                 </tr>
                 <tr>
                     <td><label for="add-form-comment">Комментарий</label></td>
-                    <td><textarea id="add-form-comment" v-model="comment"></textarea></td>
+                    <td><textarea id="add-form-comment" v-model="Dialog.comment"></textarea></td>
                 </tr>
                 <tr>
                     <td><label for="add-form-status">Выполнено</label></td>
-                    <td><input type="checkbox" id="add-form-status" v-model="done"></td>
+                    <td><input type="checkbox" id="add-form-status" v-model="Dialog.done"></td>
                 </tr>
             </table>
             <div id='buttons'>
                 <button @click="close">Отмена</button>
-                <button @click="addData">Добавить</button>
+                <button @click="addData">{{ Dialog.mode=='insert' ? 'Добавить': 'Сохранить'}}</button>
             </div>
         </div>
     </div>
@@ -37,10 +37,10 @@ export default {
     name: "add-task",
     data() {
         return {
-            name: '',
-            description: '',
-            comment: '',
-            done: ''
+            // name: '',
+            // description: '',
+            // comment: '',
+            // done: false
         }
     },
     methods: {
@@ -48,40 +48,37 @@ export default {
             'dialogClose'
         ]),
         ...mapActions({
-            sendData: 'addData'
+            sendData: 'dialogComplete'
         }),
         close() {
             this.dialogClose();
-            this.name = '';
-            this.description = '';
-            this.done = false;
-            this.comment = '';
         },
         addData(){
             if(this.name == ''){
                 alert('Название обязательное поле!');
                 return;
             }
-            let context = this;
             let dat = {
-                name: this.name,
-                description: this.description,
-                comment: this.comment,
-                done: this.done,
-                parent: context.dialogID,
+                name: this.Dialog.name,
+                description: this.Dialog.description,
+                comment: this.Dialog.comment,
+                done: this.Dialog.done,
                 removed: false
             }
-            localServer.newRecord(dat).then(function(data){
-                context.sendData(data);
-                context.close();
-            });
+            if(this.Dialog.mode == 'insert'){
+                dat.parent = this.dialogID;
+            } else {
+                dat.id = this.dialogID;
+            }
+            this.sendData(dat);
         }
     },
     computed:{
         ...mapGetters({
             visible: 'dialogVisible',
             title: 'dialogTitle',
-            dialogID: 'dialogID'
+            dialogID: 'dialogID',
+            Dialog: 'addingDialog'
         }),
     }
     

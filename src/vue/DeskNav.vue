@@ -47,21 +47,6 @@ export default {
         } 
     }
 }
-
-
-// <div 
-//                 class="desk-list"
-//                 @click="openDesks(desk.id)"
-//                 @mouseover="tmp = true"
-//                 @mouseout="tmp = false"
-//                 :id="'desk' + desk.id"
-//                 v-for="desk in desks"
-//                 :key="desk.id"
-//                 :class="curId == desk.id ? 'selected': ''"
-//                 >
-//                 <input class="name" :value="desk.name" type="text">
-//                 <img :v-if="tmp" class="img-remove" src="../Imgs/remove.png" alt="">
-//             </div>
 </script>
 
 <style scoped>

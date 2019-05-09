@@ -19,7 +19,7 @@
             class="description" 
             v-on:blur="descriptionSave"
             :class="{ hidden: isCollapsed }"
-            placeholder="Введите текст"
+            placeholder="Введите описание"
         ></textarea>
     </div>
 </template>
