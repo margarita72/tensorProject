@@ -63,7 +63,6 @@ export default {
     .root{
         width: unset;
         height: unset;
-        overflow: unset;
     }
     .hidden{
         display: none;

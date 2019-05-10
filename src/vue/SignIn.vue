@@ -1,7 +1,7 @@
 <template>
     <div class="back" v-if="visible">
         <div class="window">
-            <h2>Вход в ????????</h2>
+            <h2>Вход</h2>
             <label for="login">Электронная почта или имя пользователя</label>
             <input placeholder="Введите почту" id="login" type="text" v-model="username">
             <label for="pass">Пароль</label>

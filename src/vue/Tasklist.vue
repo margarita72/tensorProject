@@ -1,7 +1,9 @@
 <template>
     <div class="task-list" @click="menuIsOpen = false" >
+        <div class="progress-bar">
+            <div :style="progress" class="progress"></div>
+        </div>
         <div 
-            
             class="task-list-head" 
             :class="{ opened: isCollapsed }"
         >
@@ -114,6 +116,17 @@ export default {
         tasks(){
             let t = this.allTasks;
             return t.filter(task => task.parent == this.gettingTasksList.id && !task.removed);
+        },
+        progress(){
+            let count = this.tasks.length;
+            let percent = 0;
+            if (count){
+                let doneCount = this.tasks.filter(task => task.done).length;
+                percent = 100*doneCount/count;
+            }
+            return {
+                width: percent+'%'
+            }
         }
     }
 }
@@ -126,6 +139,7 @@ export default {
     /* flex-direction: column; */
     width: 300px;
     min-width: 300px;
+    max-width: 500px;
     height: max-content;
     max-height: 90%;
     background-color: #bebebe;
@@ -210,5 +224,16 @@ li:hover{
 .opened{
     height: 60px;
     margin-bottom: 0;
+}
+.progress-bar{
+    height: 4px;
+    border-radius: 5px;
+    background-color: #595959;
+}
+.progress{
+    height: 100%;
+    background-color: #a78484;
+    transition: all ease 0.3s;
+    border-radius: 5px;
 }
 </style>

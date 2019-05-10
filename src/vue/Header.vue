@@ -22,7 +22,7 @@
                     :src=" nameOfUser == '' ? './src/Imgs/log-in.png' : './src/Imgs/user.png'"
                     alt="login"
                 >
-                <span>{{ nameOfUser }}</span>
+                <span class="username">{{ nameOfUser }}</span>
             </li>
         </ul>
     </header>
@@ -111,5 +111,10 @@ header{
 #login{
     /* width: 30px; */
     padding: 0 5px;
+}
+@media screen and (max-width: 500px){
+    .username{
+        display: none;
+    }
 }
 </style>

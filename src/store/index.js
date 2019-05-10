@@ -105,7 +105,6 @@ export default new Vuex.Store({
             context.commit('openDialog', param);
         },
         dialogComplete(context,param) {
-            console.log(param.parent);
             if (param.id) {
                 localServer.sendData(param).then(function(data) {
                     context.commit('dialogClose');

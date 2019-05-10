@@ -20,6 +20,7 @@
             v-on:blur="descriptionSave"
             :class="{ hidden: isCollapsed }"
             placeholder="Введите описание"
+            @keyup="imput($event)"
         ></textarea>
     </div>
 </template>
@@ -77,6 +78,11 @@ export default {
         },
         collapse(){
             this.isCollapsed = ! this.isCollapsed;
+        },
+        imput(e){
+            let element = e.srcElement;
+            element.style.height = "5px";
+            element.style.height = (element.scrollHeight)+"px";
         }
     },
     computed: {
@@ -111,7 +117,8 @@ export default {
         border: 1px solid #630f5f;
         resize: none;
         margin-top: 10px;
-        height: 4em;
+        overflow: hidden;
+        min-height: 4em;
         width: 100%;
         font-size: 12pt;
         color: #545454;
